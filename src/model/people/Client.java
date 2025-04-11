@@ -2,12 +2,12 @@ package model.people;
 
 import java.time.LocalDate;
 
-public class Guest extends Person {
-    private int reservationCount;
+public class Client extends Person {
+    private int amountPurchasesMade;
     private final LocalDate accountCreationDate;
-    private LocalDate lastReservationDate;
+    private LocalDate dateLastPurchase;
 
-    public Guest(
+    public Client(
             String name,
             String cpf,
             LocalDate birthDate,
@@ -17,29 +17,29 @@ public class Guest extends Person {
             LocalDate accountCreationDate,
             LocalDate lastReservationDate) {
         super(name, cpf, birthDate, email, password, phone);
-        this.reservationCount = 0;
+        this.amountPurchasesMade = 0;
         this.accountCreationDate = accountCreationDate;
-        this.lastReservationDate = lastReservationDate;
+        this.dateLastPurchase = lastReservationDate;
     }
 
-    public int getReservationCount() {
-        return reservationCount;
+    public int getAmountPurchasesMade() {
+        return amountPurchasesMade;
     }
 
-    public void setReservationCount(int reservationCount) {
-        this.reservationCount = reservationCount;
+    public void setAmountPurchasesMade(int reservationCount) {
+        this.amountPurchasesMade = reservationCount;
     }
 
     public LocalDate getAccountCreationDate() {
         return accountCreationDate;
     }
 
-    public LocalDate getLastReservationDate() {
-        return lastReservationDate;
+    public LocalDate getDateLastPurchase() {
+        return dateLastPurchase;
     }
 
-    public void setLastReservationDate(LocalDate lastReservationDate) {
-        this.lastReservationDate = lastReservationDate;
+    public void setDateLastPurchase(LocalDate lastReservationDate) {
+        this.dateLastPurchase = lastReservationDate;
     }
 
     @Override
@@ -52,9 +52,9 @@ public class Guest extends Person {
                 ", email='" + this.getEmail() + '\'' +
                 ", password='" + this.getPassword() + '\'' +
                 ", phone='" + this.getPhone() + '\'' +
-                ", reservationCount=" + this.reservationCount +
+                ", reservationCount=" + this.amountPurchasesMade +
                 ", accountCreationDate=" + this.accountCreationDate +
-                ", lastReservationDate=" + this.lastReservationDate +
+                ", lastReservationDate=" + this.dateLastPurchase +
                 '}';
     }
 }
