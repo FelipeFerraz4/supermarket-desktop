@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 public class PersonServices {
 
-    public static void RegistreGuest(
+    public static void RegistreClient(
             String name,
             String cpf,
             LocalDate birthDate,
