@@ -74,15 +74,19 @@ public class PersonControllers {
         return repository.searchByEmail(email);
     }
 
-    public void updatePerson(Person updatedPerson) {
-        repository.update(updatedPerson);
+    public void updateEmployee(UUID id, String phone, String position, double salary) {
+        PersonServices.updateEmployee(id, phone, position, salary, repository);
+    }
+
+    public void updateClient(UUID id, String phone) {
+        PersonServices.updateClient(id, phone, repository);
     }
 
     public void deletePerson(UUID id) {
         repository.delete(id);
     }
 
-    public List<Person> listGuests() {
+    public List<Person> listClients() {
         return repository.getByType(Client.class);
     }
 
