@@ -52,8 +52,21 @@ public class ProcessedFood extends FoodProduct {
 
     @Override
     public String toString() {
-        return super.toString() +
-                String.format(" | Category: %s | Brand: %s | Preservatives: %s | Instructions: %s",
-                        category, brand, containsPreservatives ? "Yes" : "No", cookingInstructions);
+        return "ProcessedFood{" +
+                "id=" + getId() + '\'' +
+                ", cod='" + getCod() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", price=" + getPrice() + '\'' +
+                ", amount=" + getAmount() + '\'' +
+                ", latestStockUpdate=" + getLatestStockUpdate() + '\'' +
+                ", expirationDate=" + getExpirationDate() +
+                ", weight=" + getWeight() +
+                ", refrigerated=" + isRefrigerated() +
+                ", nutritionalInfo='" + getNutritionalInfo() + '\'' +
+                ", category='" + category + '\'' +
+                ", brand='" + brand + '\'' +
+                ", containsPreservatives=" + containsPreservatives +
+                ", cookingInstructions='" + cookingInstructions + '\'' +
+                '}';
     }
 }

@@ -72,9 +72,13 @@ public abstract class Product {
 
     @Override
     public String toString() {
-        return String.format(
-                "ID: %s | Código: %s | Nome: %s | Preço: R$%.2f | Quantidade: %d | Última Atualização: %s",
-                id, cod, name, price, amount, latestStockUpdate
-        );
+        return "Product{" +
+                "id=" + id +
+                ", cod='" + cod + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", amount=" + amount +
+                ", latestStockUpdate=" + latestStockUpdate +
+                '}';
     }
 }

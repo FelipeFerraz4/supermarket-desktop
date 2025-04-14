@@ -51,8 +51,17 @@ public abstract class FoodProduct extends Product {
 
     @Override
     public String toString() {
-        return super.toString() + String.format(
-                " | Expiration: %s | Weight: %.2fkg | Refrigerated: %s | Nutrition: %s",
-                expirationDate, weight, refrigerated ? "Yes" : "No", nutritionalInfo);
+        return "FoodProduct{" +
+                "id=" + getId() + '\'' +
+                ", cod='" + getCod() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", price=" + getPrice() + '\'' +
+                ", amount=" + getAmount() + '\'' +
+                ", latestStockUpdate=" + getLatestStockUpdate() + '\'' +
+                ", expirationDate=" + expirationDate +
+                ", weight=" + weight +
+                ", refrigerated=" + refrigerated +
+                ", nutritionalInfo='" + nutritionalInfo + '\'' +
+                '}';
     }
 }

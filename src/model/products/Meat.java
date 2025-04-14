@@ -50,8 +50,22 @@ public class Meat extends FoodProduct {
 
     @Override
     public String toString() {
-        return super.toString() +
-                String.format(" | Cut: %s | Origin: %s | Organic: %s | Animal: %s | Storage: %s",
-                        cutType, origin, isOrganic ? "Yes" : "No", animalType, storageInstructions);
+        return "Meat{" +
+                "id=" + getId() + '\'' +
+                ", cod='" + getCod() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", price=" + getPrice() + '\'' +
+                ", amount=" + getAmount() + '\'' +
+                ", latestStockUpdate=" + getLatestStockUpdate() + '\'' +
+                ", expirationDate=" + getExpirationDate() +
+                ", weight=" + getWeight() +
+                ", refrigerated=" + isRefrigerated() +
+                ", nutritionalInfo='" + getNutritionalInfo() + '\'' +
+                ", cutType='" + cutType + '\'' +
+                ", origin='" + origin + '\'' +
+                ", isOrganic=" + isOrganic +
+                ", animalType='" + animalType + '\'' +
+                ", storageInstructions='" + storageInstructions + '\'' +
+                '}';
     }
 }

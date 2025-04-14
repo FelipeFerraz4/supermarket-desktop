@@ -52,8 +52,21 @@ public class Beverage extends FoodProduct {
 
     @Override
     public String toString() {
-        return super.toString() +
-                String.format(" | Volume: %.2fL | Alcoholic: %s | Flavor: %s | Brand: %s",
-                        volume, alcoholic ? "Yes" : "No", flavor, brand);
+        return "Beverage{" +
+                "id=" + getId() + '\'' +
+                ", cod='" + getCod() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", price=" + getPrice() + '\'' +
+                ", amount=" + getAmount() + '\'' +
+                ", latestStockUpdate=" + getLatestStockUpdate() + '\'' +
+                ", expirationDate=" + getExpirationDate() +
+                ", weight=" + getWeight() +
+                ", refrigerated=" + isRefrigerated() +
+                ", nutritionalInfo='" + getNutritionalInfo() + '\'' +
+                ", volume=" + volume +
+                ", alcoholic=" + alcoholic +
+                ", flavor='" + flavor + '\'' +
+                ", brand='" + brand + '\'' +
+                '}';
     }
 }

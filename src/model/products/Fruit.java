@@ -52,8 +52,21 @@ public class Fruit extends FoodProduct {
 
     @Override
     public String toString() {
-        return super.toString() +
-                String.format(" | Variety: %s | Origin: %s | Seasonal: %s | Packaging: %s",
-                        variety, origin, seasonal ? "Yes" : "No", packagingType);
+        return "Fruit{" +
+                "id=" + getId() + '\'' +
+                ", cod='" + getCod() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", price=" + getPrice() + '\'' +
+                ", amount=" + getAmount() + '\'' +
+                ", latestStockUpdate=" + getLatestStockUpdate() + '\'' +
+                ", expirationDate=" + getExpirationDate() +
+                ", weight=" + getWeight() +
+                ", refrigerated=" + isRefrigerated() +
+                ", nutritionalInfo='" + getNutritionalInfo() + '\'' +
+                ", variety='" + variety + '\'' +
+                ", origin='" + origin + '\'' +
+                ", seasonal=" + seasonal +
+                ", packagingType='" + packagingType + '\'' +
+                '}';
     }
 }
