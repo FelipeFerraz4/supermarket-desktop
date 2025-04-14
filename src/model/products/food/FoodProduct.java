@@ -1,4 +1,6 @@
-package model.products;
+package model.products.food;
+
+import model.products.Product;
 
 import java.time.LocalDate;
 
