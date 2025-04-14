@@ -17,8 +17,8 @@ public class ConsoleMenu {
         do {
             System.out.println("\n==== SISTEMA DE SUPERMERCADO ====");
             System.out.println("1. Faça suas compras aqui");
-            System.out.println("1. Faça login e ganhe ponto para trocar por descontos");
-            System.out.println("2. Crie sua conta aqui");
+            System.out.println("2. Faça login e ganhe ponto para trocar por descontos");
+            System.out.println("3. Crie sua conta aqui");
             System.out.println("0. Sair");
             System.out.print("Escolha a opção: ");
             option = scanner.nextInt();
