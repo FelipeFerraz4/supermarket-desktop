@@ -29,6 +29,90 @@ public class ProductControllers {
         ProductServices.updateBeverage(id, cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand, repository);
     }
 
+    public void registerProcessedFood(
+            String cod, String name, double price, int amount,
+            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
+            String category, String brand, boolean containsPreservatives, String cookingInstructions) {
+
+        ProductServices.registerProcessedFood(
+                cod, name, price, amount,
+                expirationDate, weight, refrigerated, nutritionalInfo,
+                category, brand, containsPreservatives, cookingInstructions,
+                repository
+        );
+    }
+
+    public void updateProcessedFood(
+            UUID id,
+            String cod, String name, double price, int amount,
+            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
+            String category, String brand, boolean containsPreservatives, String cookingInstructions) {
+
+        ProductServices.updateProcessedFood(
+                id,
+                cod, name, price, amount,
+                expirationDate, weight, refrigerated, nutritionalInfo,
+                category, brand, containsPreservatives, cookingInstructions,
+                repository
+        );
+    }
+
+    public void registerMeat(
+            String cod, String name, double price, int amount,
+            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
+            String cutType, String origin, boolean isOrganic, String animalType, String storageInstructions) {
+
+        ProductServices.registerMeat(
+                cod, name, price, amount,
+                expirationDate, weight, refrigerated, nutritionalInfo,
+                cutType, origin, isOrganic, animalType, storageInstructions,
+                repository
+        );
+    }
+
+    public void updateMeat(
+            UUID id,
+            String cod, String name, double price, int amount,
+            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
+            String origin, String storageInstructions) {
+
+        ProductServices.updateMeat(
+                id,
+                cod, name, price, amount,
+                expirationDate, weight, refrigerated, nutritionalInfo,
+                origin, storageInstructions,
+                repository
+        );
+    }
+
+    public void registerFruit(
+            String cod, String name, double price, int amount,
+            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
+            String variety, String origin, boolean seasonal, String packagingType) {
+
+        ProductServices.registerFruit(
+                cod, name, price, amount,
+                expirationDate, weight, refrigerated, nutritionalInfo,
+                variety, origin, seasonal, packagingType,
+                repository
+        );
+    }
+
+    public void updateFruit(
+            UUID id,
+            String cod, String name, double price, int amount,
+            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
+            String variety, String origin, boolean seasonal, String packagingType) {
+
+        ProductServices.updateFruit(
+                id,
+                cod, name, price, amount,
+                expirationDate, weight, refrigerated, nutritionalInfo,
+                variety, origin, seasonal, packagingType,
+                repository
+        );
+    }
+
     public void registerHygieneProduct(
             String cod, String name, double price, int amount,
             String type, String brand, boolean forSensitiveSkin,
@@ -56,7 +140,6 @@ public class ProductControllers {
                               String material, String category, boolean isReusable, String size) {
         ProductServices.updateUtensil(id, cod, name, price, amount, material, category, isReusable, size, repository);
     }
-
 
     public void deleteProduct(UUID id) {
         repository.delete(id);
