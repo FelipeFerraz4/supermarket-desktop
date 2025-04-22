@@ -1,13 +1,12 @@
 package controllers;
 
-import dtos.ProductDTO;
+import interfaces.IRepository;
 import model.products.Product;
 import repository.product.ProductRepositoryHashMap;
 import services.ProductServices;
 
-import java.util.List;
+import java.time.LocalDate;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class ProductControllers {
     private final ProductRepositoryHashMap repository;
@@ -16,39 +15,50 @@ public class ProductControllers {
         this.repository = new ProductRepositoryHashMap();
     }
 
-    public void registerProduct(ProductDTO dto) {
-        ProductServices.registerProduct(dto, repository);
+    public void registerBeverage(
+            String cod, String name, double price, int amount,
+            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
+            double volume, boolean alcoholic, String flavor, String brand) {
+        ProductServices.registerBeverage(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand, repository);
     }
 
-    public List<ProductDTO> listAll() {
-        return repository.search().stream()
-                .map(ProductServices::toDTO)
-                .collect(Collectors.toList());
+    public void updateBeverage(UUID id,
+                               String cod, String name, double price, int amount,
+                               LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
+                               double volume, boolean alcoholic, String flavor, String brand) {
+        ProductServices.updateBeverage(id, cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand, repository);
     }
 
-    public ProductDTO findById(UUID id) {
-        return ProductServices.toDTO(repository.searchById(id));
+    public void registerHygieneProduct(
+            String cod, String name, double price, int amount,
+            String type, String brand, boolean forSensitiveSkin,
+            String usageInstructions, boolean toxic, String scent, double volume) {
+        ProductServices.registerHygieneProduct(cod, name, price, amount, type, brand, forSensitiveSkin,
+                usageInstructions, toxic, scent, volume, repository);
     }
 
-    public ProductDTO findByCod(String cod) {
-        return ProductServices.toDTO(repository.searchByCod(cod));
+    public void updateHygieneProduct(UUID id,
+                                     String cod, String name, double price, int amount,
+                                     String type, String brand, boolean forSensitiveSkin,
+                                     String usageInstructions, boolean toxic, String scent, double volume) {
+        ProductServices.updateHygieneProduct(id, cod, name, price, amount, type, brand, forSensitiveSkin,
+                usageInstructions, toxic, scent, volume, repository);
     }
 
-    public ProductDTO findByName(String name) {
-        return ProductServices.toDTO(repository.searchByName(name));
+    public void registerUtensil(
+            String cod, String name, double price, int amount,
+            String material, String category, boolean isReusable, String size) {
+        ProductServices.registerUtensil(cod, name, price, amount, material, category, isReusable, size, repository);
     }
 
-    public void updateStock(UUID id, int changeInAmount) {
-        ProductServices.updateStock(id, changeInAmount, repository);
+    public void updateUtensil(UUID id,
+                              String cod, String name, double price, int amount,
+                              String material, String category, boolean isReusable, String size) {
+        ProductServices.updateUtensil(id, cod, name, price, amount, material, category, isReusable, size, repository);
     }
+
 
     public void deleteProduct(UUID id) {
         repository.delete(id);
-    }
-
-    public List<ProductDTO> listByType(Class<?> clazz) {
-        return repository.getByType(clazz).stream()
-                .map(ProductServices::toDTO)
-                .collect(Collectors.toList());
     }
 }
