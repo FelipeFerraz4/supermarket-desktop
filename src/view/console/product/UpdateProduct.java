@@ -18,8 +18,7 @@ public class UpdateProduct {
         System.out.println("5. Produto de higiene");
         System.out.println("6. Utensílio");
 
-        int option = scanner.nextInt();
-        scanner.nextLine();
+        int option = Integer.parseInt(scanner.nextLine());
 
         UUID id = ProductView.findProduct(scanner, controller);
 
@@ -53,20 +52,19 @@ public class UpdateProduct {
             System.out.println("12. Marca");
             System.out.println("0. Salvar e sair");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
                 case 1 -> { System.out.print("Novo Código: "); dto = dto.withCode(scanner.nextLine()); }
                 case 2 -> { System.out.print("Novo Nome: "); dto = dto.withName(scanner.nextLine()); }
-                case 3 -> { System.out.print("Novo Preço: "); dto = dto.withPrice(scanner.nextDouble()); scanner.nextLine(); }
-                case 4 -> { System.out.print("Nova Quantidade: "); dto = dto.withAmount(scanner.nextInt()); scanner.nextLine(); }
+                case 3 -> { System.out.print("Novo Preço: "); dto = dto.withPrice(Double.parseDouble(scanner.nextLine()));}
+                case 4 -> { System.out.print("Nova Quantidade: "); dto = dto.withAmount(Integer.parseInt(scanner.nextLine())); }
                 case 5 -> { System.out.print("Nova Data de validade (yyyy-mm-dd): "); dto = dto.withExpirationDate(LocalDate.parse(scanner.nextLine())); }
-                case 6 -> { System.out.print("Novo Peso: "); dto = dto.withWeight(scanner.nextDouble()); scanner.nextLine(); }
-                case 7 -> { System.out.print("É refrigerado (true/false): "); dto = dto.withRefrigerated(scanner.nextBoolean()); scanner.nextLine(); }
+                case 6 -> { System.out.print("Novo Peso: "); dto = dto.withWeight(Double.parseDouble(scanner.nextLine())); }
+                case 7 -> { System.out.print("É refrigerado (true/false): "); dto = dto.withRefrigerated(Boolean.parseBoolean(scanner.nextLine())); }
                 case 8 -> { System.out.print("Novas Informações nutricionais: "); dto = dto.withNutritionalInfo(scanner.nextLine()); }
-                case 9 -> { System.out.print("Novo Volume: "); dto = dto.withVolume(scanner.nextDouble()); scanner.nextLine(); }
-                case 10 -> { System.out.print("É alcoólico (true/false): "); dto = dto.withAlcoholic(scanner.nextBoolean()); scanner.nextLine(); }
+                case 9 -> { System.out.print("Novo Volume: "); dto = dto.withVolume(Double.parseDouble(scanner.nextLine())); }
+                case 10 -> { System.out.print("É alcoólico (true/false): "); dto = dto.withAlcoholic(Boolean.parseBoolean(scanner.nextLine())); }
                 case 11 -> { System.out.print("Novo Sabor: "); dto = dto.withFlavor(scanner.nextLine()); }
                 case 12 -> { System.out.print("Nova Marca: "); dto = dto.withBrand(scanner.nextLine()); }
                 case 0 -> {
@@ -98,8 +96,7 @@ public class UpdateProduct {
             System.out.println("12. Instruções de preparo");
             System.out.println("0. Salvar e sair");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
                 case 1 -> {
@@ -112,13 +109,11 @@ public class UpdateProduct {
                 }
                 case 3 -> {
                     System.out.print("Novo Preço: ");
-                    dto = dto.withPrice(scanner.nextDouble());
-                    scanner.nextLine();
+                    dto = dto.withPrice(Double.parseDouble(scanner.nextLine()));
                 }
                 case 4 -> {
                     System.out.print("Nova Quantidade: ");
-                    dto = dto.withAmount(scanner.nextInt());
-                    scanner.nextLine();
+                    dto = dto.withAmount(Integer.parseInt(scanner.nextLine()));
                 }
                 case 5 -> {
                     System.out.print("Nova Data de validade (yyyy-mm-dd): ");
@@ -126,13 +121,11 @@ public class UpdateProduct {
                 }
                 case 6 -> {
                     System.out.print("Novo Peso: ");
-                    dto = dto.withWeight(scanner.nextDouble());
-                    scanner.nextLine();
+                    dto = dto.withWeight(Double.parseDouble(scanner.nextLine()));
                 }
                 case 7 -> {
                     System.out.print("É refrigerado (true/false): ");
-                    dto = dto.withRefrigerated(scanner.nextBoolean());
-                    scanner.nextLine();
+                    dto = dto.withRefrigerated(Boolean.parseBoolean(scanner.nextLine()));
                 }
                 case 8 -> {
                     System.out.print("Novas Informações nutricionais: ");
@@ -148,8 +141,7 @@ public class UpdateProduct {
                 }
                 case 11 -> {
                     System.out.print("Contém conservantes (true/false): ");
-                    dto = dto.withContainsPreservatives(scanner.nextBoolean());
-                    scanner.nextLine();
+                    dto = dto.withContainsPreservatives(Boolean.parseBoolean(scanner.nextLine()));
                 }
                 case 12 -> {
                     System.out.print("Novas Instruções de preparo: ");
@@ -182,8 +174,7 @@ public class UpdateProduct {
             System.out.println("10. Instruções de armazenamento");
             System.out.println("0. Salvar e sair");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
                 case 1 -> {
@@ -196,13 +187,11 @@ public class UpdateProduct {
                 }
                 case 3 -> {
                     System.out.print("Novo Preço: ");
-                    dto = dto.withPrice(scanner.nextDouble());
-                    scanner.nextLine();
+                    dto = dto.withPrice(Double.parseDouble(scanner.nextLine()));
                 }
                 case 4 -> {
                     System.out.print("Nova Quantidade: ");
-                    dto = dto.withAmount(scanner.nextInt());
-                    scanner.nextLine();
+                    dto = dto.withAmount(Integer.parseInt(scanner.nextLine()));
                 }
                 case 5 -> {
                     System.out.print("Nova Data de validade (yyyy-mm-dd): ");
@@ -210,13 +199,11 @@ public class UpdateProduct {
                 }
                 case 6 -> {
                     System.out.print("Novo Peso: ");
-                    dto = dto.withWeight(scanner.nextDouble());
-                    scanner.nextLine();
+                    dto = dto.withWeight(Double.parseDouble(scanner.nextLine()));
                 }
                 case 7 -> {
                     System.out.print("É refrigerado (true/false): ");
-                    dto = dto.withRefrigerated(scanner.nextBoolean());
-                    scanner.nextLine();
+                    dto = dto.withRefrigerated(Boolean.parseBoolean(scanner.nextLine()));
                 }
                 case 8 -> {
                     System.out.print("Novas Informações nutricionais: ");
@@ -259,8 +246,7 @@ public class UpdateProduct {
             System.out.println("12. Tipo de embalagem");
             System.out.println("0. Salvar e sair");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
                 case 1 -> {
@@ -273,13 +259,11 @@ public class UpdateProduct {
                 }
                 case 3 -> {
                     System.out.print("Novo Preço: ");
-                    dto = dto.withPrice(scanner.nextDouble());
-                    scanner.nextLine();
+                    dto = dto.withPrice(Double.parseDouble(scanner.nextLine()));
                 }
                 case 4 -> {
                     System.out.print("Nova Quantidade: ");
-                    dto = dto.withAmount(scanner.nextInt());
-                    scanner.nextLine();
+                    dto = dto.withAmount(Integer.parseInt(scanner.nextLine()));
                 }
                 case 5 -> {
                     System.out.print("Nova Data de validade (yyyy-mm-dd): ");
@@ -287,13 +271,11 @@ public class UpdateProduct {
                 }
                 case 6 -> {
                     System.out.print("Novo Peso: ");
-                    dto = dto.withWeight(scanner.nextDouble());
-                    scanner.nextLine();
+                    dto = dto.withWeight(Double.parseDouble(scanner.nextLine()));
                 }
                 case 7 -> {
                     System.out.print("É refrigerado (true/false): ");
-                    dto = dto.withRefrigerated(scanner.nextBoolean());
-                    scanner.nextLine();
+                    dto = dto.withRefrigerated(Boolean.parseBoolean(scanner.nextLine()));
                 }
                 case 8 -> {
                     System.out.print("Novas Informações nutricionais: ");
@@ -309,8 +291,7 @@ public class UpdateProduct {
                 }
                 case 11 -> {
                     System.out.print("É sazonal (true/false): ");
-                    dto = dto.withSeasonal(scanner.nextBoolean());
-                    scanner.nextLine();
+                    dto = dto.withSeasonal(Boolean.parseBoolean(scanner.nextLine()));
                 }
                 case 12 -> {
                     System.out.print("Novo Tipo de embalagem: ");
@@ -343,8 +324,7 @@ public class UpdateProduct {
             System.out.println("11. Volume");
             System.out.println("0. Salvar e sair");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
                 case 1 -> {
@@ -357,13 +337,11 @@ public class UpdateProduct {
                 }
                 case 3 -> {
                     System.out.print("Novo Preço: ");
-                    dto = dto.withPrice(scanner.nextDouble());
-                    scanner.nextLine();
+                    dto = dto.withPrice(Double.parseDouble(scanner.nextLine()));
                 }
                 case 4 -> {
                     System.out.print("Nova Quantidade: ");
-                    dto = dto.withAmount(scanner.nextInt());
-                    scanner.nextLine();
+                    dto = dto.withAmount(Integer.parseInt(scanner.nextLine()));
                 }
                 case 5 -> {
                     System.out.print("Novo Tipo: ");
@@ -375,8 +353,7 @@ public class UpdateProduct {
                 }
                 case 7 -> {
                     System.out.print("Para pele sensível (true/false): ");
-                    dto = dto.withSensitive(scanner.nextBoolean());
-                    scanner.nextLine();
+                    dto = dto.withSensitive(Boolean.parseBoolean(scanner.nextLine()));
                 }
                 case 8 -> {
                     System.out.print("Novo Modo de uso: ");
@@ -384,8 +361,7 @@ public class UpdateProduct {
                 }
                 case 9 -> {
                     System.out.print("É tóxico (true/false): ");
-                    dto = dto.withToxic(scanner.nextBoolean());
-                    scanner.nextLine();
+                    dto = dto.withToxic(Boolean.parseBoolean(scanner.nextLine()));
                 }
                 case 10 -> {
                     System.out.print("Nova Fragrância: ");
@@ -393,8 +369,7 @@ public class UpdateProduct {
                 }
                 case 11 -> {
                     System.out.print("Novo Volume: ");
-                    dto = dto.withVolume(scanner.nextDouble());
-                    scanner.nextLine();
+                    dto = dto.withVolume(Double.parseDouble(scanner.nextLine()));
                 }
                 case 0 -> {
                     controller.updateHygieneProduct(id, dto);
@@ -421,8 +396,7 @@ public class UpdateProduct {
             System.out.println("8. Tamanho");
             System.out.println("0. Salvar e sair");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine();
+            int choice = Integer.parseInt(scanner.nextLine());
 
             switch (choice) {
                 case 1 -> {
@@ -435,13 +409,11 @@ public class UpdateProduct {
                 }
                 case 3 -> {
                     System.out.print("Novo Preço: ");
-                    utensilDTO = utensilDTO.withPrice(scanner.nextDouble());
-                    scanner.nextLine();
+                    utensilDTO = utensilDTO.withPrice(Double.parseDouble(scanner.nextLine()));
                 }
                 case 4 -> {
                     System.out.print("Nova Quantidade: ");
-                    utensilDTO = utensilDTO.withAmount(scanner.nextInt());
-                    scanner.nextLine();
+                    utensilDTO = utensilDTO.withAmount(Integer.parseInt(scanner.nextLine()));
                 }
                 case 5 -> {
                     System.out.print("Novo Material: ");
@@ -453,8 +425,7 @@ public class UpdateProduct {
                 }
                 case 7 -> {
                     System.out.print("É reutilizável (true/false): ");
-                    utensilDTO = utensilDTO.withReusable(scanner.nextBoolean());
-                    scanner.nextLine();
+                    utensilDTO = utensilDTO.withReusable(Boolean.parseBoolean(scanner.nextLine()));
                 }
                 case 8 -> {
                     System.out.print("Novo Tamanho: ");

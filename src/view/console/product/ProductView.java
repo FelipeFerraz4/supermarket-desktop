@@ -1,6 +1,7 @@
 package view.console.product;
 
 import controllers.ProductController;
+import dtos.*;
 import model.products.Product;
 import model.products.food.Beverage;
 import model.products.food.ProcessedFood;
@@ -101,7 +102,9 @@ public class ProductView {
                 System.out.print("Marca: ");
                 brand = scanner.nextLine();
 
-                controller.registerBeverage(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand);
+                BeverageDTO beverageDTO = new BeverageDTO(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand);
+
+                controller.registerBeverage(beverageDTO);
                 break;
 
             case "2": // Alimento Processado
@@ -128,7 +131,9 @@ public class ProductView {
                 System.out.print("Instruções de preparo: ");
                 String cookingInstructions = scanner.nextLine();
 
-                controller.registerProcessedFood(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, category, brand, containsPreservatives, cookingInstructions);
+                ProcessedFoodDTO processedFoodDTO = new ProcessedFoodDTO(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, category, brand, containsPreservatives, cookingInstructions);
+
+                controller.registerProcessedFood(processedFoodDTO);
                 break;
 
             case "3": // Carne
@@ -158,7 +163,9 @@ public class ProductView {
                 System.out.print("Instruções de armazenamento: ");
                 String storageInstructions = scanner.nextLine();
 
-                controller.registerMeat(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, cutType, origin, isOrganic, animalType, storageInstructions);
+                MeatDTO meatDTO = new MeatDTO(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, cutType, origin, isOrganic, animalType, storageInstructions);
+
+                controller.registerMeat(meatDTO);
                 break;
 
             case "4": // Fruta
@@ -185,7 +192,9 @@ public class ProductView {
                 System.out.print("Tipo de embalagem: ");
                 String packagingType = scanner.nextLine();
 
-                controller.registerFruit(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, variety, origin, seasonal, packagingType);
+                FruitDTO fruitDTO = new FruitDTO(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, variety, origin, seasonal, packagingType);
+
+                controller.registerFruit(fruitDTO);
                 break;
 
             case "5": // Produto de Higiene
@@ -210,7 +219,9 @@ public class ProductView {
                 System.out.print("Volume (em ml): ");
                 volume = Double.parseDouble(scanner.nextLine());
 
-                controller.registerHygieneProduct(cod, name, price, amount, type, brand, forSensitiveSkin, usageInstructions, toxic, scent, volume);
+                HygieneProductDTO hygieneProductDTO = new HygieneProductDTO(cod, name, price, amount, type, brand, forSensitiveSkin, usageInstructions, toxic, scent, volume);
+
+                controller.registerHygieneProduct(hygieneProductDTO);
                 break;
 
             case "6": // Utensílio
@@ -226,7 +237,9 @@ public class ProductView {
                 System.out.print("Tamanho: ");
                 String size = scanner.nextLine();
 
-                controller.registerUtensil(cod, name, price, amount, material, category, isReusable, size);
+                UtensilDTO utensilDTO = new UtensilDTO(cod, name, price, amount, material, category, isReusable, size);
+
+                controller.registerUtensil(utensilDTO);
                 break;
 
             default:
@@ -281,12 +294,12 @@ public class ProductView {
 
     private static void listProducts(ProductController controller) {
         Map<String, Class<?>> categories = Map.of(
-                "🍹 Bebidas", Beverage.class,
-                "🥫 Alimentos Processados", ProcessedFood.class,
-                "🥩 Carnes", Meat.class,
-                "🍎 Frutas", Fruit.class,
-                "🧼 Produtos de Higiene", HygieneProduct.class,
-                "🍴 Utensílios", Utensil.class
+                "Bebidas", Beverage.class,
+                "Alimentos Processados", ProcessedFood.class,
+                "Carnes", Meat.class,
+                "Frutas", Fruit.class,
+                "Produtos de Higiene", HygieneProduct.class,
+                "Utensílios", Utensil.class
         );
 
         boolean anyProductFound = false;

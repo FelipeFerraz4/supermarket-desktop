@@ -8,11 +8,10 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 public class ConsoleMenu {
-    private final Scanner scanner = new Scanner(System.in);
     private final PersonController personController = new PersonController();
     private final ProductController productController = new ProductController();
 
-    public void start() {
+    public void start(Scanner scanner) {
         int option;
         do {
             System.out.println("\n==== SISTEMA DE SUPERMERCADO ====");
@@ -26,15 +25,15 @@ public class ConsoleMenu {
 
             switch (option) {
                 case 1 -> System.out.println("Lista de produtos");
-                case 2 -> login();
-                case 3 -> registerClient();
+                case 2 -> login(scanner);
+                case 3 -> registerClient(scanner);
                 case 0 -> System.out.println("Saindo do sistema. Até logo!");
                 default -> System.out.println("Opção inválida.");
             }
         } while (option != 0);
     }
 
-    private void login() {
+    private void login(Scanner scanner) {
         System.out.print("Email: ");
         String email = scanner.nextLine();
         System.out.print("Senha: ");
@@ -57,7 +56,7 @@ public class ConsoleMenu {
         }
     }
 
-    private void registerClient() {
+    private void registerClient(Scanner scanner) {
         System.out.print("Nome: ");
         String name = scanner.nextLine();
 
