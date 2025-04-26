@@ -1,6 +1,5 @@
 package controllers;
 
-import interfaces.IRepository;
 import model.products.Product;
 import repository.product.ProductRepositoryHashMap;
 import services.ProductServices;
@@ -9,10 +8,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public class ProductControllers {
+public class ProductController {
     private final ProductRepositoryHashMap repository;
 
-    public ProductControllers() {
+    public ProductController() {
         this.repository = new ProductRepositoryHashMap();
     }
 

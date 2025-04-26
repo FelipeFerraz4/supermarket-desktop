@@ -1,6 +1,6 @@
 package view.console;
 
-import controllers.ProductControllers;
+import controllers.ProductController;
 import model.products.Product;
 
 import java.time.LocalDate;
@@ -9,15 +9,8 @@ import java.util.Scanner;
 import java.util.UUID;
 
 public class ProductView {
-    private final Scanner scanner;
-    private final ProductControllers controller;
 
-    public ProductView(Scanner scanner, ProductControllers controller) {
-        this.scanner = scanner;
-        this.controller = controller;
-    }
-
-    public void menu() {
+    public static void menu(Scanner scanner, ProductController controller) {
         int option;
         do {
             System.out.println("\n=== MENU DE PRODUTOS ===");
@@ -32,18 +25,18 @@ public class ProductView {
             scanner.nextLine();
 
             switch (option) {
-                case 1 -> registerProduct();
-                case 2 -> updateProduct();
-                case 3 -> listProducts();
-                case 4 -> searchProductByName();
-                case 5 -> deleteProduct();
+                case 1 -> registerProduct(scanner, controller);
+                case 2 -> updateProduct(scanner, controller);
+                case 3 -> listProducts(scanner, controller);
+                case 4 -> searchProductByName(scanner, controller);
+                case 5 -> deleteProduct(scanner, controller);
                 case 0 -> System.out.println("Voltando ao menu anterior...");
                 default -> System.out.println("Opção inválida.");
             }
         } while (option != 0);
     }
 
-    public void registerProduct() {
+    public static void registerProduct(Scanner scanner, ProductController controller) {
         System.out.println("Qual tipo de produto deseja cadastrar?");
         System.out.println("1 - Bebida");
         System.out.println("2 - Alimento Processado");
@@ -66,22 +59,31 @@ public class ProductView {
         System.out.print("Quantidade: ");
         int amount = Integer.parseInt(scanner.nextLine());
 
+        LocalDate expirationDate;
+        double weight;
+        boolean refrigerated;
+        String nutritionalInfo;
+        double volume;
+        String brand;
+        String category;
+        String origin;
+
         switch (option) {
             case "1": // Bebida
                 System.out.print("Data de validade (AAAA-MM-DD): ");
-                LocalDate expirationDate = LocalDate.parse(scanner.nextLine());
+                expirationDate = LocalDate.parse(scanner.nextLine());
 
                 System.out.print("Peso: ");
-                double weight = Double.parseDouble(scanner.nextLine());
+                weight = Double.parseDouble(scanner.nextLine());
 
                 System.out.print("Refrigerado (true/false): ");
-                boolean refrigerated = Boolean.parseBoolean(scanner.nextLine());
+                refrigerated = Boolean.parseBoolean(scanner.nextLine());
 
                 System.out.print("Informações nutricionais: ");
-                String nutritionalInfo = scanner.nextLine();
+                nutritionalInfo = scanner.nextLine();
 
                 System.out.print("Volume (em litros): ");
-                double volume = Double.parseDouble(scanner.nextLine());
+                volume = Double.parseDouble(scanner.nextLine());
 
                 System.out.print("É alcoólica? (true/false): ");
                 boolean alcoholic = Boolean.parseBoolean(scanner.nextLine());
@@ -90,7 +92,7 @@ public class ProductView {
                 String flavor = scanner.nextLine();
 
                 System.out.print("Marca: ");
-                String brand = scanner.nextLine();
+                brand = scanner.nextLine();
 
                 controller.registerBeverage(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand);
                 break;
@@ -108,7 +110,7 @@ public class ProductView {
                 nutritionalInfo = scanner.nextLine();
 
                 System.out.print("Categoria: ");
-                String category = scanner.nextLine();
+                category = scanner.nextLine();
 
                 System.out.print("Marca: ");
                 brand = scanner.nextLine();
@@ -138,7 +140,7 @@ public class ProductView {
                 String cutType = scanner.nextLine();
 
                 System.out.print("Origem: ");
-                String origin = scanner.nextLine();
+                origin = scanner.nextLine();
 
                 System.out.print("Orgânico? (true/false): ");
                 boolean isOrganic = Boolean.parseBoolean(scanner.nextLine());
@@ -228,7 +230,7 @@ public class ProductView {
         System.out.println("Produto registrado com sucesso!");
     }
 
-    private UUID findProduct() {
+    private static UUID findProduct(Scanner scanner, ProductController controller) {
         System.out.println("Como deseja buscar o produto?");
         System.out.println("1 - Por nome");
         System.out.println("2 - Por código");
@@ -236,12 +238,13 @@ public class ProductView {
 
         String option = scanner.nextLine();
         UUID id = null;
+        Product product;
 
         switch (option) {
             case "1":
                 System.out.print("Nome do produto: ");
                 String name = scanner.nextLine();
-                var product = controller.searchByName(name);
+                product = controller.searchByName(name);
                 if (product != null) {
                     id = product.getId();
                 }
@@ -269,8 +272,7 @@ public class ProductView {
         }
     }
 
-    public void updateProduct() {
-        Scanner scanner = new Scanner(System.in);
+    public static void updateProduct(Scanner scanner, ProductController controller) {
         System.out.println("Qual tipo de produto você quer atualizar?");
         System.out.println("1. Bebida");
         System.out.println("2. Alimento processado");
@@ -473,7 +475,7 @@ public class ProductView {
         }
     }
 
-    private void listProducts() {
+    private static void listProducts(ProductController controller) {
         List<Product> products = controller.getAllProducts();
         if (products.isEmpty()) {
             System.out.println("Nenhum produto encontrado.");
@@ -482,7 +484,7 @@ public class ProductView {
         }
     }
 
-    private void searchProductByName() {
+    private static void searchProductByName(Scanner scanner, ProductController controller) {
         System.out.print("Nome do produto: ");
         String name = scanner.nextLine();
         Product product = controller.searchByName(name);
@@ -493,8 +495,8 @@ public class ProductView {
         }
     }
 
-    public void deleteProduct() {
-        UUID id = findProduct();
+    public static void deleteProduct(Scanner scanner, ProductController controller) {
+        UUID id = findProduct(scanner, controller);
         if (id == null) return;
 
         controller.deleteProduct(id);

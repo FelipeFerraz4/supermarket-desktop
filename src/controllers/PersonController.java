@@ -11,10 +11,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-public class PersonControllers {
+public class PersonController {
     private final PersonRepositoryHashMap repository;
 
-    public PersonControllers() {
+    public PersonController() {
         this.repository = new PersonRepositoryHashMap();
         Employee admin = new Employee(
                 "admin",

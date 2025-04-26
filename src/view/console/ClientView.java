@@ -1,19 +1,13 @@
 package view.console;
 
-import controllers.PersonControllers;
+import controllers.PersonController;
+import controllers.ProductController;
 
 import java.util.Scanner;
 
 public class ClientView {
-    private final Scanner scanner;
-    private final PersonControllers controller;
 
-    public ClientView(Scanner scanner, PersonControllers controller) {
-        this.scanner = scanner;
-        this.controller = controller;
-    }
-
-    public void menu() {
+    public static void menu(Scanner scanner, PersonController personController, ProductController productController) {
         int option;
         do {
             System.out.println("\n--- MENU DE CLIENTE ---");

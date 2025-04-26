@@ -1,6 +1,7 @@
 package view.console;
 
-import controllers.PersonControllers;
+import controllers.PersonController;
+import controllers.ProductController;
 import model.people.Person;
 
 import java.time.LocalDate;
@@ -8,9 +9,8 @@ import java.util.Scanner;
 
 public class ConsoleMenu {
     private final Scanner scanner = new Scanner(System.in);
-    private final PersonControllers controller = new PersonControllers();
-    private final ClientView clientView = new ClientView(scanner, controller);
-    private final EmployeeView employeeView = new EmployeeView(scanner, controller);
+    private final PersonController personController = new PersonController();
+    private final ProductController productController = new ProductController();
 
     public void start() {
         int option;
@@ -40,7 +40,7 @@ public class ConsoleMenu {
         System.out.print("Senha: ");
         String password = scanner.nextLine();
 
-        Person user = controller.login(email, password);
+        Person user = personController.login(email, password);
         if (user == null) {
             System.out.println("Credenciais inválidas.");
             return;
@@ -49,9 +49,9 @@ public class ConsoleMenu {
         System.out.println("Login realizado com sucesso! Bem-vindo(a), " + user.getName() + ".");
 
         if (user instanceof model.people.Client) {
-            clientView.menu();
+            ClientView.menu(scanner, personController, productController);
         } else if (user instanceof model.people.Employee) {
-            employeeView.menu();
+            EmployeeView.menu(scanner, personController, productController);
         } else {
             System.out.println("Tipo de usuário desconhecido.");
         }
@@ -79,7 +79,7 @@ public class ConsoleMenu {
         LocalDate accountCreationDate = LocalDate.now();
         LocalDate dateLastPurchase = LocalDate.now();
 
-        controller.registerClient(name, cpf, birthDate, email, password, phone, accountCreationDate, dateLastPurchase);
+        personController.registerClient(name, cpf, birthDate, email, password, phone, accountCreationDate, dateLastPurchase);
 
         System.out.println("Cliente cadastrado com sucesso!");
     }
