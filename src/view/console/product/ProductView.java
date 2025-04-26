@@ -55,9 +55,6 @@ public class ProductView {
         System.out.print("Escolha uma opção: ");
         String option = scanner.nextLine();
 
-        System.out.print("Código do produto: ");
-        String cod = scanner.nextLine();
-
         System.out.print("Nome do produto: ");
         String name = scanner.nextLine();
 
@@ -67,6 +64,8 @@ public class ProductView {
         System.out.print("Quantidade: ");
         int amount = Integer.parseInt(scanner.nextLine());
 
+        String cod;
+        List<Product> products;
         LocalDate expirationDate;
         double weight;
         boolean refrigerated;
@@ -78,6 +77,9 @@ public class ProductView {
 
         switch (option) {
             case "1": // Bebida
+                products = controller.getProductsByCategory(Beverage.class);
+                cod = String.format("BE%04d", products.size() + 1);
+
                 System.out.print("Data de validade (AAAA-MM-DD): ");
                 expirationDate = LocalDate.parse(scanner.nextLine());
 
@@ -108,6 +110,10 @@ public class ProductView {
                 break;
 
             case "2": // Alimento Processado
+                products = controller.getProductsByCategory(ProcessedFood.class);
+                cod = String.format("PR%04d", products.size() + 1);
+
+                System.out.print("Data de validade (AAAA-MM-DD): ");
                 expirationDate = LocalDate.parse(scanner.nextLine());
 
                 System.out.print("Peso: ");
@@ -137,6 +143,10 @@ public class ProductView {
                 break;
 
             case "3": // Carne
+                products = controller.getProductsByCategory(Meat.class);
+                cod = String.format("ME%04d", products.size() + 1);
+
+                System.out.print("Data de validade (AAAA-MM-DD): ");
                 expirationDate = LocalDate.parse(scanner.nextLine());
 
                 System.out.print("Peso: ");
@@ -169,6 +179,10 @@ public class ProductView {
                 break;
 
             case "4": // Fruta
+                products = controller.getProductsByCategory(Fruit.class);
+                cod = String.format("FR%04d", products.size() + 1);
+
+                System.out.print("Data de validade (AAAA-MM-DD): ");
                 expirationDate = LocalDate.parse(scanner.nextLine());
 
                 System.out.print("Peso: ");
@@ -198,6 +212,9 @@ public class ProductView {
                 break;
 
             case "5": // Produto de Higiene
+                products = controller.getProductsByCategory(HygieneProduct.class);
+                cod = String.format("HY%04d", products.size() + 1);
+
                 System.out.print("Tipo: ");
                 String type = scanner.nextLine();
 
@@ -225,6 +242,9 @@ public class ProductView {
                 break;
 
             case "6": // Utensílio
+                products = controller.getProductsByCategory(Utensil.class);
+                cod = String.format("UT%04d", products.size() + 1);
+
                 System.out.print("Material: ");
                 String material = scanner.nextLine();
 
