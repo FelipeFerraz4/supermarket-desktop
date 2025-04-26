@@ -16,7 +16,7 @@ public record HygieneProductDTO (
      String scent,
      Double volume
 ){
-    public static HygieneProductDTO toDto(Product product){
+    public static HygieneProductDTO toDTO(Product product){
         HygieneProduct hygieneProduct = (HygieneProduct) product;
 
         return new HygieneProductDTO(
@@ -146,7 +146,7 @@ public record HygieneProductDTO (
         );
     }
 
-    public HygieneProductDTO withForSensitiveSkin(Boolean forSensitiveSkin) {
+    public HygieneProductDTO withSensitive(Boolean forSensitiveSkin) {
         return new HygieneProductDTO(
                 this.cod(),
                 this.name(),
