@@ -1,7 +1,6 @@
 package controllers;
 
-import dtos.BeverageDTO;
-import dtos.ProcessedFoodDTO;
+import dtos.*;
 import model.products.Product;
 import repository.product.ProductRepositoryHashMap;
 import services.ProductServices;
@@ -18,118 +17,52 @@ public class ProductController {
     }
 
     public void registerBeverage(
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            double volume, boolean alcoholic, String flavor, String brand) {
-        ProductServices.registerBeverage(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand, repository);
+            BeverageDTO beverageDTO) {
+        ProductServices.registerBeverage(beverageDTO, repository);
     }
 
     public void updateBeverage(UUID id, BeverageDTO beverageDTO) {
         ProductServices.updateBeverage(id, beverageDTO, repository);
     }
 
-    public void registerProcessedFood(
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            String category, String brand, boolean containsPreservatives, String cookingInstructions) {
-
-        ProductServices.registerProcessedFood(
-                cod, name, price, amount,
-                expirationDate, weight, refrigerated, nutritionalInfo,
-                category, brand, containsPreservatives, cookingInstructions,
-                repository
-        );
+    public void registerProcessedFood(ProcessedFoodDTO processedFoodDTO) {
+        ProductServices.registerProcessedFood(processedFoodDTO, repository);
     }
 
-    public void updateProcessedFood(
-            UUID id,
-            ProcessedFoodDTO processedFoodDTO) {
-
+    public void updateProcessedFood(UUID id,ProcessedFoodDTO processedFoodDTO) {
         ProductServices.updateProcessedFood(id, processedFoodDTO, repository);
     }
 
-    public void registerMeat(
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            String cutType, String origin, boolean isOrganic, String animalType, String storageInstructions) {
-
-        ProductServices.registerMeat(
-                cod, name, price, amount,
-                expirationDate, weight, refrigerated, nutritionalInfo,
-                cutType, origin, isOrganic, animalType, storageInstructions,
-                repository
-        );
+    public void registerMeat(MeatDTO meatDTO) {
+        ProductServices.registerMeat(meatDTO, repository);
     }
 
-    public void updateMeat(
-            UUID id,
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            String origin, String storageInstructions) {
-
-        ProductServices.updateMeat(
-                id,
-                cod, name, price, amount,
-                expirationDate, weight, refrigerated, nutritionalInfo,
-                origin, storageInstructions,
-                repository
-        );
+    public void updateMeat(UUID id, MeatDTO meatDTO) {
+        ProductServices.updateMeat(id, meatDTO, repository);
     }
 
-    public void registerFruit(
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            String variety, String origin, boolean seasonal, String packagingType) {
-
-        ProductServices.registerFruit(
-                cod, name, price, amount,
-                expirationDate, weight, refrigerated, nutritionalInfo,
-                variety, origin, seasonal, packagingType,
-                repository
-        );
+    public void registerFruit(FruitDTO fruitDTO) {
+        ProductServices.registerFruit(fruitDTO, repository);
     }
 
-    public void updateFruit(
-            UUID id,
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            String variety, String origin, boolean seasonal, String packagingType) {
-
-        ProductServices.updateFruit(
-                id,
-                cod, name, price, amount,
-                expirationDate, weight, refrigerated, nutritionalInfo,
-                variety, origin, seasonal, packagingType,
-                repository
-        );
+    public void updateFruit(UUID id, FruitDTO fruitDTO) {
+        ProductServices.updateFruit(id, fruitDTO,repository);
     }
 
-    public void registerHygieneProduct(
-            String cod, String name, double price, int amount,
-            String type, String brand, boolean forSensitiveSkin,
-            String usageInstructions, boolean toxic, String scent, double volume) {
-        ProductServices.registerHygieneProduct(cod, name, price, amount, type, brand, forSensitiveSkin,
-                usageInstructions, toxic, scent, volume, repository);
+    public void registerHygieneProduct(HygieneProductDTO hygieneProductDTO) {
+        ProductServices.registerHygieneProduct(hygieneProductDTO, repository);
     }
 
-    public void updateHygieneProduct(UUID id,
-                                     String cod, String name, double price, int amount,
-                                     String type, String brand, boolean forSensitiveSkin,
-                                     String usageInstructions, boolean toxic, String scent, double volume) {
-        ProductServices.updateHygieneProduct(id, cod, name, price, amount, type, brand, forSensitiveSkin,
-                usageInstructions, toxic, scent, volume, repository);
+    public void updateHygieneProduct(UUID id, HygieneProductDTO hygieneProductDTO) {
+        ProductServices.updateHygieneProduct(id, hygieneProductDTO, repository);
     }
 
-    public void registerUtensil(
-            String cod, String name, double price, int amount,
-            String material, String category, boolean isReusable, String size) {
-        ProductServices.registerUtensil(cod, name, price, amount, material, category, isReusable, size, repository);
+    public void registerUtensil(HygieneProductDTO hygieneProductDTO) {
+        ProductServices.registerUtensil(hygieneProductDTO, repository);
     }
 
-    public void updateUtensil(UUID id,
-                              String cod, String name, double price, int amount,
-                              String material, String category, boolean isReusable, String size) {
-        ProductServices.updateUtensil(id, cod, name, price, amount, material, category, isReusable, size, repository);
+    public void updateUtensil(UUID id, UtensilDTO utensilDTO) {
+        ProductServices.updateUtensil(id, utensilDTO, repository);
     }
 
     public Product searchById(UUID id) {

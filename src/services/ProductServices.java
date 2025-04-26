@@ -19,18 +19,15 @@ import java.util.function.Consumer;
 
 public class ProductServices {
 
-    public static void registerBeverage(
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            double volume, boolean alcoholic, String flavor, String brand, IRepository<Product> repository){
-        Beverage beverage = new Beverage(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand);
-        repository.add(beverage);
-    }
-
     private static <T> void updateIfPresent(T value, Consumer<T> setter) {
         Optional.ofNullable(value).ifPresent(setter);
     }
 
+    public static void registerBeverage(
+            BeverageDTO beverageDTO, IRepository<Product> repository){
+        Beverage beverage = BeverageDTO.toEntity(beverageDTO);
+        repository.add(beverage);
+    }
 
     public static void updateBeverage(UUID id, BeverageDTO beverageDTO, IRepository<Product> repository) {
 
@@ -56,16 +53,9 @@ public class ProductServices {
         }
     }
 
+    public static void registerHygieneProduct(HygieneProductDTO hygieneProductDTO, IRepository<Product> repository) {
 
-    public static void registerHygieneProduct(
-            String cod, String name, double price, int amount,
-            String type, String brand, boolean forSensitiveSkin,
-            String usageInstructions, boolean toxic, String scent, double volume, IRepository<Product> repository) {
-
-        HygieneProduct hygieneProduct = new HygieneProduct(
-                cod, name, price, amount,
-                type, brand, forSensitiveSkin, usageInstructions, toxic, scent, volume
-        );
+        HygieneProduct hygieneProduct = HygieneProductDTO.toEntity(hygieneProductDTO);
         repository.add(hygieneProduct);
     }
 
@@ -76,7 +66,16 @@ public class ProductServices {
 
         if (product instanceof HygieneProduct hygieneProduct) {
             updateIfPresent(hygieneProductDTO.cod(), hygieneProduct::setCod);
-
+            updateIfPresent(hygieneProductDTO.name(), hygieneProduct::setName);
+            updateIfPresent(hygieneProductDTO.price(), hygieneProduct::setPrice);
+            updateIfPresent(hygieneProductDTO.amount(), hygieneProduct::setAmount);
+            updateIfPresent(hygieneProductDTO.type(), hygieneProduct::setType);
+            updateIfPresent(hygieneProductDTO.brand(), hygieneProduct::setBrand);
+            updateIfPresent(hygieneProductDTO.forSensitiveSkin(), hygieneProduct::setForSensitiveSkin);
+            updateIfPresent(hygieneProductDTO.usageInstructions(), hygieneProduct::setUsageInstructions);
+            updateIfPresent(hygieneProductDTO.toxic(), hygieneProduct::setToxic);
+            updateIfPresent(hygieneProductDTO.scent(), hygieneProduct::setScent);
+            updateIfPresent(hygieneProductDTO.volume(), hygieneProduct::setVolume);
 
             repository.update(hygieneProduct);
         } else {
