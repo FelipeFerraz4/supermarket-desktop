@@ -20,7 +20,10 @@ public class PersonServices {
             LocalDate accountCreationDate,
             LocalDate dateLastPurchase,
             IRepository<Person> repository) {
+
+
         Client client = new Client(name, cpf, birthDate, email, password, phone, accountCreationDate, dateLastPurchase);
+
         repository.add(client);
     }
 
