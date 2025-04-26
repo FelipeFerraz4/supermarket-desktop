@@ -1,5 +1,8 @@
 package services;
 
+import dtos.BeverageDTO;
+import dtos.HygieneProductDTO;
+import dtos.ProcessedFoodDTO;
 import interfaces.IRepository;
 import model.products.Product;
 import model.products.Utensil;
@@ -29,27 +32,23 @@ public class ProductServices {
     }
 
 
-    public static void updateBeverage(
-            UUID id,
-            String cod, String name, Double price, Integer amount,
-            LocalDate expirationDate, Double weight, Boolean refrigerated, String nutritionalInfo,
-            Double volume, Boolean alcoholic, String flavor, String brand, IRepository<Product> repository) {
+    public static void updateBeverage(UUID id, BeverageDTO beverageDTO, IRepository<Product> repository) {
 
         Product product = repository.searchById(id);
 
         if (product instanceof Beverage beverage) {
-            updateIfPresent(cod, beverage::setCod);
-            updateIfPresent(name, beverage::setName);
-            updateIfPresent(price, beverage::setPrice);
-            updateIfPresent(amount, beverage::setAmount);
-            updateIfPresent(expirationDate, beverage::setExpirationDate);
-            updateIfPresent(weight, beverage::setWeight);
-            updateIfPresent(refrigerated, beverage::setRefrigerated);
-            updateIfPresent(nutritionalInfo, beverage::setNutritionalInfo);
-            updateIfPresent(volume, beverage::setVolume);
-            updateIfPresent(alcoholic, beverage::setAlcoholic);
-            updateIfPresent(flavor, beverage::setFlavor);
-            updateIfPresent(brand, beverage::setBrand);
+            updateIfPresent(beverageDTO.cod(), beverage::setCod);
+            updateIfPresent(beverageDTO.name(), beverage::setName);
+            updateIfPresent(beverageDTO.price(), beverage::setPrice);
+            updateIfPresent(beverageDTO.amount(), beverage::setAmount);
+            updateIfPresent(beverageDTO.expirationDate(), beverage::setExpirationDate);
+            updateIfPresent(beverageDTO.weight(), beverage::setWeight);
+            updateIfPresent(beverageDTO.refrigerated(), beverage::setRefrigerated);
+            updateIfPresent(beverageDTO.nutritionalInfo(), beverage::setNutritionalInfo);
+            updateIfPresent(beverageDTO.volume(), beverage::setVolume);
+            updateIfPresent(beverageDTO.alcoholic(), beverage::setAlcoholic);
+            updateIfPresent(beverageDTO.flavor(), beverage::setFlavor);
+            updateIfPresent(beverageDTO.brand(), beverage::setBrand);
 
             repository.update(beverage);
         } else {
@@ -71,21 +70,13 @@ public class ProductServices {
     }
 
     public static void updateHygieneProduct(
-            UUID id,
-            String cod, String name, double price, int amount,
-            String type, String brand, boolean forSensitiveSkin,
-            String usageInstructions, boolean toxic, String scent, double volume, IRepository<Product> repository) {
+            UUID id, HygieneProductDTO hygieneProductDTO, IRepository<Product> repository) {
 
         Product product = repository.searchById(id);
 
         if (product instanceof HygieneProduct hygieneProduct) {
-            hygieneProduct.setCod(cod);
-            hygieneProduct.setName(name);
-            hygieneProduct.setPrice(price);
-            hygieneProduct.setAmount(amount);
-            hygieneProduct.setForSensitiveSkin(forSensitiveSkin);
-            hygieneProduct.setUsageInstructions(usageInstructions);
-            // os campos finais não podem ser alterados diretamente
+            updateIfPresent(hygieneProductDTO.cod(), hygieneProduct::setCod);
+
 
             repository.update(hygieneProduct);
         } else {

@@ -1,5 +1,7 @@
 package controllers;
 
+import dtos.BeverageDTO;
+import dtos.ProcessedFoodDTO;
 import model.products.Product;
 import repository.product.ProductRepositoryHashMap;
 import services.ProductServices;
@@ -22,11 +24,8 @@ public class ProductController {
         ProductServices.registerBeverage(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand, repository);
     }
 
-    public void updateBeverage(UUID id,
-                               String cod, String name, Double price, Integer amount,
-                               LocalDate expirationDate, Double weight, Boolean refrigerated, String nutritionalInfo,
-                               Double volume, Boolean alcoholic, String flavor, String brand) {
-        ProductServices.updateBeverage(id, cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand, repository);
+    public void updateBeverage(UUID id, BeverageDTO beverageDTO) {
+        ProductServices.updateBeverage(id, beverageDTO, repository);
     }
 
     public void registerProcessedFood(
@@ -44,17 +43,9 @@ public class ProductController {
 
     public void updateProcessedFood(
             UUID id,
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            String category, String brand, boolean containsPreservatives, String cookingInstructions) {
+            ProcessedFoodDTO processedFoodDTO) {
 
-        ProductServices.updateProcessedFood(
-                id,
-                cod, name, price, amount,
-                expirationDate, weight, refrigerated, nutritionalInfo,
-                category, brand, containsPreservatives, cookingInstructions,
-                repository
-        );
+        ProductServices.updateProcessedFood(id, processedFoodDTO, repository);
     }
 
     public void registerMeat(

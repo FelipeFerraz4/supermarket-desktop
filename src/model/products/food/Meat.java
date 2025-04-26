@@ -3,10 +3,10 @@ package model.products.food;
 import java.time.LocalDate;
 
 public class Meat extends FoodProduct {
-    private final String cutType;
+    private String cutType;
     private String origin;
-    private final boolean isOrganic;
-    private final String animalType;
+    private boolean isOrganic;
+    private String animalType;
     private String storageInstructions;
 
     public Meat(String cod, String name, double price, int amount,
@@ -18,6 +18,18 @@ public class Meat extends FoodProduct {
         this.isOrganic = isOrganic;
         this.animalType = animalType;
         this.storageInstructions = storageInstructions;
+    }
+
+    public void setCutType(String cutType) {
+        this.cutType = cutType;
+    }
+
+    public void setOrganic(boolean organic) {
+        isOrganic = organic;
+    }
+
+    public void setAnimalType(String animalType) {
+        this.animalType = animalType;
     }
 
     public String getCutType() {

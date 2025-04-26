@@ -1,4 +1,4 @@
-package view.console;
+package view.console.product;
 
 import controllers.ProductController;
 import model.products.Product;
@@ -33,7 +33,7 @@ public class ProductView {
 
             switch (option) {
                 case 1 -> registerProduct(scanner, controller);
-                case 2 -> updateProduct(scanner, controller);
+                case 2 -> UpdateProduct.updateProduct(scanner, controller);
                 case 3 -> listProducts(controller);
                 case 4 -> searchProductByName(scanner, controller);
                 case 5 -> deleteProduct(scanner, controller);
@@ -237,7 +237,7 @@ public class ProductView {
         System.out.println("Produto registrado com sucesso!");
     }
 
-    private static UUID findProduct(Scanner scanner, ProductController controller) {
+    static UUID findProduct(Scanner scanner, ProductController controller) {
         System.out.println("Como deseja buscar o produto?");
         System.out.println("1 - Por nome");
         System.out.println("2 - Por código");
@@ -276,208 +276,6 @@ public class ProductView {
         } else {
             System.out.println("Produto não encontrado ou inativo.");
             return null;
-        }
-    }
-
-    public static void updateProduct(Scanner scanner, ProductController controller) {
-        System.out.println("Qual tipo de produto você quer atualizar?");
-        System.out.println("1. Bebida");
-        System.out.println("2. Alimento processado");
-        System.out.println("3. Carne");
-        System.out.println("4. Fruta");
-        System.out.println("5. Produto de higiene");
-        System.out.println("6. Utensílio");
-
-        int option = scanner.nextInt();
-        scanner.nextLine(); // Consumir nova linha
-
-        UUID id = findProduct(scanner, controller);
-
-        switch (option) {
-            case 1:
-                System.out.println("Atualizando bebida");
-                System.out.print("Código: ");
-                String codB = scanner.nextLine();
-                System.out.print("Nome: ");
-                String nameB = scanner.nextLine();
-                System.out.print("Preço: ");
-                double priceB = scanner.nextDouble();
-                System.out.print("Quantidade: ");
-                int amountB = scanner.nextInt();
-                scanner.nextLine();
-                System.out.print("Data de validade (yyyy-mm-dd): ");
-                LocalDate expDateB = LocalDate.parse(scanner.nextLine());
-                System.out.print("Peso: ");
-                double weightB = scanner.nextDouble();
-                System.out.print("Refrigerado (true/false): ");
-                boolean refrigeratedB = scanner.nextBoolean();
-                scanner.nextLine();
-                System.out.print("Informações nutricionais: ");
-                String infoB = scanner.nextLine();
-                System.out.print("Volume: ");
-                double volumeB = scanner.nextDouble();
-                System.out.print("Alcoólico (true/false): ");
-                boolean alcoholic = scanner.nextBoolean();
-                scanner.nextLine();
-                System.out.print("Sabor: ");
-                String flavor = scanner.nextLine();
-                System.out.print("Marca: ");
-                String brandB = scanner.nextLine();
-
-                controller.updateBeverage(id, codB, nameB, priceB, amountB, expDateB, weightB, refrigeratedB, infoB, volumeB, alcoholic, flavor, brandB);
-                break;
-
-            case 2:
-                System.out.println("Atualizando alimento processado:");
-                System.out.print("Código: ");
-                String codP = scanner.nextLine();
-                System.out.print("Nome: ");
-                String nameP = scanner.nextLine();
-                System.out.print("Preço: ");
-                double priceP = scanner.nextDouble();
-                System.out.print("Quantidade: ");
-                int amountP = scanner.nextInt();
-                scanner.nextLine();
-                System.out.print("Data de validade (yyyy-mm-dd): ");
-                LocalDate expDateP = LocalDate.parse(scanner.nextLine());
-                System.out.print("Peso: ");
-                double weightP = scanner.nextDouble();
-                System.out.print("Refrigerado (true/false): ");
-                boolean refrigeratedP = scanner.nextBoolean();
-                scanner.nextLine();
-                System.out.print("Informações nutricionais: ");
-                String infoP = scanner.nextLine();
-                System.out.print("Categoria: ");
-                String category = scanner.nextLine();
-                System.out.print("Marca: ");
-                String brandP = scanner.nextLine();
-                System.out.print("Contém conservantes (true/false): ");
-                boolean preservatives = scanner.nextBoolean();
-                scanner.nextLine();
-                System.out.print("Instruções de preparo: ");
-                String instructions = scanner.nextLine();
-
-                controller.updateProcessedFood(id, codP, nameP, priceP, amountP, expDateP, weightP, refrigeratedP, infoP, category, brandP, preservatives, instructions);
-                break;
-
-            case 3:
-                System.out.println("Atualizando carne:");
-                System.out.print("Código: ");
-                String codM = scanner.nextLine();
-                System.out.print("Nome: ");
-                String nameM = scanner.nextLine();
-                System.out.print("Preço: ");
-                double priceM = scanner.nextDouble();
-                System.out.print("Quantidade: ");
-                int amountM = scanner.nextInt();
-                scanner.nextLine();
-                System.out.print("Data de validade (yyyy-mm-dd): ");
-                LocalDate expDateM = LocalDate.parse(scanner.nextLine());
-                System.out.print("Peso: ");
-                double weightM = scanner.nextDouble();
-                System.out.print("Refrigerado (true/false): ");
-                boolean refrigeratedM = scanner.nextBoolean();
-                scanner.nextLine();
-                System.out.print("Informações nutricionais: ");
-                String infoM = scanner.nextLine();
-                System.out.print("Origem: ");
-                String originM = scanner.nextLine();
-                System.out.print("Instruções de armazenamento: ");
-                String storage = scanner.nextLine();
-
-                controller.updateMeat(id, codM, nameM, priceM, amountM, expDateM, weightM, refrigeratedM, infoM, originM, storage);
-                break;
-
-            case 4:
-                System.out.println("Atualizando fruta:");
-                System.out.print("Código: ");
-                String codF = scanner.nextLine();
-                System.out.print("Nome: ");
-                String nameF = scanner.nextLine();
-                System.out.print("Preço: ");
-                double priceF = scanner.nextDouble();
-                System.out.print("Quantidade: ");
-                int amountF = scanner.nextInt();
-                scanner.nextLine();
-                System.out.print("Data de validade (yyyy-mm-dd): ");
-                LocalDate expDateF = LocalDate.parse(scanner.nextLine());
-                System.out.print("Peso: ");
-                double weightF = scanner.nextDouble();
-                System.out.print("Refrigerado (true/false): ");
-                boolean refrigeratedF = scanner.nextBoolean();
-                scanner.nextLine();
-                System.out.print("Informações nutricionais: ");
-                String infoF = scanner.nextLine();
-                System.out.print("Variedade: ");
-                String variety = scanner.nextLine();
-                System.out.print("Origem: ");
-                String originF = scanner.nextLine();
-                System.out.print("É sazonal (true/false): ");
-                boolean seasonal = scanner.nextBoolean();
-                scanner.nextLine();
-                System.out.print("Tipo de embalagem: ");
-                String packaging = scanner.nextLine();
-
-                controller.updateFruit(id, codF, nameF, priceF, amountF, expDateF, weightF, refrigeratedF, infoF, variety, originF, seasonal, packaging);
-                break;
-
-            case 5:
-                System.out.println("Atualizando produto de higiene:");
-                System.out.print("Código: ");
-                String codH = scanner.nextLine();
-                System.out.print("Nome: ");
-                String nameH = scanner.nextLine();
-                System.out.print("Preço: ");
-                double priceH = scanner.nextDouble();
-                System.out.print("Quantidade: ");
-                int amountH = scanner.nextInt();
-                scanner.nextLine();
-                System.out.print("Tipo: ");
-                String type = scanner.nextLine();
-                System.out.print("Marca: ");
-                String brandH = scanner.nextLine();
-                System.out.print("Para pele sensível (true/false): ");
-                boolean sensitive = scanner.nextBoolean();
-                scanner.nextLine();
-                System.out.print("Modo de uso: ");
-                String usage = scanner.nextLine();
-                System.out.print("É tóxico (true/false): ");
-                boolean toxic = scanner.nextBoolean();
-                scanner.nextLine();
-                System.out.print("Fragrância: ");
-                String scent = scanner.nextLine();
-                System.out.print("Volume: ");
-                double volumeH = scanner.nextDouble();
-
-                controller.updateHygieneProduct(id, codH, nameH, priceH, amountH, type, brandH, sensitive, usage, toxic, scent, volumeH);
-                break;
-
-            case 6:
-                System.out.println("Atualizando utensílio:");
-                System.out.print("Código: ");
-                String codU = scanner.nextLine();
-                System.out.print("Nome: ");
-                String nameU = scanner.nextLine();
-                System.out.print("Preço: ");
-                double priceU = scanner.nextDouble();
-                System.out.print("Quantidade: ");
-                int amountU = scanner.nextInt();
-                scanner.nextLine();
-                System.out.print("Material: ");
-                String material = scanner.nextLine();
-                System.out.print("Categoria: ");
-                String categoryU = scanner.nextLine();
-                System.out.print("Reutilizável (true/false): ");
-                boolean reusable = scanner.nextBoolean();
-                scanner.nextLine();
-                System.out.print("Tamanho: ");
-                String size = scanner.nextLine();
-
-                controller.updateUtensil(id, codU, nameU, priceU, amountU, material, categoryU, reusable, size);
-                break;
-
-            default:
-                System.out.println("Opção inválida.");
         }
     }
 

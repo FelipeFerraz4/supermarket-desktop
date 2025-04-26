@@ -1,13 +1,13 @@
 package model.products;
 
 public class HygieneProduct extends Product{
-    private final String type; // e.g., soap, disinfectant
-    private final String brand;
+    private String type; // e.g., soap, disinfectant
+    private String brand;
     private boolean forSensitiveSkin;
     private String usageInstructions;
-    private final boolean toxic;
-    private final String scent;
-    private final double volume;
+    private boolean toxic;
+    private String scent;
+    private double volume;
 
     public HygieneProduct(
             String cod, String name, double price, int amount,
@@ -20,6 +20,26 @@ public class HygieneProduct extends Product{
         this.usageInstructions = usageInstructions;
         this.toxic = toxic;
         this.scent = scent;
+        this.volume = volume;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setToxic(boolean toxic) {
+        this.toxic = toxic;
+    }
+
+    public void setScent(String scent) {
+        this.scent = scent;
+    }
+
+    public void setVolume(double volume) {
         this.volume = volume;
     }
 

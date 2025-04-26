@@ -18,6 +18,8 @@ public class Beverage extends FoodProduct {
         this.brand = brand;
     }
 
+
+
     public double getVolume() {
         return volume;
     }

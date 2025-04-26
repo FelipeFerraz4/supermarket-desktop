@@ -2,6 +2,7 @@ package view.console;
 
 import controllers.PersonController;
 import controllers.ProductController;
+import view.console.product.ProductView;
 
 import java.util.Scanner;
 
