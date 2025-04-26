@@ -291,12 +291,11 @@ public class ProductView {
         int option = scanner.nextInt();
         scanner.nextLine(); // Consumir nova linha
 
-        System.out.println("Informe o ID do produto:");
-        UUID id = UUID.fromString(scanner.nextLine());
+        UUID id = findProduct(scanner, controller);
 
         switch (option) {
             case 1:
-                System.out.println("Atualizando bebida:");
+                System.out.println("Atualizando bebida");
                 System.out.print("Código: ");
                 String codB = scanner.nextLine();
                 System.out.print("Nome: ");

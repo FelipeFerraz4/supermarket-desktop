@@ -10,7 +10,9 @@ import model.products.food.Meat;
 import model.products.food.Fruit;
 
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 public class ProductServices {
 
@@ -22,32 +24,39 @@ public class ProductServices {
         repository.add(beverage);
     }
 
+    private static <T> void updateIfPresent(T value, Consumer<T> setter) {
+        Optional.ofNullable(value).ifPresent(setter);
+    }
+
+
     public static void updateBeverage(
             UUID id,
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            double volume, boolean alcoholic, String flavor, String brand, IRepository<Product> repository) {
+            String cod, String name, Double price, Integer amount,
+            LocalDate expirationDate, Double weight, Boolean refrigerated, String nutritionalInfo,
+            Double volume, Boolean alcoholic, String flavor, String brand, IRepository<Product> repository) {
+
         Product product = repository.searchById(id);
 
         if (product instanceof Beverage beverage) {
-            beverage.setCod(cod);
-            beverage.setName(name);
-            beverage.setPrice(price);
-            beverage.setAmount(amount);
-            beverage.setExpirationDate(expirationDate);
-            beverage.setWeight(weight);
-            beverage.setRefrigerated(refrigerated);
-            beverage.setNutritionalInfo(nutritionalInfo);
-            beverage.setVolume(volume);
-            beverage.setAlcoholic(alcoholic);
-            beverage.setFlavor(flavor);
-            beverage.setBrand(brand);
+            updateIfPresent(cod, beverage::setCod);
+            updateIfPresent(name, beverage::setName);
+            updateIfPresent(price, beverage::setPrice);
+            updateIfPresent(amount, beverage::setAmount);
+            updateIfPresent(expirationDate, beverage::setExpirationDate);
+            updateIfPresent(weight, beverage::setWeight);
+            updateIfPresent(refrigerated, beverage::setRefrigerated);
+            updateIfPresent(nutritionalInfo, beverage::setNutritionalInfo);
+            updateIfPresent(volume, beverage::setVolume);
+            updateIfPresent(alcoholic, beverage::setAlcoholic);
+            updateIfPresent(flavor, beverage::setFlavor);
+            updateIfPresent(brand, beverage::setBrand);
 
             repository.update(beverage);
         } else {
             throw new IllegalArgumentException("Produto com ID " + id + " não é uma bebida.");
         }
     }
+
 
     public static void registerHygieneProduct(
             String cod, String name, double price, int amount,

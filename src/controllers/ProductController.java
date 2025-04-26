@@ -23,9 +23,9 @@ public class ProductController {
     }
 
     public void updateBeverage(UUID id,
-                               String cod, String name, double price, int amount,
-                               LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-                               double volume, boolean alcoholic, String flavor, String brand) {
+                               String cod, String name, Double price, Integer amount,
+                               LocalDate expirationDate, Double weight, Boolean refrigerated, String nutritionalInfo,
+                               Double volume, Boolean alcoholic, String flavor, String brand) {
         ProductServices.updateBeverage(id, cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand, repository);
     }
 
