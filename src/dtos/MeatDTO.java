@@ -76,8 +76,8 @@ public record MeatDTO (
         );
     }
 
-    public Meat withName(String name) {
-        return new Meat(
+    public MeatDTO withName(String name) {
+        return new MeatDTO(
                 this.cod(),
                 name,
                 this.price(),

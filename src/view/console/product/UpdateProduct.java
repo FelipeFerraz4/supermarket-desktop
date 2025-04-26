@@ -2,6 +2,7 @@ package view.console.product;
 
 import controllers.ProductController;
 import dtos.BeverageDTO;
+import dtos.MeatDTO;
 import dtos.ProcessedFoodDTO;
 import model.products.food.Beverage;
 import model.products.food.ProcessedFood;
@@ -161,6 +162,47 @@ public class UpdateProduct {
                 case 0 -> {
                     controller.updateProcessedFood(id, dto);
                     System.out.println("Alimento processado atualizado com sucesso!");
+                    return;
+                }
+                default -> System.out.println("Opção inválida!");
+            }
+        }
+    }
+
+    private static void updateMeat(Scanner scanner, ProductController controller, UUID id) {
+        MeatDTO dto = MeatDTO.toDTO((controller.searchById(id)));
+
+        while (true) {
+            System.out.println("\nEscolha o campo para alterar:");
+            System.out.println("1. Código");
+            System.out.println("2. Nome");
+            System.out.println("3. Preço");
+            System.out.println("4. Quantidade");
+            System.out.println("5. Data de validade");
+            System.out.println("6. Peso");
+            System.out.println("7. Refrigerado");
+            System.out.println("8. Informações nutricionais");
+            System.out.println("9. Origem");
+            System.out.println("10. Instruções de armazenamento");
+            System.out.println("0. Salvar e sair");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1 -> { dto = dto.withCode(scanner.nextLine()); }
+                case 2 -> { System.out.print("Novo Nome: "); dto = dto.withName(scanner.nextLine()); }
+                case 3 -> { dto = dto.withPrice(scanner.nextDouble()); scanner.nextLine(); }
+                case 4 -> { dto = dto.withAmount(scanner.nextInt()); scanner.nextLine(); }
+                case 5 -> { dto = dto.withExpirationDate(LocalDate.parse(scanner.nextLine())); }
+                case 6 -> { dto = dto.withWeight(scanner.nextDouble()); scanner.nextLine(); }
+                case 7 -> { dto = dto.withRefrigerated(scanner.nextBoolean()); scanner.nextLine(); }
+                case 8 -> { dto = dto.withNutritionalInfo(scanner.nextLine()); }
+                case 9 -> { dto = dto.withOrigin(scanner.nextLine()); }
+                case 10 -> { dto = dto.withStorageInstructions(scanner.nextLine()); }
+                case 0 -> {
+                    controller.updateMeat(id, dto);
+                    System.out.println("Carne atualizada com sucesso!");
                     return;
                 }
                 default -> System.out.println("Opção inválida!");

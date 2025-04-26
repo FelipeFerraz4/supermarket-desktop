@@ -5,7 +5,6 @@ import model.products.Product;
 import repository.product.ProductRepositoryHashMap;
 import services.ProductServices;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,8 +15,7 @@ public class ProductController {
         this.repository = new ProductRepositoryHashMap();
     }
 
-    public void registerBeverage(
-            BeverageDTO beverageDTO) {
+    public void registerBeverage(BeverageDTO beverageDTO) {
         ProductServices.registerBeverage(beverageDTO, repository);
     }
 
@@ -57,8 +55,8 @@ public class ProductController {
         ProductServices.updateHygieneProduct(id, hygieneProductDTO, repository);
     }
 
-    public void registerUtensil(HygieneProductDTO hygieneProductDTO) {
-        ProductServices.registerUtensil(hygieneProductDTO, repository);
+    public void registerUtensil(UtensilDTO utensilDTO) {
+        ProductServices.registerUtensil(utensilDTO, repository);
     }
 
     public void updateUtensil(UUID id, UtensilDTO utensilDTO) {

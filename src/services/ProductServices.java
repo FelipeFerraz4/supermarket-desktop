@@ -1,8 +1,6 @@
 package services;
 
-import dtos.BeverageDTO;
-import dtos.HygieneProductDTO;
-import dtos.ProcessedFoodDTO;
+import dtos.*;
 import interfaces.IRepository;
 import model.products.Product;
 import model.products.Utensil;
@@ -23,8 +21,7 @@ public class ProductServices {
         Optional.ofNullable(value).ifPresent(setter);
     }
 
-    public static void registerBeverage(
-            BeverageDTO beverageDTO, IRepository<Product> repository){
+    public static void registerBeverage(BeverageDTO beverageDTO, IRepository<Product> repository){
         Beverage beverage = BeverageDTO.toEntity(beverageDTO);
         repository.add(beverage);
     }
@@ -59,8 +56,7 @@ public class ProductServices {
         repository.add(hygieneProduct);
     }
 
-    public static void updateHygieneProduct(
-            UUID id, HygieneProductDTO hygieneProductDTO, IRepository<Product> repository) {
+    public static void updateHygieneProduct(UUID id, HygieneProductDTO hygieneProductDTO, IRepository<Product> repository) {
 
         Product product = repository.searchById(id);
 
@@ -83,33 +79,24 @@ public class ProductServices {
         }
     }
 
-    public static void registerUtensil(
-            String cod, String name, double price, int amount,
-            String material, String category, boolean isReusable, String size, IRepository<Product> repository) {
-
-        Utensil utensil = new Utensil(
-                cod, name, price, amount,
-                material, category, isReusable, size
-        );
+    public static void registerUtensil(UtensilDTO utensilDTO, IRepository<Product> repository) {
+        Utensil utensil = UtensilDTO.toEntity(utensilDTO);
         repository.add(utensil);
     }
 
-    public static void updateUtensil(
-            UUID id,
-            String cod, String name, double price, int amount,
-            String material, String category, boolean isReusable, String size, IRepository<Product> repository) {
+    public static void updateUtensil(UUID id,UtensilDTO utensilDTO, IRepository<Product> repository) {
 
         Product product = repository.searchById(id);
 
         if (product instanceof Utensil utensil) {
-            utensil.setCod(cod);
-            utensil.setName(name);
-            utensil.setPrice(price);
-            utensil.setAmount(amount);
-            utensil.setMaterial(material);
-            utensil.setCategory(category);
-            utensil.setReusable(isReusable);
-            utensil.setSize(size);
+            updateIfPresent(utensilDTO.cod(), utensil::setCod);
+            updateIfPresent(utensilDTO.name(), utensil::setName);
+            updateIfPresent(utensilDTO.price(), utensil::setPrice);
+            updateIfPresent(utensilDTO.amount(), utensil::setAmount);
+            updateIfPresent(utensilDTO.material(), utensil::setMaterial);
+            updateIfPresent(utensilDTO.category(), utensil::setCategory);
+            updateIfPresent(utensilDTO.reusable(), utensil::setReusable);
+            updateIfPresent(utensilDTO.size(), utensil::setSize);
 
             repository.update(utensil);
         } else {
@@ -117,43 +104,28 @@ public class ProductServices {
         }
     }
 
-    public static void registerProcessedFood(
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            String category, String brand, boolean containsPreservatives, String cookingInstructions,
-            IRepository<Product> repository) {
-
-        ProcessedFood processedFood = new ProcessedFood(
-                cod, name, price, amount,
-                expirationDate, weight, refrigerated, nutritionalInfo,
-                category, brand, containsPreservatives, cookingInstructions
-        );
-
+    public static void registerProcessedFood(ProcessedFoodDTO processedFoodDTO, IRepository<Product> repository) {
+        ProcessedFood processedFood = ProcessedFoodDTO.toEntity(processedFoodDTO);
         repository.add(processedFood);
     }
 
-    public static void updateProcessedFood(
-            UUID id,
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            String category, String brand, boolean containsPreservatives, String cookingInstructions,
-            IRepository<Product> repository) {
+    public static void updateProcessedFood(UUID id, ProcessedFoodDTO processedFoodDTO,IRepository<Product> repository) {
 
         Product product = repository.searchById(id);
 
         if (product instanceof ProcessedFood processedFood) {
-            processedFood.setCod(cod);
-            processedFood.setName(name);
-            processedFood.setPrice(price);
-            processedFood.setAmount(amount);
-            processedFood.setExpirationDate(expirationDate);
-            processedFood.setWeight(weight);
-            processedFood.setRefrigerated(refrigerated);
-            processedFood.setNutritionalInfo(nutritionalInfo);
-            processedFood.setCategory(category);
-            processedFood.setBrand(brand);
-            processedFood.setContainsPreservatives(containsPreservatives);
-            processedFood.setCookingInstructions(cookingInstructions);
+            updateIfPresent(processedFoodDTO.cod(), processedFood::setCod);
+            updateIfPresent(processedFoodDTO.name(), processedFood::setName);
+            updateIfPresent(processedFoodDTO.price(), processedFood::setPrice);
+            updateIfPresent(processedFoodDTO.amount(), processedFood::setAmount);
+            updateIfPresent(processedFoodDTO.expirationDate(), processedFood::setExpirationDate);
+            updateIfPresent(processedFoodDTO.weight(), processedFood::setWeight);
+            updateIfPresent(processedFoodDTO.refrigerated(), processedFood::setRefrigerated);
+            updateIfPresent(processedFoodDTO.nutritionalInfo(), processedFood::setNutritionalInfo);
+            updateIfPresent(processedFoodDTO.category(), processedFood::setCategory);
+            updateIfPresent(processedFoodDTO.brand(), processedFood::setBrand);
+            updateIfPresent(processedFoodDTO.containsPreservatives(), processedFood::setContainsPreservatives);
+            updateIfPresent(processedFoodDTO.cookingInstructions(), processedFood::setCookingInstructions);
 
             repository.update(processedFood);
         } else {
@@ -161,43 +133,29 @@ public class ProductServices {
         }
     }
 
-    public static void registerMeat(
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            String cutType, String origin, boolean isOrganic, String animalType, String storageInstructions,
-            IRepository<Product> repository) {
-
-        Meat meat = new Meat(
-                cod, name, price, amount,
-                expirationDate, weight, refrigerated, nutritionalInfo,
-                cutType, origin, isOrganic, animalType, storageInstructions
-        );
-
+    public static void registerMeat(MeatDTO meatDTO, IRepository<Product> repository) {
+        Meat meat = MeatDTO.toEntity(meatDTO);
         repository.add(meat);
     }
 
-    public static void updateMeat(
-            UUID id,
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            String origin, String storageInstructions,
-            IRepository<Product> repository) {
+    public static void updateMeat(UUID id, MeatDTO meatDTO, IRepository<Product> repository) {
 
         Product product = repository.searchById(id);
 
         if (product instanceof Meat meat) {
-            meat.setCod(cod);
-            meat.setName(name);
-            meat.setPrice(price);
-            meat.setAmount(amount);
-            meat.setExpirationDate(expirationDate);
-            meat.setWeight(weight);
-            meat.setRefrigerated(refrigerated);
-            meat.setNutritionalInfo(nutritionalInfo);
-
-            // Os imutáveis não podem ser alterados (cutType, isOrganic, animalType)
-            meat.setOrigin(origin);
-            meat.setStorageInstructions(storageInstructions);
+            updateIfPresent(meatDTO.cod(), meat::setCod);
+            updateIfPresent(meatDTO.name(), meat::setName);
+            updateIfPresent(meatDTO.price(), meat::setPrice);
+            updateIfPresent(meatDTO.amount(), meat::setAmount);
+            updateIfPresent(meatDTO.expirationDate(), meat::setExpirationDate);
+            updateIfPresent(meatDTO.weight(), meat::setWeight);
+            updateIfPresent(meatDTO.refrigerated(), meat::setRefrigerated);
+            updateIfPresent(meatDTO.nutritionalInfo(), meat::setNutritionalInfo);
+            updateIfPresent(meatDTO.cutType(), meat::setCutType);
+            updateIfPresent(meatDTO.isOrganic(), meat::setOrganic);
+            updateIfPresent(meatDTO.animalType(), meat::setAnimalType);
+            updateIfPresent(meatDTO.origin(), meat::setOrigin);
+            updateIfPresent(meatDTO.storageInstructions(), meat::setStorageInstructions);
 
             repository.update(meat);
         } else {
@@ -205,44 +163,28 @@ public class ProductServices {
         }
     }
 
-    public static void registerFruit(
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            String variety, String origin, boolean seasonal, String packagingType,
-            IRepository<Product> repository) {
-
-        Fruit fruit = new Fruit(
-                cod, name, price, amount,
-                expirationDate, weight, refrigerated, nutritionalInfo,
-                variety, origin, seasonal, packagingType
-        );
-
+    public static void registerFruit(FruitDTO fruitDTO, IRepository<Product> repository) {
+        Fruit fruit = FruitDTO.toEntity(fruitDTO);
         repository.add(fruit);
     }
 
-    public static void updateFruit(
-            UUID id,
-            String cod, String name, double price, int amount,
-            LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
-            String variety, String origin, boolean seasonal, String packagingType,
-            IRepository<Product> repository) {
+    public static void updateFruit(UUID id, FruitDTO fruitDTO, IRepository<Product> repository) {
 
         Product product = repository.searchById(id);
 
         if (product instanceof Fruit fruit) {
-            fruit.setCod(cod);
-            fruit.setName(name);
-            fruit.setPrice(price);
-            fruit.setAmount(amount);
-            fruit.setExpirationDate(expirationDate);
-            fruit.setWeight(weight);
-            fruit.setRefrigerated(refrigerated);
-            fruit.setNutritionalInfo(nutritionalInfo);
-
-            fruit.setVariety(variety);
-            fruit.setOrigin(origin);
-            fruit.setSeasonal(seasonal);
-            fruit.setPackagingType(packagingType);
+            updateIfPresent(fruitDTO.cod(), fruit::setCod);
+            updateIfPresent(fruitDTO.name(), fruit::setName);
+            updateIfPresent(fruitDTO.price(), fruit::setPrice);
+            updateIfPresent(fruitDTO.amount(), fruit::setAmount);
+            updateIfPresent(fruitDTO.expirationDate(), fruit::setExpirationDate);
+            updateIfPresent(fruitDTO.weight(), fruit::setWeight);
+            updateIfPresent(fruitDTO.refrigerated(), fruit::setRefrigerated);
+            updateIfPresent(fruitDTO.nutritionalInfo(), fruit::setNutritionalInfo);
+            updateIfPresent(fruitDTO.variety(), fruit::setVariety);
+            updateIfPresent(fruitDTO.origin(), fruit::setOrigin);
+            updateIfPresent(fruitDTO.seasonal(), fruit::setSeasonal);
+            updateIfPresent(fruitDTO.packagingType(), fruit::setPackagingType);
 
             repository.update(fruit);
         } else {
