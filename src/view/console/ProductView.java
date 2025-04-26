@@ -2,9 +2,16 @@ package view.console;
 
 import controllers.ProductController;
 import model.products.Product;
+import model.products.food.Beverage;
+import model.products.food.ProcessedFood;
+import model.products.food.Meat;
+import model.products.food.Fruit;
+import model.products.Utensil;
+import model.products.HygieneProduct;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -27,7 +34,7 @@ public class ProductView {
             switch (option) {
                 case 1 -> registerProduct(scanner, controller);
                 case 2 -> updateProduct(scanner, controller);
-                case 3 -> listProducts(scanner, controller);
+                case 3 -> listProducts(controller);
                 case 4 -> searchProductByName(scanner, controller);
                 case 5 -> deleteProduct(scanner, controller);
                 case 0 -> System.out.println("Voltando ao menu anterior...");
@@ -476,13 +483,33 @@ public class ProductView {
     }
 
     private static void listProducts(ProductController controller) {
-        List<Product> products = controller.getAllProducts();
-        if (products.isEmpty()) {
+        Map<String, Class<?>> categories = Map.of(
+                "🍹 Bebidas", Beverage.class,
+                "🥫 Alimentos Processados", ProcessedFood.class,
+                "🥩 Carnes", Meat.class,
+                "🍎 Frutas", Fruit.class,
+                "🧼 Produtos de Higiene", HygieneProduct.class,
+                "🍴 Utensílios", Utensil.class
+        );
+
+        boolean anyProductFound = false;
+
+        System.out.println("==== LISTA DE PRODUTOS ====");
+
+        for (Map.Entry<String, Class<?>> entry : categories.entrySet()) {
+            List<Product> products = controller.getProductsByCategory(entry.getValue());
+            if (!products.isEmpty()) {
+                anyProductFound = true;
+                System.out.println("\n=== " + entry.getKey() + " ===");
+                products.forEach(System.out::println);
+            }
+        }
+
+        if (!anyProductFound) {
             System.out.println("Nenhum produto encontrado.");
-        } else {
-            products.forEach(System.out::println);
         }
     }
+
 
     private static void searchProductByName(Scanner scanner, ProductController controller) {
         System.out.print("Nome do produto: ");
