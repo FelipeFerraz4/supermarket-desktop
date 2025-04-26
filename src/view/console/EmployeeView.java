@@ -19,32 +19,60 @@ public class EmployeeView {
         int option;
         do {
             System.out.println("\n=== MENU DE FUNCIONÁRIOS ===");
-            System.out.println("1. Cadastrar funcionário");
-            System.out.println("2. Cadastrar clientes");
-            System.out.println("3. Listar funcionários");
-            System.out.println("4. Listar clientes");
-            System.out.println("5. Atualizar funcionário");
-            System.out.println("6. Atualizar cliente");
-            System.out.println("7. Buscar pessoa");
-            System.out.println("8. Inativar pessoa");
+            System.out.println("1. Cadastrar pessoa");
+            System.out.println("2. Listar pessoas");
+            System.out.println("3. Atualizar pessoa");
+            System.out.println("4. Buscar pessoa");
+            System.out.println("5. Inativar pessoa");
             System.out.println("0. Voltar");
             System.out.print("Escolha a opção: ");
             option = scanner.nextInt();
             scanner.nextLine();
 
             switch (option) {
-                case 1 -> registerEmployee();
-                case 2 -> registerClient();
-                case 3 -> listEmployees();
-                case 4 -> listClients();
-                case 5 -> updateEmployee();
-                case 6 -> updateClient();
-                case 7 -> findPerson();
-                case 8 -> deletePerson();
+                case 1 -> selectPerson("Cadastrar");
+                case 2 -> selectPerson("Listar");
+                case 3 -> selectPerson("Atualizar");
+                case 4 -> findPerson();
+                case 5 -> deletePerson();
                 case 0 -> System.out.println("Voltando ao menu principal...");
                 default -> System.out.println("Opção inválida.");
             }
         } while (option != 0);
+    }
+
+    private void selectPerson(String operation) {
+        System.out.println(operation + ":");
+        System.out.println("1 - Funcionário");
+        System.out.println("2 - Cliente");
+        System.out.print("Escolha uma opção: ");
+        String choice = scanner.nextLine();
+
+        if (operation.equalsIgnoreCase("cadastrar")) {
+            switch (choice) {
+                case "1" -> registerEmployee();
+                case "2" -> registerClient();
+                default -> System.out.println("Opção inválida.");
+            }
+        } else if (operation.equalsIgnoreCase("listar")) {
+            switch (choice) {
+                case "1" -> {
+                    System.out.println("\n--- Lista de Funcionários ---");
+                    controller.listEmployees().forEach(System.out::println);
+                }
+                case "2" -> {
+                    System.out.println("\n--- Lista de Clientes ---");
+                    controller.listClients().forEach(System.out::println);
+                }
+                default -> System.out.println("Opção inválida.");
+            }
+        } else {
+            switch (choice) {
+                case "1" -> updateEmployee();
+                case "2" -> updateClient();
+                default -> System.out.println("Opção inválida.");
+            }
+        }
     }
 
     private void registerEmployee() {
@@ -63,7 +91,7 @@ public class EmployeeView {
         System.out.print("Cargo: ");
         String position = scanner.nextLine();
 
-        System.out.print("Salario: ");
+        System.out.print("Salário: ");
         double salary = scanner.nextDouble();
         scanner.nextLine();
 
@@ -76,7 +104,6 @@ public class EmployeeView {
         LocalDate hireDate = LocalDate.now();
 
         controller.registerEmployee(name, cpf, birthDate, email, password, phone, position, salary, hireDate);
-
         System.out.println("Funcionário cadastrado com sucesso!");
     }
 
@@ -103,22 +130,12 @@ public class EmployeeView {
         LocalDate dateLastPurchase = LocalDate.now();
 
         controller.registerClient(name, cpf, birthDate, email, password, phone, accountCreationDate, dateLastPurchase);
-
         System.out.println("Cliente cadastrado com sucesso!");
-    }
-
-    private void listEmployees() {
-        System.out.println("\n--- Lista de Funcionários ---");
-        controller.listEmployees().forEach(System.out::println);
-    }
-
-    private void listClients() {
-        System.out.println("\n--- Lista de Hóspedes ---");
-        controller.listClients().forEach(System.out::println);
     }
 
     private void updateEmployee() {
         UUID id = findPerson();
+        if (id == null) return;
 
         System.out.print("Novo telefone: ");
         String phone = scanner.nextLine();
@@ -132,65 +149,61 @@ public class EmployeeView {
 
         controller.updateEmployee(id, phone, position, salary);
         System.out.println("Funcionário atualizado com sucesso!");
-
     }
 
     private void updateClient() {
         UUID id = findPerson();
+        if (id == null) return;
 
-        System.out.print("=== Atualizar ===");
         System.out.print("Novo telefone: ");
         String phone = scanner.nextLine();
 
         controller.updateClient(id, phone);
-
         System.out.println("Cliente atualizado com sucesso!");
     }
 
     private UUID findPerson() {
-        System.out.println("Como deseja buscar a pessoa?");
-        System.out.println("1 - Por nome");
-        System.out.println("2 - Por email");
-        System.out.println("3 - Por CPF");
+        System.out.println("Buscar pessoa por:");
+        System.out.println("1 - Nome");
+        System.out.println("2 - Email");
+        System.out.println("3 - CPF");
         System.out.print("Escolha uma opção: ");
-
         String option = scanner.nextLine();
-        UUID id;
+
+        UUID id = null;
 
         switch (option) {
-            case "1":
+            case "1" -> {
                 System.out.print("Nome da pessoa: ");
                 String name = scanner.nextLine();
-                id = controller.findByName(name).getId();
-                break;
-
-            case "2":
+                var person = controller.findByName(name);
+                if (person != null) id = person.getId();
+            }
+            case "2" -> {
                 System.out.print("Email da pessoa: ");
                 String email = scanner.nextLine();
-                id = controller.findByEmail(email).getId();
-                break;
-
-            case "3":
+                var person = controller.findByEmail(email);
+                if (person != null) id = person.getId();
+            }
+            case "3" -> {
                 System.out.print("CPF da pessoa: ");
                 String cpf = scanner.nextLine();
-                id = controller.findByCPF(cpf).getId();
-                break;
-
-            default:
-                System.out.println("Opção inválida.");
-                return null;
+                var person = controller.findByCPF(cpf);
+                if (person != null) id = person.getId();
+            }
+            default -> System.out.println("Opção inválida.");
         }
 
-        if (id != null) {
-            return id;
-        } else {
+        if (id == null) {
             System.out.println("Pessoa não encontrada ou inativa.");
-            return null;
         }
+
+        return id;
     }
 
     private void deletePerson() {
         UUID id = findPerson();
+        if (id == null) return;
 
         controller.deletePerson(id);
         System.out.println("Pessoa inativada com sucesso.");
