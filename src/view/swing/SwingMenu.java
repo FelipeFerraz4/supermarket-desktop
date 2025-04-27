@@ -1,19 +1,22 @@
 package view.swing;
 
+import controllers.PersonController;
+import controllers.ProductController;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class SwingMenu {
     private static JFrame frame;
 
-    public static void display() {
+    public static void display(PersonController personController, ProductController productController) {
         frame = new JFrame("Supermercado - Swing");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
 
-        changeScreen(new MainMenuPanel());
+        changeScreen(new MainMenuPanel(personController, productController));
 
         frame.setVisible(true);
     }

@@ -8,10 +8,8 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 public class ConsoleMenu {
-    private final PersonController personController = new PersonController();
-    private final ProductController productController = new ProductController();
 
-    public void start(Scanner scanner) {
+    public void start(Scanner scanner, PersonController personController, ProductController productController) {
         int option;
         do {
             System.out.println("\n==== SISTEMA DE SUPERMERCADO ====");
@@ -25,15 +23,15 @@ public class ConsoleMenu {
 
             switch (option) {
                 case 1 -> ClientView.menu(scanner, personController, productController, null);
-                case 2 -> login(scanner);
-                case 3 -> registerClient(scanner);
+                case 2 -> login(scanner, personController, productController);
+                case 3 -> registerClient(scanner, personController, productController);
                 case 0 -> System.out.println("Saindo do sistema. Até logo!");
                 default -> System.out.println("Opção inválida.");
             }
         } while (option != 0);
     }
 
-    private void login(Scanner scanner) {
+    private void login(Scanner scanner, PersonController personController, ProductController productController) {
         System.out.print("Email: ");
         String email = scanner.nextLine();
         System.out.print("Senha: ");
@@ -56,7 +54,7 @@ public class ConsoleMenu {
         }
     }
 
-    private void registerClient(Scanner scanner) {
+    private void registerClient(Scanner scanner, PersonController personController, ProductController productController) {
         System.out.print("Nome: ");
         String name = scanner.nextLine();
 
@@ -80,6 +78,7 @@ public class ConsoleMenu {
 
         personController.registerClient(name, cpf, birthDate, email, password, phone, accountCreationDate, dateLastPurchase);
 
+        ClientView.menu(scanner, personController, productController, personController.findByName(name));
         System.out.println("Cliente cadastrado com sucesso!");
     }
 }
