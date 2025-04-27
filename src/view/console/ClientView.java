@@ -2,7 +2,6 @@ package view.console;
 
 import controllers.PersonController;
 import controllers.ProductController;
-import model.people.Client;
 import model.people.Person;
 import model.products.Product;
 import model.products.Utensil;
@@ -29,7 +28,8 @@ public class ClientView {
             System.out.println("\n--- MENU DE CLIENTE ---");
             System.out.println("1. Adicionar produto ao carrinho");
             System.out.println("2. Ver carrinho");
-            System.out.println("3. Finalizar compra");
+            System.out.println("3. Remover item do carrinho");
+            System.out.println("4. Finalizar compra");
             System.out.println("0. Voltar");
             System.out.print("Escolha: ");
             option = scanner.nextInt();
@@ -38,10 +38,12 @@ public class ClientView {
             switch (option) {
                 case 1 -> addProductByType(scanner, personController, productController, cart, person);
                 case 2 -> viewCart(cart, productController);
-                case 3 -> finalizePurchase(cart, personController, productController);
+                case 3 -> removeFromCart(cart, productController, personController, person);
+                case 4 -> finalizePurchase(cart, personController, productController, person);
                 case 0 -> System.out.println("Voltando ao menu principal...");
                 default -> System.out.println("Opção inválida.");
             }
+
         } while (option != 0);
     }
 
@@ -58,7 +60,7 @@ public class ClientView {
             System.out.print("Escolha: ");
             int type = Integer.parseInt(scanner.nextLine());
 
-            List<Product> filteredProducts = new ArrayList<>();
+            List<Product> filteredProducts;
 
             switch (type) {
                 case 1 -> {
@@ -130,7 +132,7 @@ public class ClientView {
                     scanner.nextLine();
                     cart.put(product.getId(), (double) quantity);
                     if (person != null) {
-                        personController.addItemToClientCart(person.getId(), product.getId(), (double) quantity);
+                        personController.addItemToClientCart(person.getId(), product.getId(), quantity);
                     }
                 }
 
@@ -162,12 +164,14 @@ public class ClientView {
             }
 
             if (product instanceof Meat) {
-                System.out.printf("%s - %.2f kg - R$ %.2f\n",
+                System.out.printf("%s -> %s - %.2f kg - R$ %.2f\n",
+                        product.getCod(),
                         product.getName(),
                         quantityOrWeight,
                         product.getPrice() * quantityOrWeight);
             } else {
-                System.out.printf("%s - %d unidades - R$ %.2f\n",
+                System.out.printf("%s -> %s - %d unidades - R$ %.2f\n",
+                        product.getCod(),
                         product.getName(),
                         (int) quantityOrWeight,
                         product.getPrice() * quantityOrWeight);
@@ -179,6 +183,42 @@ public class ClientView {
         System.out.printf("Total: R$ %.2f\n", total);
     }
 
+    private static void removeFromCart(Map<UUID, Double> cart, ProductController productController, PersonController personController, Person person) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\n--- Remover Produto do Carrinho ---");
+
+        if (cart.isEmpty()) {
+            System.out.println("Carrinho vazio. Nada para remover.");
+            return;
+        }
+
+        viewCart(cart, productController);
+
+        System.out.print("\nDigite o código do produto que deseja remover: ");
+        String cod = scanner.nextLine();
+
+        Product productToRemove = productController.searchByCod(cod);
+
+        if (productToRemove == null) {
+            System.out.println("Produto não encontrado.");
+            return;
+        }
+
+        if (cart.containsKey(productToRemove.getId())) {
+            cart.remove(productToRemove.getId());
+
+            if (person != null) {
+                personController.updateClientCart(person.getId(), cart);
+            }
+
+            System.out.println("Produto removido do carrinho!");
+        } else {
+            System.out.println("Este produto não está no seu carrinho.");
+        }
+    }
+
+
 
     private static void finalizePurchase(Map<UUID, Double> cart, PersonController personController, ProductController productController, Person person) {
         System.out.println("\n--- Finalizando Compra ---");
@@ -186,6 +226,11 @@ public class ClientView {
         System.out.println("Pagamento Efetuado");
         System.out.println("Compra finalizada com sucesso!");
         cart.clear();
-        personController.updateClientCart(person.getId(), cart);
+        if (person != null) {
+            personController.updateClientCart(person.getId(), cart);
+            System.out.println("Obrigado por comprar conosco, " + person.getName() + "!");
+        } else {
+            System.out.println("Obrigado por comprar conosco!");
+        }
     }
 }
