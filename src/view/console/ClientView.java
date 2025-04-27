@@ -2,6 +2,8 @@ package view.console;
 
 import controllers.PersonController;
 import controllers.ProductController;
+import model.people.Client;
+import model.people.Person;
 import model.products.Product;
 import model.products.Utensil;
 import model.products.food.Beverage;
@@ -14,8 +16,13 @@ import java.util.*;
 
 public class ClientView {
 
-    public static void menu(Scanner scanner, PersonController personController, ProductController productController) {
-        Map<UUID, Double> cart = new HashMap<>();
+    public static void menu(Scanner scanner, PersonController personController, ProductController productController, Person person) {
+        if (person != null) {
+            System.out.println("Bem-vindo(a), " + person.getName() + "!");
+        } else {
+            System.out.println("Bem-vindo(a) ao nosso sistema de compras!");
+        }
+        Map<UUID, Double> cart = person != null ? personController.getClientCart(person.getId()) : new HashMap<>();
 
         int option;
         do {
@@ -29,16 +36,16 @@ public class ClientView {
             scanner.nextLine(); // Consumir quebra de linha
 
             switch (option) {
-                case 1 -> addProductByType(scanner, productController, cart);
+                case 1 -> addProductByType(scanner, personController, productController, cart, person);
                 case 2 -> viewCart(cart, productController);
-                case 3 -> finalizePurchase(cart, productController);
+                case 3 -> finalizePurchase(cart, personController, productController);
                 case 0 -> System.out.println("Voltando ao menu principal...");
                 default -> System.out.println("Opção inválida.");
             }
         } while (option != 0);
     }
 
-    private static void addProductByType(Scanner scanner, ProductController productController, Map<UUID, Double> cart) {
+    private static void addProductByType(Scanner scanner, PersonController personController, ProductController productController, Map<UUID, Double> cart, Person person) {
         while (true) {
             System.out.println("\n--- Escolha o tipo de produto ---");
             System.out.println("1. Bebidas");
@@ -114,11 +121,17 @@ public class ClientView {
 
 
                     cart.put(product.getId(), weight);
+                    if (person != null) {
+                        personController.addItemToClientCart(person.getId(), product.getId(), weight);
+                    }
                 } else {
                     System.out.print("Digite a quantidade: ");
                     int quantity = scanner.nextInt();
                     scanner.nextLine();
                     cart.put(product.getId(), (double) quantity);
+                    if (person != null) {
+                        personController.addItemToClientCart(person.getId(), product.getId(), (double) quantity);
+                    }
                 }
 
                 System.out.println("Produto adicionado ao carrinho!");
@@ -167,10 +180,12 @@ public class ClientView {
     }
 
 
-    private static void finalizePurchase(Map<UUID, Double> cart, ProductController productController) {
+    private static void finalizePurchase(Map<UUID, Double> cart, PersonController personController, ProductController productController, Person person) {
         System.out.println("\n--- Finalizando Compra ---");
         viewCart(cart, productController);
+        System.out.println("Pagamento Efetuado");
         System.out.println("Compra finalizada com sucesso!");
         cart.clear();
+        personController.updateClientCart(person.getId(), cart);
     }
 }

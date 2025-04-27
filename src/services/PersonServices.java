@@ -4,8 +4,10 @@ import interfaces.IRepository;
 import model.people.Employee;
 import model.people.Client;
 import model.people.Person;
+import repository.person.PersonRepositoryHashMap;
 
 import java.time.LocalDate;
+import java.util.Map;
 import java.util.UUID;
 
 public class PersonServices {
@@ -61,5 +63,35 @@ public class PersonServices {
         }
 
         repository.update(employee);
+    }
+
+    public static void updateClientCart(UUID id, Map<UUID, Double> cart, PersonRepositoryHashMap repository) {
+        Client client = (Client) repository.searchById(id);
+        if (client != null) {
+            client.setCart(cart);
+            repository.update(client);
+        } else {
+            System.out.println("Cliente não encontrado.");
+        }
+    }
+
+    public static void addItemToClientCart(UUID id, UUID productId, double price, PersonRepositoryHashMap repository) {
+        Client client = (Client) repository.searchById(id);
+        if (client != null) {
+            client.addToCart(productId, price);
+            repository.update(client);
+        } else {
+            System.out.println("Cliente não encontrado.");
+        }
+    }
+
+    public static Map<UUID, Double> getClientCart(UUID uuid, PersonRepositoryHashMap repository) {
+        Client client = (Client) repository.searchById(uuid);
+        if (client != null) {
+            return client.getCart();
+        } else {
+            System.out.println("Cliente não encontrado.");
+            return null;
+        }
     }
 }

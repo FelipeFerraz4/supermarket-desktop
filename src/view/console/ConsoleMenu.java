@@ -24,7 +24,7 @@ public class ConsoleMenu {
             scanner.nextLine();
 
             switch (option) {
-                case 1 -> System.out.println("Lista de produtos");
+                case 1 -> ClientView.menu(scanner, personController, productController, null);
                 case 2 -> login(scanner);
                 case 3 -> registerClient(scanner);
                 case 0 -> System.out.println("Saindo do sistema. Até logo!");
@@ -48,7 +48,7 @@ public class ConsoleMenu {
         System.out.println("Login realizado com sucesso! Bem-vindo(a), " + user.getName() + ".");
 
         if (user instanceof model.people.Client) {
-            ClientView.menu(scanner, personController, productController);
+            ClientView.menu(scanner, personController, productController, user);
         } else if (user instanceof model.people.Employee) {
             EmployeeView.menu(scanner, personController, productController);
         } else {

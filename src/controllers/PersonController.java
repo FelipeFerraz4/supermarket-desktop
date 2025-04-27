@@ -9,6 +9,7 @@ import services.PersonServices;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class PersonController {
@@ -82,6 +83,14 @@ public class PersonController {
         PersonServices.updateClient(id, phone, repository);
     }
 
+    public void updateClientCart(UUID id, Map<UUID, Double> cart) {
+        PersonServices.updateClientCart(id, cart, repository);
+    }
+
+    public void addItemToClientCart(UUID id, UUID productId, double price) {
+        PersonServices.addItemToClientCart(id, productId, price, repository);
+    }
+
     public void deletePerson(UUID id) {
         repository.delete(id);
     }
@@ -96,5 +105,9 @@ public class PersonController {
 
     public Person login(String email, String password){
         return AuthServices.login(email, password, repository);
+    }
+
+    public Map<UUID, Double> getClientCart(UUID uuid) {
+        return PersonServices.getClientCart(uuid, repository);
     }
 }
