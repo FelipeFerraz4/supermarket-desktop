@@ -19,36 +19,23 @@ public class MainMenuPanel extends JPanel {
 
         add(Box.createVerticalStrut(10));
 
-        JButton buttonStartShopping = new JButton("Faça suas compras aqui");
-        JButton buttonLogin = new JButton("Faça login e ganhe ponto para trocar por descontos");
-        JButton buttonCreateClient = new JButton("Crie sua conta aqui");
+        JButton buttonStartShopping =
+                AuxComponents.createStyledButton(
+                        "Faça suas compras aqui", 400, 50,
+                        () -> SwingMenu.changeScreen(new StartShoppingPanel(personController, productController))
+                );
 
-        buttonStartShopping.setBackground(Color.GRAY);
-        buttonLogin.setBackground(Color.GRAY);
-        buttonCreateClient.setBackground(Color.GRAY);
+        JButton buttonLogin =
+                AuxComponents.createStyledButton(
+                        "Faça login e ganhe ponto para trocar por descontos", 400, 50,
+                        () -> SwingMenu.changeScreen(new LoginPanel(personController, productController))
+                );
 
-        buttonStartShopping.setForeground(Color.WHITE);
-        buttonLogin.setForeground(Color.WHITE);
-        buttonCreateClient.setForeground(Color.WHITE);
-
-        Dimension buttonSize = new Dimension(400, 50);
-        buttonStartShopping.setPreferredSize(buttonSize);
-        buttonStartShopping.setMinimumSize(buttonSize);
-        buttonStartShopping.setMaximumSize(buttonSize);
-        buttonLogin.setPreferredSize(buttonSize);
-        buttonLogin.setMinimumSize(buttonSize);
-        buttonLogin.setMaximumSize(buttonSize);
-        buttonCreateClient.setPreferredSize(buttonSize);
-        buttonCreateClient.setMinimumSize(buttonSize);
-        buttonCreateClient.setMaximumSize(buttonSize);
-
-        buttonStartShopping.setAlignmentX(CENTER_ALIGNMENT);
-        buttonLogin.setAlignmentX(CENTER_ALIGNMENT);
-        buttonCreateClient.setAlignmentX(CENTER_ALIGNMENT);
-
-        buttonStartShopping.addActionListener(_ -> SwingMenu.changeScreen(new StartShoppingPanel(personController, productController)));
-        buttonLogin.addActionListener(_ -> SwingMenu.changeScreen(new LoginPanel(personController, productController)));
-        buttonCreateClient.addActionListener(_ -> SwingMenu.changeScreen(new CreateClientPanel(personController, productController)));
+        JButton buttonCreateClient =
+                AuxComponents.createStyledButton(
+                        "Crie sua conta aqui", 400, 50,
+                        () -> SwingMenu.changeScreen(new CreateClientPanel(personController, productController))
+                );
 
         add(Box.createVerticalGlue());
         add(buttonStartShopping);
