@@ -17,17 +17,7 @@ public class PersonController {
 
     public PersonController() {
         this.repository = new PersonRepositoryHashMap();
-        Employee admin = new Employee(
-                "admin",
-                "99988833300",
-                LocalDate.parse("2000-01-01"),
-                "admin@gmail.com",
-                "123456",
-                "",
-                "Gerente",
-                15000,
-                LocalDate.parse("2015-06-06"));
-        this.repository.add(admin);
+        this.initializePeople();
     }
 
     public void registerClient(
@@ -110,4 +100,64 @@ public class PersonController {
     public Map<UUID, Double> getClientCart(UUID uuid) {
         return PersonServices.getClientCart(uuid, repository);
     }
+
+    public void initializePeople() {
+        registerEmployee(
+                "João Silva",
+                "11122233344",
+                LocalDate.parse("1985-03-10"),
+                "joao@empresa.com",
+                "123",
+                "85999990000",
+                "Vendedor",
+                3000.0,
+                LocalDate.parse("2020-02-15")
+        );
+
+        registerEmployee(
+                "Maria Oliveira",
+                "55566677788",
+                LocalDate.parse("1990-07-25"),
+                "maria@empresa.com",
+                "123",
+                "85988887777",
+                "Caixa",
+                2800.0,
+                LocalDate.parse("2021-08-10")
+        );
+        Employee admin = new Employee(
+                "admin",
+                "99988833300",
+                LocalDate.parse("2000-01-01"),
+                "admin@gmail.com",
+                "1234",
+                "",
+                "Gerente",
+                15000,
+                LocalDate.parse("2015-06-06"));
+        this.repository.add(admin);
+
+        registerClient(
+                "Carlos Souza",
+                "99988877766",
+                LocalDate.parse("1995-05-20"),
+                "carlos@gmail.com",
+                "123",
+                "85977776666",
+                LocalDate.now().minusYears(1), // Conta criada há 1 ano
+                LocalDate.now().minusMonths(2) // Última compra há 2 meses
+        );
+
+        registerClient(
+                "Ana Paula",
+                "44455566677",
+                LocalDate.parse("1998-11-15"),
+                "ana@gmail.com",
+                "123",
+                "85966665555",
+                LocalDate.now().minusMonths(6), // Conta criada há 6 meses
+                LocalDate.now().minusDays(10) // Última compra há 10 dias
+        );
+    }
+
 }

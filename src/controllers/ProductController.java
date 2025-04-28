@@ -5,6 +5,7 @@ import model.products.Product;
 import repository.product.ProductRepositoryHashMap;
 import services.ProductServices;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,6 +14,7 @@ public class ProductController {
 
     public ProductController() {
         this.repository = new ProductRepositoryHashMap();
+        this.initializeProducts();
     }
 
     public void registerBeverage(BeverageDTO beverageDTO) {
@@ -87,4 +89,83 @@ public class ProductController {
         return repository.getByType(categoryClass);
     }
 
+    public void initializeProducts() {
+        ProductServices.registerBeverage(
+                new BeverageDTO("BE0001", "Coca-Cola", 5.99, 50, LocalDate.of(2024, 12, 31), 1.5, true, "Coca-Cola", 2.0, true, "Cola", "Coca-Cola"),
+                repository
+        );
+        ProductServices.registerBeverage(
+                new BeverageDTO("BE0002", "Pepsi", 4.99, 30, LocalDate.of(2024, 11, 30), 1.5, true, "Pepsi", 2.0, true, "Cola", "Pepsi"),
+                repository
+        );
+        ProductServices.registerBeverage(
+                new BeverageDTO("BE0003", "Fanta", 3.99, 20, LocalDate.of(2024, 10, 31), 1.5, true, "Fanta", 2.0, true, "Orange", "Coca-Cola"),
+                repository
+        );
+
+        ProductServices.registerMeat(
+                new MeatDTO("ME0001", "Picanha", 49.99, 10, LocalDate.of(2024, 12, 31), 1.0, true, "Beef", "Ribeye", "Brazil", true, "Beef", "Keep refrigerated"),
+                repository
+        );
+        ProductServices.registerMeat(
+                new MeatDTO("ME0002", "Fraldinha", 39.99, 15, LocalDate.of(2024, 11, 30), 1.0, true, "Beef", "Flank", "Brazil", true, "Beef", "Keep refrigerated"),
+                repository
+        );
+        ProductServices.registerMeat(
+                new MeatDTO("ME0003", "Alcatra", 44.99, 12, LocalDate.of(2024, 10, 31), 1.0, true, "Beef", "Sirloin", "Brazil", true, "Beef", "Keep refrigerated"),
+                repository
+        );
+
+        ProductServices.registerFruit(
+                new FruitDTO("FR0001", "Apple", 2.99, 100, LocalDate.of(2024, 12, 31), 0.2, true, "Nutritional info", "Fuji", "USA", true, "Plastic"),
+                repository
+        );
+        ProductServices.registerFruit(
+                new FruitDTO("FR0002", "Banana", 1.99, 150, LocalDate.of(2024, 11, 30), 0.2, true, "Nutritional info", "Cavendish", "Ecuador", true, "Plastic"),
+                repository
+        );
+        ProductServices.registerFruit(
+                new FruitDTO("FR0003", "Orange", 3.49, 80, LocalDate.of(2024, 10, 31), 0.2, true, "Nutritional info", "Navel", "Spain", true, "Plastic"),
+                repository
+        );
+
+        ProductServices.registerProcessedFood(
+                new ProcessedFoodDTO("PF0001", "Cereal", 4.99, 50, LocalDate.of(2024, 12, 31), 0.5, true, "Nutritional info", "Corn Flakes", "Kellogg's", true, "Breakfast"),
+                repository
+        );
+        ProductServices.registerProcessedFood(
+                new ProcessedFoodDTO("PF0002", "Pasta", 2.49, 30, LocalDate.of(2024, 11, 30), 0.5, true, "Nutritional info", "Spaghetti", "Barilla", true, "Dinner"),
+                repository
+        );
+        ProductServices.registerProcessedFood(
+                new ProcessedFoodDTO("PF0003", "Rice", 1.99, 20, LocalDate.of(2024, 10, 31), 0.5, true, "Nutritional info", "Basmati", "Tilda", true, "Lunch"),
+                repository
+        );
+
+        ProductServices.registerHygieneProduct(
+                new HygieneProductDTO("HY0001", "Shampoo", 9.99, 50, "Hair care", "Dove", true, "Apply and rinse", false, "Floral", 0.5),
+                repository
+        );
+        ProductServices.registerHygieneProduct(
+                new HygieneProductDTO("HY0002", "Soap", 1.99, 30, "Body wash", "Lux", true, "Use with water", false, "Lavender", 0.2),
+                repository
+        );
+        ProductServices.registerHygieneProduct(
+                new HygieneProductDTO("HY0003", "Toothpaste", 3.49, 20, "Oral care", "Colgate", true, "Brush teeth twice a day", false, "Mint", 0.1),
+                repository
+        );
+
+        ProductServices.registerUtensil(
+                new UtensilDTO("UT0001", "Spoon", 1.99, 100, "Stainless steel", "Kitchen", true, "Medium"),
+                repository
+        );
+        ProductServices.registerUtensil(
+                new UtensilDTO("UT0002", "Fork", 1.49, 80, "Stainless steel", "Kitchen", true, "Medium"),
+                repository
+        );
+        ProductServices.registerUtensil(
+                new UtensilDTO("UT0003", "Knife", 2.49, 60, "Stainless steel", "Kitchen", true, "Medium"),
+                repository
+        );
+    }
 }
