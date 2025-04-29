@@ -21,16 +21,24 @@ public class EmployeePanel extends JPanel {
         JButton buttonManageProducts =
                 AuxComponents.createStyledButton(
                         "Gerenciar Produtos", 400, 50,
-                        () -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController))
+                        () -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, person))
                 );
 
-        JButton buttonManagePeople =
+        JButton buttonManageClients =
                 AuxComponents.createStyledButton(
-                        "Gerenciar Pessoas", 400, 50,
-                        () -> SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController))
+                        "Gerenciar Clientes", 400, 50,
+                        () -> SwingMenu.changeScreen(new ManageClientsPanel(personController, productController, person))
                 );
 
-        add(buttonManagePeople);
+        JButton buttonManageEmployees =
+                AuxComponents.createStyledButton(
+                        "Gerenciar Funcionários", 400, 50,
+                        () -> SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, person))
+                );
+
+        add(buttonManageEmployees);
+        add(Box.createVerticalStrut(15));
+        add(buttonManageClients);
         add(Box.createVerticalStrut(15));
         add(buttonManageProducts);
 
