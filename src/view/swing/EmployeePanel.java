@@ -3,6 +3,9 @@ package view.swing;
 import controllers.PersonController;
 import controllers.ProductController;
 import model.people.Person;
+import view.swing.people.client.ManageClientsPanel;
+import view.swing.people.employee.ManageEmployeePanel;
+import view.swing.product.ManageProductsPanel;
 
 import javax.swing.*;
 import java.awt.*;

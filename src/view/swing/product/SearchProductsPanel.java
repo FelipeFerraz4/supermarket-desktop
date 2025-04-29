@@ -1,17 +1,20 @@
-package view.swing;
+package view.swing.product;
 
 import controllers.PersonController;
 import controllers.ProductController;
 import model.people.Person;
+import view.swing.AuxComponents;
+import view.swing.SwingMenu;
+import view.swing.people.employee.ManageEmployeePanel;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ManageEmployeePanel extends JPanel {
-    public ManageEmployeePanel(PersonController personController, ProductController productController, Person person) {
+public class SearchProductsPanel extends JPanel {
+    public SearchProductsPanel(PersonController personController, ProductController productController, Person employee){
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JLabel titleLabel = new JLabel("Gerenciar Pessoas");
+        JLabel titleLabel = new JLabel("Buscar Produtos");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         add(Box.createVerticalStrut(20));
@@ -21,7 +24,7 @@ public class ManageEmployeePanel extends JPanel {
         JButton buttonBack =
                 AuxComponents.createStyledButton(
                         "Voltar", 150, 40,
-                        () -> SwingMenu.changeScreen(new EmployeePanel(personController, productController, person))
+                        () -> SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, employee))
                 );
         add(buttonBack);
     }
