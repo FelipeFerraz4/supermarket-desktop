@@ -36,7 +36,7 @@ public class LoginPanel extends JPanel {
                         if (person instanceof model.people.Client) {
                             SwingMenu.changeScreen(new MainMenuPanel(personController, productController));
                         } else {
-                            SwingMenu.changeScreen(new MainMenuPanel(personController, productController));
+                            SwingMenu.changeScreen(new EmployeePanel(personController, productController, person));
                         }
                     } else {
                         JOptionPane.showMessageDialog(this, "E-mail ou senha incorretos.");
