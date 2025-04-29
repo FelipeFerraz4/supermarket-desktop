@@ -42,7 +42,7 @@ public class AuxComponents {
     public static JPanel createLabeledField(String labelText, int fontsize, JComponent field, int fieldWidth, int fieldHeight) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setAlignmentX(Component.LEFT_ALIGNMENT); // Para alinhar
+        panel.setAlignmentX(Component.CENTER_ALIGNMENT); // Para alinhar
 
         // Label
         JLabel label = new JLabel(labelText);
