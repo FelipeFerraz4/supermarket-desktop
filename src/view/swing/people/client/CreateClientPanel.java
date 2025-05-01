@@ -9,6 +9,7 @@ import view.swing.people.employee.ManageEmployeePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
 
 public class CreateClientPanel extends JPanel {
     public CreateClientPanel(PersonController personController, ProductController productController, Person employee) {
@@ -19,13 +20,48 @@ public class CreateClientPanel extends JPanel {
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         add(Box.createVerticalStrut(20));
         add(titleLabel);
-        add(Box.createVerticalStrut(80));
+        add(Box.createVerticalStrut(40));
 
-        JButton buttonBack =
-                AuxComponents.createStyledButton(
-                        "Voltar", 150, 40,
-                        () -> SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, employee))
-                );
-        add(buttonBack);
+        // Campos
+        JTextField nameField = new JTextField();
+        JTextField cpfField = new JTextField();
+        JTextField birthField = new JTextField(); // formato: AAAA-MM-DD
+        JTextField phoneField = new JTextField();
+        JTextField emailField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+
+        add(AuxComponents.createLabeledField("Nome:", 14, nameField, 460, 30));
+        add(Box.createVerticalStrut(20));
+        add(AuxComponents.createHorizontalFields("CPF:", 14, cpfField, 220, 30, "Telefone:", 14, phoneField, 220, 30));
+        add(AuxComponents.createHorizontalFields("Nascimento (AAAA-MM-DD):", 14, birthField, 220, 30, "E-mail:", 14, emailField, 220, 30));
+        add(AuxComponents.createLabeledField("Senha:", 14, passwordField, 220, 30));
+        add(Box.createVerticalStrut(20));
+
+        JButton buttonRegister = AuxComponents.createStyledButton("Cadastrar", 150, 40, () -> {
+            try {
+                String name = nameField.getText();
+                String cpf = cpfField.getText();
+                LocalDate birthDate = LocalDate.parse(birthField.getText());
+                String phone = phoneField.getText();
+                String email = emailField.getText();
+                String password = new String(passwordField.getPassword());
+
+                LocalDate accountCreationDate = LocalDate.now();
+                LocalDate dateLastPurchase = LocalDate.now();
+
+                personController.registerClient(name, cpf, birthDate, email, password, phone, accountCreationDate, dateLastPurchase);
+                JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso!");
+
+                SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, employee));
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Erro ao cadastrar cliente: " + e.getMessage());
+            }
+        });
+
+        JButton buttonBack = AuxComponents.createStyledButton("Voltar", 150, 40,
+                () -> SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, employee)));
+
+        add(AuxComponents.createHorizontalButtonPanel(buttonBack, buttonRegister));
     }
 }

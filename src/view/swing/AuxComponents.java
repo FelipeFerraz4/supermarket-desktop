@@ -55,7 +55,7 @@ public class AuxComponents {
         field.setAlignmentX(Component.LEFT_ALIGNMENT);
         field.setMinimumSize(dimension);
         field.setMaximumSize(dimension);
-        field.setPreferredSize(dimension);  // <-- adiciona também preferred
+        field.setPreferredSize(dimension);
 
         panel.add(label);
         panel.add(Box.createVerticalStrut(5));
@@ -64,7 +64,6 @@ public class AuxComponents {
         panel.setMaximumSize(new Dimension(fieldWidth, 80)); // Limita o painel no mesmo tamanho do field
         return panel;
     }
-
 
     public static JPanel createHorizontalFields(
             String labelText1, int labelFontSize1, JComponent field1, int fieldWidth1, int fieldHeight1,
@@ -77,7 +76,10 @@ public class AuxComponents {
         panel.add(Box.createHorizontalStrut(20));
         panel.add(createLabeledField(labelText2, labelFontSize2, field2, fieldWidth2, fieldHeight2));
 
-        panel.setMaximumSize(new Dimension(600, 80)); // Opcional: limita largura total da linha
+        int totalWidth = fieldWidth1 + fieldWidth2 + 20;
+        panel.setPreferredSize(new Dimension(totalWidth, 80));
+        panel.setMaximumSize(new Dimension(totalWidth, 80));
+        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
         return panel;
     }
 

@@ -65,12 +65,13 @@ public class PersonController {
         return repository.searchByEmail(email);
     }
 
-    public void updateEmployee(UUID id, String phone, String position, double salary) {
-        PersonServices.updateEmployee(id, phone, position, salary, repository);
+    public void updateEmployee(UUID id, String phone, String position, double salary, String email, String password) {
+        PersonServices.updateEmployee(id, phone, position, salary, email, password, repository);
     }
 
-    public void updateClient(UUID id, String phone) {
-        PersonServices.updateClient(id, phone, repository);
+
+    public void updateClient(UUID id, String phone, String email, String password) {
+        PersonServices.updateClient(id, phone, email, password, repository);
     }
 
     public void updateClientCart(UUID id, Map<UUID, Double> cart) {
@@ -131,7 +132,7 @@ public class PersonController {
                 LocalDate.parse("2000-01-01"),
                 "admin@gmail.com",
                 "1234",
-                "",
+                "88999998888",
                 "Gerente",
                 15000,
                 LocalDate.parse("2015-06-06"));

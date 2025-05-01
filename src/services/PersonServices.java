@@ -44,19 +44,33 @@ public class PersonServices {
         repository.add(employee);
     }
 
-    public static void updateClient(UUID id, String phone, IRepository<Person> repository){
+    public static void updateClient(UUID id, String phone, String email, String password, IRepository<Person> repository){
         Client client = (Client) repository.searchById(id);
-        client.setPhone(phone);
+        if (phone != null) {
+            client.setPhone(phone);
+        }
+        if (email != null) {
+            client.setEmail(email);
+        }
+        if (password != null) {
+            client.setPassword(password);
+        }
         repository.update(client);
     }
 
-    public static void updateEmployee(UUID id, String phone, String position, double salary, IRepository<Person> repository) {
+    public static void updateEmployee(UUID id, String phone, String position, double salary, String email, String password, IRepository<Person> repository) {
         Employee employee = (Employee) repository.searchById(id);
         if (phone != null) {
             employee.setPhone(phone);
         }
         if (position != null) {
             employee.setPosition(position);
+        }
+        if (email != null) {
+            employee.setEmail(email);
+        }
+        if (password != null) {
+            employee.setPassword(password);
         }
         if (salary != 0) {
             employee.setSalary(salary);

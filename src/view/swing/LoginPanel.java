@@ -32,7 +32,7 @@ public class LoginPanel extends JPanel {
                     String password = new String(passwordField.getPassword());
                     Person person = personController.login(email, password);
                     if (person != null) {
-                        JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
+//                        JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
                         if (person instanceof model.people.Client) {
                             SwingMenu.changeScreen(new MainMenuPanel(personController, productController));
                         } else {

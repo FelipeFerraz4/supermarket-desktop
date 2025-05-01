@@ -140,7 +140,13 @@ public class PersonView {
         double salary = scanner.nextDouble();
         scanner.nextLine();
 
-        controller.updateEmployee(id, phone, position, salary);
+        System.out.print("Novo e-mail: ");
+        String email = scanner.nextLine();
+
+        System.out.print("Novo password: ");
+        String password = scanner.nextLine();
+
+        controller.updateEmployee(id, phone, position, salary, email, password);
         System.out.println("Funcionário atualizado com sucesso!");
     }
 
@@ -151,7 +157,13 @@ public class PersonView {
         System.out.print("Novo telefone: ");
         String phone = scanner.nextLine();
 
-        controller.updateClient(id, phone);
+        System.out.print("Novo e-mail: ");
+        String email = scanner.nextLine();
+
+        System.out.print("Novo password: ");
+        String password = scanner.nextLine();
+
+        controller.updateClient(id, phone, email, password);
         System.out.println("Cliente atualizado com sucesso!");
     }
 
