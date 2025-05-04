@@ -1,4 +1,4 @@
-package view.swing.people.employee;
+package view.swing.people;
 
 import controllers.PersonController;
 import controllers.ProductController;
@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class UpdateEmployeePanel extends JPanel {
-    public UpdateEmployeePanel(PersonController personController, ProductController productController, Person employee) {
+    public UpdateEmployeePanel(PersonController personController, ProductController productController, Person person, Person employee, int type) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JLabel titleLabel = new JLabel("Atualizar Funcionário");
@@ -45,14 +45,14 @@ public class UpdateEmployeePanel extends JPanel {
                 personController.updateEmployee(emp.getId(), phone, position, salary, email, password);
                 JOptionPane.showMessageDialog(this, "Funcionário atualizado com sucesso!");
 
-                SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, emp));
+                SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController, emp));
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Erro ao atualizar funcionário: " + e.getMessage());
             }
         });
 
         JButton buttonBack = AuxComponents.createStyledButton("Voltar", 150, 40,
-                () -> SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, emp)));
+                () -> SwingMenu.changeScreen( type == 1 ? new SearchPersonPanel(personController, productController, person) : new ManagePeoplePanel(personController, productController, person)));
 
         add(AuxComponents.createHorizontalButtonPanel(buttonBack, buttonUpdate));
     }

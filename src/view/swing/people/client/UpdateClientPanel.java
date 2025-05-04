@@ -6,16 +6,17 @@ import model.people.Client;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
-import view.swing.people.employee.ManageEmployeePanel;
+import view.swing.people.ManagePeoplePanel;
+import view.swing.people.SearchPersonPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class UpdateClientPanel extends JPanel {
-    public UpdateClientPanel(PersonController personController, ProductController productController, Person employee) {
+    public UpdateClientPanel(PersonController personController, ProductController productController, Person personDeafault, Person person) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        if (!(employee instanceof Client client)) {
+        if (!(person instanceof Client client)) {
             add(new JLabel("Erro: pessoa selecionada não é um cliente."));
             return;
         }
@@ -52,12 +53,12 @@ public class UpdateClientPanel extends JPanel {
 
             personController.updateClient(client.getId(), phone, email, password);
             JOptionPane.showMessageDialog(this, "Cliente atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, employee));
+            SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController, person));
         });
 
         // Botão voltar
         JButton backButton = AuxComponents.createStyledButton("Voltar", 150, 40,
-                () -> SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, employee)));
+                () -> SwingMenu.changeScreen(new SearchPersonPanel(personController, productController, personDeafault)));
 
         add(AuxComponents.createHorizontalButtonPanel(backButton, saveButton));
     }

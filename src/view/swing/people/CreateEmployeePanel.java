@@ -1,4 +1,4 @@
-package view.swing.people.employee;
+package view.swing.people;
 
 import controllers.PersonController;
 import controllers.ProductController;
@@ -54,7 +54,7 @@ public class CreateEmployeePanel extends JPanel {
                 personController.registerEmployee(name, cpf, birthDate, email, password, phone, position, salary, hireDate);
                 JOptionPane.showMessageDialog(this, "Funcionário cadastrado com sucesso!");
 
-                SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, employee));
+                SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController, employee));
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Erro ao cadastrar funcionário: " + e.getMessage());
@@ -62,7 +62,7 @@ public class CreateEmployeePanel extends JPanel {
         });
 
         JButton buttonBack = AuxComponents.createStyledButton("Voltar", 150, 40,
-                () -> SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, employee)));
+                () -> SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController, employee)));
 
         add(AuxComponents.createHorizontalButtonPanel(buttonBack, buttonRegister));
     }

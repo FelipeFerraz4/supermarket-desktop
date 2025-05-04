@@ -8,8 +8,6 @@ import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
 import view.swing.people.client.UpdateClientPanel;
-import view.swing.people.employee.ManageEmployeePanel;
-import view.swing.people.employee.UpdateEmployeePanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -19,21 +17,24 @@ import java.util.UUID;
 
 public class SearchPersonPanel extends JPanel {
 
-    public SearchPersonPanel(PersonController personController, ProductController productController, Person employee) {
+    public SearchPersonPanel(PersonController personController, ProductController productController, Person person) {
         setLayout(new BorderLayout());
 
         JLabel titleLabel = new JLabel("Gerenciar Pessoas", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         add(titleLabel, BorderLayout.NORTH);
 
-        // Filtros e busca
         JPanel topPanel = new JPanel(new FlowLayout());
 
         JComboBox<String> filterCombo = new JComboBox<>(new String[]{"Todos", "Funcionários", "Clientes"});
         JTextField searchField = new JTextField(20);
 
-        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"Nome", "E-mail", "Telefone", "Tipo"}, 0);
+        DefaultTableModel tableModel = new DefaultTableModel(new String[]{"ID", "Nome", "E-mail", "Tipo"}, 0);
         JTable peopleTable = new JTable(tableModel);
+
+        peopleTable.getColumnModel().getColumn(0).setMinWidth(0);
+        peopleTable.getColumnModel().getColumn(0).setMaxWidth(0);
+        peopleTable.getColumnModel().getColumn(0).setWidth(0);
 
         JButton searchButton = AuxComponents.createStyledButton("Buscar", 100, 30, () -> {
             String filter = (String) filterCombo.getSelectedItem();
@@ -60,7 +61,7 @@ public class SearchPersonPanel extends JPanel {
         });
 
         JButton buttonBack = AuxComponents.createStyledButton("Voltar", 100, 30,
-                () -> SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, employee)));
+                () -> SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController, person)));
 
         topPanel.add(new JLabel("Filtro:"));
         topPanel.add(filterCombo);
@@ -71,7 +72,6 @@ public class SearchPersonPanel extends JPanel {
 
         add(topPanel, BorderLayout.SOUTH);
 
-        // Tabela
         JScrollPane scrollPane = new JScrollPane(peopleTable);
         add(scrollPane, BorderLayout.CENTER);
 
@@ -80,19 +80,17 @@ public class SearchPersonPanel extends JPanel {
                 UUID id = UUID.fromString(tableModel.getValueAt(peopleTable.getSelectedRow(), 0).toString());
                 Person selected = personController.findById(id);
                 if (selected instanceof Employee emp) {
-                    SwingMenu.changeScreen(new UpdateEmployeePanel(personController, productController, emp));
+                    SwingMenu.changeScreen(new UpdateEmployeePanel(personController, productController, person, emp, 1));
                 } else if (selected instanceof Client client) {
-                    SwingMenu.changeScreen(new UpdateClientPanel(personController, productController, client));
+                    SwingMenu.changeScreen(new UpdateClientPanel(personController, productController, person, client));
                 }
             }
         });
 
-
-        // Carrega todos inicialmente
         tableModel.setRowCount(0);
         for (Person p : personController.listAll()) {
             String type = (p instanceof Employee) ? "Funcionário" : "Cliente";
-            tableModel.addRow(new Object[]{p.getName(), p.getEmail(), p.getPhone(), type});
+            tableModel.addRow(new Object[]{p.getId(), p.getName(), p.getEmail(), type});
         }
     }
 }

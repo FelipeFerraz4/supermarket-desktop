@@ -25,13 +25,13 @@ public class ManageClientsPanel extends JPanel {
         JButton buttonCreatePerson =
                 AuxComponents.createStyledButton(
                         "Cadastrar pessoa", 400, 50,
-                        () -> SwingMenu.changeScreen(new CreateClientPanel(personController, productController, person))
+                        () -> SwingMenu.changeScreen(new CreateClientAdminPanel(personController, productController, person))
                 );
 
         JButton buttonUpdatePerson =
                 AuxComponents.createStyledButton(
                         "Atualizar pessoa", 400, 50,
-                        () -> SwingMenu.changeScreen(new UpdateClientPanel(personController, productController, person))
+                        () -> SwingMenu.changeScreen(new UpdateClientPanel(personController, productController,person, person))
                 );
 
         JButton buttonSearchPerson =

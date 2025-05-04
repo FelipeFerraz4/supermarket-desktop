@@ -1,4 +1,4 @@
-package view.swing.people.employee;
+package view.swing.people;
 
 import controllers.PersonController;
 import controllers.ProductController;
@@ -6,13 +6,13 @@ import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
 import view.swing.EmployeePanel;
-import view.swing.people.SearchPersonPanel;
+import view.swing.people.client.CreateClientAdminPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class ManageEmployeePanel extends JPanel {
-    public ManageEmployeePanel(PersonController personController, ProductController productController, Person person) {
+public class ManagePeoplePanel extends JPanel {
+    public ManagePeoplePanel(PersonController personController, ProductController productController, Person person) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JLabel titleLabel = new JLabel("Gerenciar Funcionários");
@@ -22,16 +22,16 @@ public class ManageEmployeePanel extends JPanel {
         add(titleLabel);
         add(Box.createVerticalStrut(80));
 
-        JButton buttonCreatePerson =
+        JButton buttonCreateClient =
+                AuxComponents.createStyledButton(
+                        "Cadastrar Cliente", 400, 50,
+                        () -> SwingMenu.changeScreen(new CreateClientAdminPanel(personController, productController, person))
+                );
+
+        JButton buttonCreateEmployee =
                 AuxComponents.createStyledButton(
                         "Cadastrar funcionário", 400, 50,
                         () -> SwingMenu.changeScreen(new CreateEmployeePanel(personController, productController, person))
-                );
-
-        JButton buttonUpdatePerson =
-                AuxComponents.createStyledButton(
-                        "Atualizar funcionário", 400, 50,
-                        () -> SwingMenu.changeScreen(new UpdateEmployeePanel(personController, productController, person))
                 );
 
         JButton buttonSearchPerson =
@@ -40,7 +40,15 @@ public class ManageEmployeePanel extends JPanel {
                         () -> SwingMenu.changeScreen(new SearchPersonPanel(personController, productController, person))
                 );
 
-        add(AuxComponents.createHorizontalButtonPanel(buttonCreatePerson));
+        JButton buttonUpdatePerson =
+                AuxComponents.createStyledButton(
+                        "Atualizar Meus dados", 400, 50,
+                        () -> SwingMenu.changeScreen(new UpdateEmployeePanel(personController, productController, person, person, 2))
+                );
+
+        add(AuxComponents.createHorizontalButtonPanel(buttonCreateClient));
+        add(Box.createVerticalStrut(15));
+        add(AuxComponents.createHorizontalButtonPanel(buttonCreateEmployee));
         add(Box.createVerticalStrut(15));
         add(AuxComponents.createHorizontalButtonPanel(buttonSearchPerson));
         add(Box.createVerticalStrut(15));

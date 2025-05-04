@@ -2,6 +2,7 @@ package view.swing;
 
 import controllers.PersonController;
 import controllers.ProductController;
+import model.people.Person;
 
 import javax.swing.*;
 import java.awt.*;

@@ -5,14 +5,14 @@ import controllers.ProductController;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
-import view.swing.people.employee.ManageEmployeePanel;
+import view.swing.people.ManagePeoplePanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 
-public class CreateClientPanel extends JPanel {
-    public CreateClientPanel(PersonController personController, ProductController productController, Person employee) {
+public class CreateClientAdminPanel extends JPanel {
+    public CreateClientAdminPanel(PersonController personController, ProductController productController, Person person) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JLabel titleLabel = new JLabel("Cadastrar Cliente");
@@ -25,7 +25,7 @@ public class CreateClientPanel extends JPanel {
         // Campos
         JTextField nameField = new JTextField();
         JTextField cpfField = new JTextField();
-        JTextField birthField = new JTextField(); // formato: AAAA-MM-DD
+        JTextField birthField = new JTextField();
         JTextField phoneField = new JTextField();
         JTextField emailField = new JTextField();
         JPasswordField passwordField = new JPasswordField();
@@ -52,7 +52,7 @@ public class CreateClientPanel extends JPanel {
                 personController.registerClient(name, cpf, birthDate, email, password, phone, accountCreationDate, dateLastPurchase);
                 JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso!");
 
-                SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, employee));
+                SwingMenu.changeScreen(new CreateClientAdminPanel(personController, productController, person));
 
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Erro ao cadastrar cliente: " + e.getMessage());
@@ -60,7 +60,7 @@ public class CreateClientPanel extends JPanel {
         });
 
         JButton buttonBack = AuxComponents.createStyledButton("Voltar", 150, 40,
-                () -> SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, employee)));
+                () -> SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController, person)));
 
         add(AuxComponents.createHorizontalButtonPanel(buttonBack, buttonRegister));
     }

@@ -4,7 +4,7 @@ import controllers.PersonController;
 import controllers.ProductController;
 import model.people.Person;
 import view.swing.people.client.ManageClientsPanel;
-import view.swing.people.employee.ManageEmployeePanel;
+import view.swing.people.ManagePeoplePanel;
 import view.swing.product.ManageProductsPanel;
 
 import javax.swing.*;
@@ -27,21 +27,13 @@ public class EmployeePanel extends JPanel {
                         () -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, person))
                 );
 
-        JButton buttonManageClients =
-                AuxComponents.createStyledButton(
-                        "Gerenciar Clientes", 400, 50,
-                        () -> SwingMenu.changeScreen(new ManageClientsPanel(personController, productController, person))
-                );
-
         JButton buttonManageEmployees =
                 AuxComponents.createStyledButton(
-                        "Gerenciar Funcionários", 400, 50,
-                        () -> SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, person))
+                        "Gerenciar Pessoas", 400, 50,
+                        () -> SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController, person))
                 );
 
         add(buttonManageEmployees);
-        add(Box.createVerticalStrut(15));
-        add(buttonManageClients);
         add(Box.createVerticalStrut(15));
         add(buttonManageProducts);
 

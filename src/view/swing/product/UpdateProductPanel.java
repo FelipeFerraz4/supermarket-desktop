@@ -5,7 +5,7 @@ import controllers.ProductController;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
-import view.swing.people.employee.ManageEmployeePanel;
+import view.swing.people.ManagePeoplePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +24,7 @@ public class UpdateProductPanel extends JPanel {
         JButton buttonBack =
                 AuxComponents.createStyledButton(
                         "Voltar", 150, 40,
-                        () -> SwingMenu.changeScreen(new ManageEmployeePanel(personController, productController, employee))
+                        () -> SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController, employee))
                 );
         add(buttonBack);
     }
