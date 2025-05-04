@@ -24,7 +24,7 @@ public class ManageProductsPanel extends JPanel {
         JButton buttonCreateProduct =
                 AuxComponents.createStyledButton(
                         "Cadastrar produto", 400, 50,
-                        () -> SwingMenu.changeScreen(new CreateProductPanel(personController, productController, person))
+                        () -> SwingMenu.changeScreen(new SelectProductTypePanel(personController, productController, person))
                 );
         JButton buttonUpdateProduct =
                 AuxComponents.createStyledButton(

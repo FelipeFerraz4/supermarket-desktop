@@ -26,17 +26,36 @@ public class AuxComponents {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 
+        int totalWidth = 0;
+        int maxHeight = 0;
+        int spacing = 20;
+
         for (int i = 0; i < buttons.length; i++) {
-            panel.add(buttons[i]);
+            JButton btn = buttons[i];
+            Dimension size = btn.getPreferredSize();
+            totalWidth += size.width;
+            maxHeight = Math.max(maxHeight, size.height);
+
+            panel.add(btn);
+
             if (i < buttons.length - 1) {
-                panel.add(Box.createHorizontalStrut(10)); // Espaço entre os botões
+                panel.add(Box.createHorizontalStrut(spacing));
+                totalWidth += spacing;
             }
         }
+
+        totalWidth += 20; // margem extra lateral
+
+        Dimension panelSize = new Dimension(totalWidth, maxHeight + 10);
+        panel.setPreferredSize(panelSize);
+        panel.setMaximumSize(panelSize);
+        panel.setMinimumSize(panelSize);
 
         panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         return panel;
     }
+
 
 
     public static JPanel createLabeledField(String labelText, int fontsize, JComponent field, int fieldWidth, int fieldHeight) {
