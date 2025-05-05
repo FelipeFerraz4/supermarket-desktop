@@ -1,5 +1,7 @@
 package model.products.food;
 
+import model.products.ProductType;
+
 import java.time.LocalDate;
 
 public class Beverage extends FoodProduct {
@@ -11,7 +13,7 @@ public class Beverage extends FoodProduct {
     public Beverage(String cod, String name, double price, int amount,
                     LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
                     double volume, boolean alcoholic, String flavor, String brand) {
-        super(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo);
+        super(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, ProductType.DRINK);
         this.volume = volume;
         this.alcoholic = alcoholic;
         this.flavor = flavor;
@@ -59,6 +61,7 @@ public class Beverage extends FoodProduct {
                 ", cod='" + getCod() + '\'' +
                 ", name='" + getName() + '\'' +
                 ", price=" + getPrice() + '\'' +
+                ", type=" + getTypeProduct() + '\'' +
                 ", amount=" + getAmount() + '\'' +
                 ", latestStockUpdate=" + getLatestStockUpdate() + '\'' +
                 ", expirationDate=" + getExpirationDate() +

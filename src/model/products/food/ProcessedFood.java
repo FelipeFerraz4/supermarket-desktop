@@ -1,5 +1,7 @@
 package model.products.food;
 
+import model.products.ProductType;
+
 import java.time.LocalDate;
 
 public class ProcessedFood extends FoodProduct {
@@ -11,7 +13,7 @@ public class ProcessedFood extends FoodProduct {
     public ProcessedFood(String cod, String name, double price, int amount,
                          LocalDate expirationDate, double weight, boolean refrigerated, String nutritionalInfo,
                          String category, String brand, boolean containsPreservatives, String cookingInstructions) {
-        super(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo);
+        super(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, ProductType.FOOD);
         this.category = category;
         this.brand = brand;
         this.containsPreservatives = containsPreservatives;
@@ -57,6 +59,7 @@ public class ProcessedFood extends FoodProduct {
                 ", cod='" + getCod() + '\'' +
                 ", name='" + getName() + '\'' +
                 ", price=" + getPrice() + '\'' +
+                ", type=" + getTypeProduct() + '\'' +
                 ", amount=" + getAmount() + '\'' +
                 ", latestStockUpdate=" + getLatestStockUpdate() + '\'' +
                 ", expirationDate=" + getExpirationDate() +

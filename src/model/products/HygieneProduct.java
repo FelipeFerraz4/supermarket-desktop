@@ -13,7 +13,7 @@ public class HygieneProduct extends Product{
             String cod, String name, double price, int amount,
             String type, String brand, boolean forSensitiveSkin,
             String usageInstructions, boolean toxic, String scent, double volume) {
-        super(cod, name, price, amount);
+        super(cod, name, price, amount, ProductType.HYGIENE);
         this.type = type;
         this.brand = brand;
         this.forSensitiveSkin = forSensitiveSkin;
@@ -44,7 +44,7 @@ public class HygieneProduct extends Product{
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public String getBrand() {
@@ -86,6 +86,7 @@ public class HygieneProduct extends Product{
                 ", cod='" + getCod() + '\'' +
                 ", name='" + getName() + '\'' +
                 ", price=" + getPrice() + '\'' +
+                ", type=" + getTypeProduct() + '\'' +
                 ", amount=" + getAmount() + '\'' +
                 ", latestStockUpdate=" + getLatestStockUpdate() + '\'' +
                 ", type='" + type + '\'' +

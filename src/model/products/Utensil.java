@@ -9,7 +9,7 @@ public class Utensil extends Product{
     public Utensil(
             String cod, String name, double price, int amount,
             String material, String category, boolean isReusable, String size) {
-        super(cod, name, price, amount);
+        super(cod, name, price, amount, ProductType.UTENSIL);
         this.material = material;
         this.category = category;
         this.isReusable = isReusable;
@@ -55,6 +55,7 @@ public class Utensil extends Product{
                 ", cod='" + getCod() + '\'' +
                 ", name='" + getName() + '\'' +
                 ", price=" + getPrice() + '\'' +
+                ", type=" + getTypeProduct() + '\'' +
                 ", amount=" + getAmount() + '\'' +
                 ", latestStockUpdate=" + getLatestStockUpdate() + '\'' +
                 ", material='" + material + '\'' +

@@ -26,11 +26,11 @@ public class ManageProductsPanel extends JPanel {
                         "Cadastrar produto", 400, 50,
                         () -> SwingMenu.changeScreen(new SelectProductTypePanel(personController, productController, person))
                 );
-        JButton buttonUpdateProduct =
-                AuxComponents.createStyledButton(
-                        "Atualizar produto", 400, 50,
-                        () -> SwingMenu.changeScreen(new UpdateProductPanel(personController, productController, person))
-                );
+//        JButton buttonUpdateProduct =
+//                AuxComponents.createStyledButton(
+//                        "Atualizar produto", 400, 50,
+//                        () -> SwingMenu.changeScreen(new UpdateProductPanel(personController, productController, person))
+//                );
         JButton buttonSearchProduct =
                 AuxComponents.createStyledButton(
                         "Buscar produto por nome", 400, 50,
@@ -41,8 +41,8 @@ public class ManageProductsPanel extends JPanel {
         add(Box.createVerticalStrut(15));
         add(AuxComponents.createHorizontalButtonPanel(buttonSearchProduct));
         add(Box.createVerticalStrut(15));
-        add(AuxComponents.createHorizontalButtonPanel(buttonUpdateProduct));
-        add(Box.createVerticalStrut(15));
+//        add(AuxComponents.createHorizontalButtonPanel(buttonUpdateProduct));
+//        add(Box.createVerticalStrut(15));
 
         JButton buttonBack =
                 AuxComponents.createStyledButton(

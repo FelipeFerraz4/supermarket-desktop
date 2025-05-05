@@ -10,11 +10,13 @@ public abstract class Product {
     private double price;
     private int amount;
     private LocalDate latestStockUpdate;
+    private final ProductType typeProduct;
 
-    public Product(String cod, String name, double price, int amount) {
+    public Product(String cod, String name, double price, int amount, ProductType type) {
         this.id = UUID.randomUUID();
         this.cod = cod;
         this.name = name;
+        this.typeProduct = type;
         this.price = price;
         this.amount = amount;
         this.latestStockUpdate = LocalDate.now();
@@ -61,6 +63,10 @@ public abstract class Product {
         this.latestStockUpdate = LocalDate.now();
     }
 
+    public ProductType getTypeProduct() {
+        return this.typeProduct;
+    }
+
     public void updateStock(int change) {
         this.amount += change;
         this.latestStockUpdate = LocalDate.now();
@@ -76,6 +82,7 @@ public abstract class Product {
                 "id=" + id +
                 ", cod='" + cod + '\'' +
                 ", name='" + name + '\'' +
+                ", type=" + typeProduct +
                 ", price=" + price +
                 ", amount=" + amount +
                 ", latestStockUpdate=" + latestStockUpdate +
