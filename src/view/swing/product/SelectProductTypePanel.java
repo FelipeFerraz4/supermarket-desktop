@@ -7,6 +7,7 @@ import view.swing.AuxComponents;
 import view.swing.SwingMenu;
 import view.swing.people.ManagePeoplePanel;
 import view.swing.product.create.CreateBeveragePanel;
+import view.swing.product.create.CreateProcessedFoodPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,9 +29,9 @@ public class SelectProductTypePanel extends JPanel {
                 "Bebida", 200, 50,
                 () -> SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee))
         );
-        JButton buttonAlimento = AuxComponents.createStyledButton(
+        JButton buttonProcessedFood = AuxComponents.createStyledButton(
                 "Alimento", 200, 50,
-                () -> SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee))
+                () -> SwingMenu.changeScreen(new CreateProcessedFoodPanel(personController, productController, employee))
         );
         JButton buttonCarne = AuxComponents.createStyledButton(
                 "Carne", 200, 50,
@@ -49,7 +50,7 @@ public class SelectProductTypePanel extends JPanel {
                 () -> SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee))
         );
 
-        add(AuxComponents.createHorizontalButtonPanel(buttonBeverage, buttonAlimento));
+        add(AuxComponents.createHorizontalButtonPanel(buttonBeverage, buttonProcessedFood));
         add(AuxComponents.createHorizontalButtonPanel(buttonCarne, buttonFruta));
         add(AuxComponents.createHorizontalButtonPanel(buttonHigiene, buttonUtensilio));
 

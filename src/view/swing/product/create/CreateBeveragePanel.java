@@ -6,7 +6,7 @@ import dtos.BeverageDTO;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
-import view.swing.people.ManagePeoplePanel;
+import view.swing.product.ManageProductsPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -82,14 +82,14 @@ public class CreateBeveragePanel extends JPanel {
                 productController.registerBeverage(beverageDTO);
 
                 JOptionPane.showMessageDialog(this, "Bebida cadastrada com sucesso!");
-                SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController, employee));
+                SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee));
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
             }
         });
 
         JButton backBtn = AuxComponents.createStyledButton("Voltar", 150, 40,
-                () -> SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController, employee)));
+                () -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, employee)));
 
         add(Box.createVerticalStrut(20));
         add(AuxComponents.createHorizontalButtonPanel(registerBtn, backBtn));
