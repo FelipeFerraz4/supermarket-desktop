@@ -6,6 +6,7 @@ import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
 import view.swing.people.ManagePeoplePanel;
+import view.swing.product.create.CreateBeveragePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,32 +24,32 @@ public class SelectProductTypePanel extends JPanel {
         add(Box.createVerticalStrut(40));
 
         // Criando os botões para os tipos de produto
-        JButton buttonBebida = AuxComponents.createStyledButton(
+        JButton buttonBeverage = AuxComponents.createStyledButton(
                 "Bebida", 200, 50,
-                () -> SwingMenu.changeScreen(new CreateProductPanel(personController, productController, employee))
+                () -> SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee))
         );
         JButton buttonAlimento = AuxComponents.createStyledButton(
                 "Alimento", 200, 50,
-                () -> SwingMenu.changeScreen(new CreateProductPanel(personController, productController, employee))
+                () -> SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee))
         );
         JButton buttonCarne = AuxComponents.createStyledButton(
                 "Carne", 200, 50,
-                () -> SwingMenu.changeScreen(new CreateProductPanel(personController, productController, employee))
+                () -> SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee))
         );
         JButton buttonFruta = AuxComponents.createStyledButton(
                 "Fruta", 200, 50,
-                () -> SwingMenu.changeScreen(new CreateProductPanel(personController, productController, employee))
+                () -> SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee))
         );
         JButton buttonHigiene = AuxComponents.createStyledButton(
                 "Higiene", 200, 50,
-                () -> SwingMenu.changeScreen(new CreateProductPanel(personController, productController, employee))
+                () -> SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee))
         );
         JButton buttonUtensilio = AuxComponents.createStyledButton(
                 "Utensílio", 200, 50,
-                () -> SwingMenu.changeScreen(new CreateProductPanel(personController, productController, employee))
+                () -> SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee))
         );
 
-        add(AuxComponents.createHorizontalButtonPanel(buttonBebida, buttonAlimento));
+        add(AuxComponents.createHorizontalButtonPanel(buttonBeverage, buttonAlimento));
         add(AuxComponents.createHorizontalButtonPanel(buttonCarne, buttonFruta));
         add(AuxComponents.createHorizontalButtonPanel(buttonHigiene, buttonUtensilio));
 

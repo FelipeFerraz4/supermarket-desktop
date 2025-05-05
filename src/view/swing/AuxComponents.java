@@ -102,4 +102,20 @@ public class AuxComponents {
         return panel;
     }
 
+    public static JPanel createHorizontalCheckBoxes(JCheckBox... checkBoxes) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        for (int i = 0; i < checkBoxes.length; i++) {
+            panel.add(checkBoxes[i]);
+            if (i < checkBoxes.length - 1) {
+                panel.add(Box.createHorizontalStrut(20)); // espaçamento entre os checkboxes
+            }
+        }
+
+        return panel;
+    }
+
+
 }
