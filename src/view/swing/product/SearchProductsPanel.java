@@ -7,7 +7,7 @@ import model.products.Product;
 import model.products.ProductType;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
-import view.swing.people.ManagePeoplePanel;
+import view.swing.product.update.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -69,13 +69,11 @@ public class SearchProductsPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(productTable);
         add(scrollPane, BorderLayout.CENTER);
 
-        // Preenche a tabela inicialmente
         tableModel.setRowCount(0);
         for (Product p : productController.getAllProducts()) {
             tableModel.addRow(new Object[]{p.getId(), p.getName(), p.getTypeProduct().toString(), String.format("R$ %.2f", p.getPrice())});
         }
 
-        // Redireciona para a tela de edição apropriada ao selecionar uma linha
         productTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && productTable.getSelectedRow() != -1) {
                 UUID id = UUID.fromString(tableModel.getValueAt(productTable.getSelectedRow(), 0).toString());
@@ -83,12 +81,12 @@ public class SearchProductsPanel extends JPanel {
                 ProductType type = selected.getTypeProduct();
 
                 switch (type) {
-                    case DRINK -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, employee));
-                    case FOOD -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, employee));
-                    case MEAT -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, employee));
-                    case FRUIT -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, employee));
-                    case HYGIENE -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, employee));
-                    case UTENSIL -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, employee));
+                    case DRINK -> SwingMenu.changeScreen(new UpdateBeveragePanel(personController, productController, employee, id));
+                    case FOOD -> SwingMenu.changeScreen(new UpdateProcessedFoodPanel(personController, productController, employee, id));
+                    case MEAT -> SwingMenu.changeScreen(new UpdateMeatPanel(personController, productController, employee, id));
+                    case FRUIT -> SwingMenu.changeScreen(new UpdateFruitPanel(personController, productController, employee, id));
+                    case HYGIENE -> SwingMenu.changeScreen(new UpdateHygienePanel(personController, productController, employee, id));
+                    case UTENSIL -> SwingMenu.changeScreen(new UpdateUtensilPanel(personController, productController, employee, id));
                 }
             }
         });
