@@ -55,7 +55,7 @@ public class SearchProductsPanel extends JPanel {
         });
 
         JButton buttonBack = AuxComponents.createStyledButton("Voltar", 100, 30,
-                () -> SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController, employee)));
+                () -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, employee)));
 
         topPanel.add(new JLabel("Filtro por tipo:"));
         topPanel.add(filterCombo);
