@@ -1,4 +1,4 @@
-package view.swing.product.update;
+package view.swing.employee.product.update;
 
 import controllers.PersonController;
 import controllers.ProductController;
@@ -6,7 +6,7 @@ import dtos.UtensilDTO;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
-import view.swing.product.SearchProductsPanel;
+import view.swing.employee.product.SearchProductsPanel;
 
 import javax.swing.*;
 import java.awt.*;

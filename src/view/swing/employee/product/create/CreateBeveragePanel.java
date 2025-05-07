@@ -1,23 +1,24 @@
-package view.swing.product.create;
+package view.swing.employee.product.create;
 
 import controllers.PersonController;
 import controllers.ProductController;
-import dtos.MeatDTO;
+import dtos.BeverageDTO;
 import model.people.Person;
+import model.products.food.Beverage;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
-import view.swing.product.ManageProductsPanel;
+import view.swing.employee.product.SelectProductTypePanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.util.List;
 
-public class CreateMeatPanel extends JPanel {
-    public CreateMeatPanel(PersonController personController, ProductController productController, Person employee) {
+public class CreateBeveragePanel extends JPanel {
+    public CreateBeveragePanel(PersonController personController, ProductController productController, Person employee) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JLabel titleLabel = new JLabel("Cadastrar Carnes");
+        JLabel titleLabel = new JLabel("Cadastrar Bebidas");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         add(Box.createVerticalStrut(20));
@@ -30,14 +31,13 @@ public class CreateMeatPanel extends JPanel {
         JTextField amountField = new JTextField();
         JTextField expirationDateField = new JTextField();
         JTextField weightField = new JTextField();
-        JTextField nutritionalInfoField = new JTextField();
-        JTextField cutTypeField = new JTextField();
-        JTextField originField = new JTextField();
-        JTextField animalTypeField = new JTextField();
-        JTextField storageInstructionsField = new JTextField();
+        JTextField brandField = new JTextField(); // Corrigido
+        JTextField volumeField = new JTextField();
+        JTextField flavorField = new JTextField();
+        JTextField nutritionalInfoField = new JTextField(); // Corrigido
 
         JCheckBox refrigeratedBox = new JCheckBox("Refrigerado?");
-        JCheckBox organicBox = new JCheckBox("Orgânico?");
+        JCheckBox alcoholicBox = new JCheckBox("Alcoólica?");
 
         add(AuxComponents.createHorizontalFields(
                 "Nome:", 14, nameField, 400, 25,
@@ -49,27 +49,23 @@ public class CreateMeatPanel extends JPanel {
         ));
         add(AuxComponents.createHorizontalFields(
                 "Peso (Kg):", 14, weightField, 300, 25,
-                "Tipo de Corte:", 14, cutTypeField, 300, 25
+                "Marca:", 14, brandField, 300, 25
         ));
         add(AuxComponents.createHorizontalFields(
-                "Origem:", 14, originField, 300, 25,
-                "Tipo de Animal:", 14, animalTypeField, 300, 25
+                "Volume (L):", 14, volumeField, 300, 25,
+                "Sabor:", 14, flavorField, 300, 25
         ));
         add(AuxComponents.createLabeledField(
                 "Informações Nutricionais:", 14, nutritionalInfoField, 620, 25
         ));
-        add(Box.createVerticalStrut(10));
-        add(AuxComponents.createLabeledField(
-                "Instruções de Armazenamento:", 14, storageInstructionsField, 620, 25
-        ));
 
         add(Box.createVerticalStrut(20));
-        add(AuxComponents.createHorizontalCheckBoxes(refrigeratedBox, organicBox));
+        add(AuxComponents.createHorizontalCheckBoxes(refrigeratedBox, alcoholicBox));
 
         JButton registerBtn = AuxComponents.createStyledButton("Cadastrar", 150, 40, () -> {
             try {
-                List<?> products = productController.getProductsByCategory(Class.forName("model.products.subclasses.Meat"));
-                String cod = String.format("ME%04d", products.size() + 1);
+                List<?> products = productController.getProductsByCategory(Beverage.class);
+                String cod = String.format("BE%04d", products.size() + 1);
 
                 String name = nameField.getText().trim();
                 double price = Double.parseDouble(priceField.getText().trim());
@@ -78,25 +74,23 @@ public class CreateMeatPanel extends JPanel {
                 double weight = Double.parseDouble(weightField.getText().trim());
                 boolean refrigerated = refrigeratedBox.isSelected();
                 String nutritionalInfo = nutritionalInfoField.getText().trim();
-                String cutType = cutTypeField.getText().trim();
-                String origin = originField.getText().trim();
-                boolean isOrganic = organicBox.isSelected();
-                String animalType = animalTypeField.getText().trim();
-                String storageInstructions = storageInstructionsField.getText().trim();
+                double volume = Double.parseDouble(volumeField.getText().trim());
+                boolean alcoholic = alcoholicBox.isSelected();
+                String flavor = flavorField.getText().trim();
+                String brand = brandField.getText().trim();
 
-                MeatDTO meatDTO = new MeatDTO(cod, name, price, amount, expirationDate, weight, refrigerated,
-                        nutritionalInfo, cutType, origin, isOrganic, animalType, storageInstructions);
-                productController.registerMeat(meatDTO);
+                BeverageDTO beverageDTO = new BeverageDTO(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand);
+                productController.registerBeverage(beverageDTO);
 
-                JOptionPane.showMessageDialog(this, "Carne cadastrada com sucesso!");
-                SwingMenu.changeScreen(new CreateMeatPanel(personController, productController, employee));
+                JOptionPane.showMessageDialog(this, "Bebida cadastrada com sucesso!");
+                SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee));
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
             }
         });
 
         JButton backBtn = AuxComponents.createStyledButton("Voltar", 150, 40,
-                () -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, employee)));
+                () -> SwingMenu.changeScreen(new SelectProductTypePanel(personController, productController, employee)));
 
         add(Box.createVerticalStrut(20));
         add(AuxComponents.createHorizontalButtonPanel(registerBtn, backBtn));

@@ -3,9 +3,13 @@ package view.swing;
 import controllers.PersonController;
 import controllers.ProductController;
 import model.people.Person;
+import view.swing.client.ClientPanel;
+import view.swing.employee.EmployeePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
+import java.util.UUID;
 
 public class LoginPanel extends JPanel {
     public LoginPanel(PersonController personController, ProductController productController) {
@@ -32,9 +36,9 @@ public class LoginPanel extends JPanel {
                     String password = new String(passwordField.getPassword());
                     Person person = personController.login(email, password);
                     if (person != null) {
-//                        JOptionPane.showMessageDialog(this, "Login realizado com sucesso!");
                         if (person instanceof model.people.Client) {
-                            SwingMenu.changeScreen(new MainMenuPanel(personController, productController));
+                            Map<UUID, Double> cart = personController.getClientCart(person.getId());
+                            SwingMenu.changeScreen(new ClientPanel(personController, productController, person, cart));
                         } else {
                             SwingMenu.changeScreen(new EmployeePanel(personController, productController, person));
                         }

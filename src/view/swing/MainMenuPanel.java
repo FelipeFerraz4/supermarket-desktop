@@ -2,9 +2,11 @@ package view.swing;
 
 import controllers.PersonController;
 import controllers.ProductController;
+import view.swing.client.ClientPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
 public class MainMenuPanel extends JPanel {
     public MainMenuPanel(PersonController personController, ProductController productController) {
@@ -22,7 +24,7 @@ public class MainMenuPanel extends JPanel {
         JButton buttonStartShopping =
                 AuxComponents.createStyledButton(
                         "Faça suas compras aqui", 400, 50,
-                        () -> SwingMenu.changeScreen(new StartShoppingPanel(personController, productController))
+                        () -> SwingMenu.changeScreen(new ClientPanel(personController, productController, null, new HashMap<>()))
                 );
 
         JButton buttonLogin =

@@ -2,11 +2,12 @@ package view.swing;
 
 import controllers.PersonController;
 import controllers.ProductController;
-import model.people.Person;
+import view.swing.client.ClientPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
+import java.util.HashMap;
 
 public class CreateClientPanel extends JPanel {
     public CreateClientPanel(PersonController personController, ProductController productController) {
@@ -63,7 +64,7 @@ public class CreateClientPanel extends JPanel {
 
                         JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso!");
 
-                        SwingMenu.changeScreen(new MainMenuPanel(personController, productController));
+                        SwingMenu.changeScreen(new ClientPanel(personController, productController, personController.findByName(name), new HashMap<>()));
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(this, "Erro ao cadastrar cliente: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                     }

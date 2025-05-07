@@ -1,25 +1,25 @@
-package view.swing.product.update;
+package view.swing.employee.product.update;
 
 import controllers.PersonController;
 import controllers.ProductController;
-import dtos.BeverageDTO;
+import dtos.FruitDTO;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
-import view.swing.product.SearchProductsPanel;
+import view.swing.employee.product.SearchProductsPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class UpdateBeveragePanel extends JPanel {
-    public UpdateBeveragePanel(PersonController personController, ProductController productController, Person employee, UUID id) {
+public class UpdateFruitPanel extends JPanel {
+    public UpdateFruitPanel(PersonController personController, ProductController productController, Person employee, UUID id) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        BeverageDTO dto = BeverageDTO.toDTO(productController.searchById(id));
+        FruitDTO dto = FruitDTO.toDTO(productController.searchById(id));
 
-        JLabel titleLabel = new JLabel("Atualizar Bebida");
+        JLabel titleLabel = new JLabel("Atualizar Fruta");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         add(Box.createVerticalStrut(20));
@@ -34,10 +34,10 @@ public class UpdateBeveragePanel extends JPanel {
         JTextField weightField = new JTextField(String.valueOf(dto.weight()));
         JCheckBox refrigeratedBox = new JCheckBox("Refrigerado", dto.refrigerated());
         JTextField nutritionalInfoField = new JTextField(dto.nutritionalInfo());
-        JTextField volumeField = new JTextField(String.valueOf(dto.volume()));
-        JCheckBox alcoholicBox = new JCheckBox("Alcoólico", dto.alcoholic());
-        JTextField flavorField = new JTextField(dto.flavor());
-        JTextField brandField = new JTextField(dto.brand());
+        JTextField varietyField = new JTextField(dto.variety());
+        JTextField originField = new JTextField(dto.origin());
+        JCheckBox seasonalBox = new JCheckBox("Sazonal", dto.seasonal());
+        JTextField packagingTypeField = new JTextField(dto.packagingType());
 
         add(AuxComponents.createHorizontalFields(
                 "Código:", 14, codeField, 200, 25,
@@ -53,42 +53,35 @@ public class UpdateBeveragePanel extends JPanel {
         ));
         add(AuxComponents.createHorizontalFields(
                 "Informações Nutricionais:", 14, nutritionalInfoField, 300, 25,
-                "Volume (ml):", 14, volumeField, 200, 25
+                "Variedade:", 14, varietyField, 300, 25
         ));
         add(AuxComponents.createHorizontalFields(
-                "Sabor:", 14, flavorField, 300, 25,
-                "Marca:", 14, brandField, 300, 25
+                "Origem:", 14, originField, 300, 25,
+                "Tipo de Embalagem:", 14, packagingTypeField, 300, 25
         ));
+
         add(Box.createVerticalStrut(10));
-
-        add(AuxComponents.createHorizontalCheckBoxes(refrigeratedBox, alcoholicBox));
-
+        add(AuxComponents.createHorizontalCheckBoxes(refrigeratedBox, seasonalBox));
         add(Box.createVerticalStrut(20));
 
         JButton updateButton = AuxComponents.createStyledButton("Atualizar", 150, 40, () -> {
-            try {
-                BeverageDTO updatedDto = dto
-                        .withCode(codeField.getText())
-                        .withName(nameField.getText())
-                        .withPrice(Double.parseDouble(priceField.getText()))
-                        .withAmount(Integer.parseInt(amountField.getText()))
-                        .withExpirationDate(LocalDate.parse(expirationField.getText()))
-                        .withWeight(Double.parseDouble(weightField.getText()))
-                        .withRefrigerated(refrigeratedBox.isSelected())
-                        .withNutritionalInfo(nutritionalInfoField.getText())
-                        .withVolume(Double.parseDouble(volumeField.getText()))
-                        .withAlcoholic(alcoholicBox.isSelected())
-                        .withFlavor(flavorField.getText())
-                        .withBrand(brandField.getText());
+            FruitDTO updatedDto = dto
+                    .withCode(codeField.getText())
+                    .withName(nameField.getText())
+                    .withPrice(Double.parseDouble(priceField.getText()))
+                    .withAmount(Integer.parseInt(amountField.getText()))
+                    .withExpirationDate(LocalDate.parse(expirationField.getText()))
+                    .withWeight(Double.parseDouble(weightField.getText()))
+                    .withRefrigerated(refrigeratedBox.isSelected())
+                    .withNutritionalInfo(nutritionalInfoField.getText())
+                    .withVariety(varietyField.getText())
+                    .withOrigin(originField.getText())
+                    .withSeasonal(seasonalBox.isSelected())
+                    .withPackagingType(packagingTypeField.getText());
 
-                productController.updateBeverage(id, updatedDto);
-
-                JOptionPane.showMessageDialog(null, "Bebida atualizada com sucesso!");
-
-                SwingMenu.changeScreen(new SearchProductsPanel(personController, productController, employee));
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Erro: Certifique-se de que todos os campos numéricos estejam corretos.");
-            }
+            productController.updateFruit(id, updatedDto);
+            JOptionPane.showMessageDialog(null, "Fruta atualizada com sucesso!");
+            SwingMenu.changeScreen(new UpdateFruitPanel(personController, productController, employee, id));
         });
 
         JButton backButton = AuxComponents.createStyledButton("Voltar", 150, 40, () ->

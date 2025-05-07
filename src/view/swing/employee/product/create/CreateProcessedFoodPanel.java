@@ -1,12 +1,13 @@
-package view.swing.product.create;
+package view.swing.employee.product.create;
 
 import controllers.PersonController;
 import controllers.ProductController;
 import dtos.ProcessedFoodDTO;
 import model.people.Person;
+import model.products.food.ProcessedFood;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
-import view.swing.product.ManageProductsPanel;
+import view.swing.employee.product.SelectProductTypePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,7 +56,7 @@ public class CreateProcessedFoodPanel extends JPanel {
         // Botões
         JButton registerBtn = AuxComponents.createStyledButton("Cadastrar", 150, 40, () -> {
             try {
-                List<?> products = productController.getProductsByCategory(Class.forName("model.products.subclasses.ProcessedFood"));
+                List<?> products = productController.getProductsByCategory(ProcessedFood.class);
                 String cod = String.format("PR%04d", products.size() + 1);
 
                 String name = nameField.getText().trim();
@@ -83,7 +84,7 @@ public class CreateProcessedFoodPanel extends JPanel {
         });
 
         JButton backBtn = AuxComponents.createStyledButton("Voltar", 150, 40,
-                () -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, employee)));
+                () -> SwingMenu.changeScreen(new SelectProductTypePanel(personController, productController, employee)));
 
         add(Box.createVerticalStrut(20));
         add(AuxComponents.createHorizontalButtonPanel(registerBtn, backBtn));

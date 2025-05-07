@@ -1,11 +1,12 @@
-package view.swing.product;
+package view.swing.employee.product;
 
 import controllers.PersonController;
 import controllers.ProductController;
 import model.people.Person;
 import view.swing.AuxComponents;
+import view.swing.employee.EmployeePanel;
 import view.swing.SwingMenu;
-import view.swing.product.create.*;
+import view.swing.employee.product.create.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,7 +54,7 @@ public class SelectProductTypePanel extends JPanel {
         add(AuxComponents.createHorizontalButtonPanel(buttonHygieneProduct, buttonUtensil));
 
         JButton buttonBack = AuxComponents.createStyledButton("Voltar", 150, 40, () ->
-                SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, employee))
+                SwingMenu.changeScreen(new EmployeePanel(personController, productController, employee))
         );
 
         add(Box.createVerticalStrut(40));

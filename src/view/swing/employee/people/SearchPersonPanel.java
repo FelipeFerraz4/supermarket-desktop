@@ -1,4 +1,4 @@
-package view.swing.people;
+package view.swing.employee.people;
 
 import controllers.PersonController;
 import controllers.ProductController;
@@ -6,8 +6,9 @@ import model.people.Client;
 import model.people.Employee;
 import model.people.Person;
 import view.swing.AuxComponents;
+import view.swing.employee.EmployeePanel;
 import view.swing.SwingMenu;
-import view.swing.people.client.UpdateClientPanel;
+import view.swing.employee.people.client.UpdateClientPanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -61,7 +62,7 @@ public class SearchPersonPanel extends JPanel {
         });
 
         JButton buttonBack = AuxComponents.createStyledButton("Voltar", 100, 30,
-                () -> SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController, person)));
+                () -> SwingMenu.changeScreen(new EmployeePanel(personController, productController, person)));
 
         topPanel.add(new JLabel("Filtro:"));
         topPanel.add(filterCombo);

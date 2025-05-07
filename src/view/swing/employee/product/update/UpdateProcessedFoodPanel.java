@@ -1,25 +1,25 @@
-package view.swing.product.update;
+package view.swing.employee.product.update;
 
 import controllers.PersonController;
 import controllers.ProductController;
-import dtos.MeatDTO;
+import dtos.ProcessedFoodDTO;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
-import view.swing.product.SearchProductsPanel;
+import view.swing.employee.product.SearchProductsPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
-public class UpdateMeatPanel extends JPanel {
-    public UpdateMeatPanel(PersonController personController, ProductController productController, Person employee, UUID id) {
+public class UpdateProcessedFoodPanel extends JPanel {
+    public UpdateProcessedFoodPanel(PersonController personController, ProductController productController, Person employee, UUID id) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        final MeatDTO dto = MeatDTO.toDTO(productController.searchById(id));
+        ProcessedFoodDTO dto = ProcessedFoodDTO.toDTO(productController.searchById(id));
 
-        JLabel titleLabel = new JLabel("Atualizar Carne");
+        JLabel titleLabel = new JLabel("Atualizar Alimento Processado");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         add(Box.createVerticalStrut(20));
@@ -34,8 +34,10 @@ public class UpdateMeatPanel extends JPanel {
         JTextField weightField = new JTextField(String.valueOf(dto.weight()));
         JCheckBox refrigeratedBox = new JCheckBox("Refrigerado", dto.refrigerated());
         JTextField nutritionalInfoField = new JTextField(dto.nutritionalInfo());
-        JTextField originField = new JTextField(dto.origin());
-        JTextField storageInstructionsField = new JTextField(dto.storageInstructions());
+        JTextField categoryField = new JTextField(dto.category());
+        JTextField brandField = new JTextField(dto.brand());
+        JCheckBox preservativesBox = new JCheckBox("Contém conservantes", dto.containsPreservatives());
+        JTextField cookingInstructionsField = new JTextField(dto.cookingInstructions());
 
         add(AuxComponents.createHorizontalFields(
                 "Código:", 14, codeField, 200, 25,
@@ -51,19 +53,19 @@ public class UpdateMeatPanel extends JPanel {
         ));
         add(AuxComponents.createHorizontalFields(
                 "Informações Nutricionais:", 14, nutritionalInfoField, 300, 25,
-                "Origem:", 14, originField, 300, 25
+                "Categoria:", 14, categoryField, 200, 25
         ));
-        add(AuxComponents.createLabeledField(
-                "Instruções de Armazenamento:", 14, storageInstructionsField, 300, 25
+        add(AuxComponents.createHorizontalFields(
+                "Marca:", 14, brandField, 300, 25,
+                "Instruções de Preparo:", 14, cookingInstructionsField, 300, 25
         ));
-
         add(Box.createVerticalStrut(10));
-        add(AuxComponents.createHorizontalCheckBoxes(refrigeratedBox));
+        add(AuxComponents.createHorizontalCheckBoxes(refrigeratedBox, preservativesBox));
         add(Box.createVerticalStrut(20));
 
         JButton updateButton = AuxComponents.createStyledButton("Atualizar", 150, 40, () -> {
             try {
-                MeatDTO updatedDto = dto
+                ProcessedFoodDTO updatedDto = dto
                         .withCode(codeField.getText())
                         .withName(nameField.getText())
                         .withPrice(Double.parseDouble(priceField.getText()))
@@ -72,14 +74,19 @@ public class UpdateMeatPanel extends JPanel {
                         .withWeight(Double.parseDouble(weightField.getText()))
                         .withRefrigerated(refrigeratedBox.isSelected())
                         .withNutritionalInfo(nutritionalInfoField.getText())
-                        .withOrigin(originField.getText())
-                        .withStorageInstructions(storageInstructionsField.getText());
+                        .withCategory(categoryField.getText())
+                        .withBrand(brandField.getText())
+                        .withContainsPreservatives(preservativesBox.isSelected())
+                        .withCookingInstructions(cookingInstructionsField.getText());
 
-                productController.updateMeat(id, updatedDto);
-                JOptionPane.showMessageDialog(null, "Carne atualizada com sucesso!");
+                productController.updateProcessedFood(id, updatedDto);
+
+                JOptionPane.showMessageDialog(null, "Produto processado atualizado com sucesso!");
                 SwingMenu.changeScreen(new SearchProductsPanel(personController, productController, employee));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Verifique os campos numéricos.");
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
             }
         });
 

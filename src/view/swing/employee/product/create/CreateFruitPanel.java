@@ -1,23 +1,24 @@
-package view.swing.product.create;
+package view.swing.employee.product.create;
 
 import controllers.PersonController;
 import controllers.ProductController;
-import dtos.BeverageDTO;
+import dtos.FruitDTO;
 import model.people.Person;
+import model.products.food.Fruit;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
-import view.swing.product.ManageProductsPanel;
+import view.swing.employee.product.SelectProductTypePanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.util.List;
 
-public class CreateBeveragePanel extends JPanel {
-    public CreateBeveragePanel(PersonController personController, ProductController productController, Person employee) {
+public class CreateFruitPanel extends JPanel {
+    public CreateFruitPanel(PersonController personController, ProductController productController, Person employee) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JLabel titleLabel = new JLabel("Cadastrar Bebidas");
+        JLabel titleLabel = new JLabel("Cadastrar Fruta");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         add(Box.createVerticalStrut(20));
@@ -30,13 +31,13 @@ public class CreateBeveragePanel extends JPanel {
         JTextField amountField = new JTextField();
         JTextField expirationDateField = new JTextField();
         JTextField weightField = new JTextField();
-        JTextField brandField = new JTextField(); // Corrigido
-        JTextField volumeField = new JTextField();
-        JTextField flavorField = new JTextField();
-        JTextField nutritionalInfoField = new JTextField(); // Corrigido
+        JTextField nutritionalInfoField = new JTextField();
+        JTextField varietyField = new JTextField();
+        JTextField originField = new JTextField();
+        JTextField packagingTypeField = new JTextField();
 
         JCheckBox refrigeratedBox = new JCheckBox("Refrigerado?");
-        JCheckBox alcoholicBox = new JCheckBox("Alcoólica?");
+        JCheckBox seasonalBox = new JCheckBox("É sazonal?");
 
         add(AuxComponents.createHorizontalFields(
                 "Nome:", 14, nameField, 400, 25,
@@ -48,23 +49,23 @@ public class CreateBeveragePanel extends JPanel {
         ));
         add(AuxComponents.createHorizontalFields(
                 "Peso (Kg):", 14, weightField, 300, 25,
-                "Marca:", 14, brandField, 300, 25
+                "Variedade:", 14, varietyField, 300, 25
         ));
         add(AuxComponents.createHorizontalFields(
-                "Volume (L):", 14, volumeField, 300, 25,
-                "Sabor:", 14, flavorField, 300, 25
+                "Origem:", 14, originField, 300, 25,
+                "Tipo de Embalagem:", 14, packagingTypeField, 300, 25
         ));
         add(AuxComponents.createLabeledField(
                 "Informações Nutricionais:", 14, nutritionalInfoField, 620, 25
         ));
 
         add(Box.createVerticalStrut(20));
-        add(AuxComponents.createHorizontalCheckBoxes(refrigeratedBox, alcoholicBox));
+        add(AuxComponents.createHorizontalCheckBoxes(refrigeratedBox, seasonalBox));
 
         JButton registerBtn = AuxComponents.createStyledButton("Cadastrar", 150, 40, () -> {
             try {
-                List<?> products = productController.getProductsByCategory(Class.forName("model.products.subclasses.Beverage"));
-                String cod = String.format("BE%04d", products.size() + 1);
+                List<?> products = productController.getProductsByCategory(Fruit.class);
+                String cod = String.format("FR%04d", products.size() + 1);
 
                 String name = nameField.getText().trim();
                 double price = Double.parseDouble(priceField.getText().trim());
@@ -73,23 +74,24 @@ public class CreateBeveragePanel extends JPanel {
                 double weight = Double.parseDouble(weightField.getText().trim());
                 boolean refrigerated = refrigeratedBox.isSelected();
                 String nutritionalInfo = nutritionalInfoField.getText().trim();
-                double volume = Double.parseDouble(volumeField.getText().trim());
-                boolean alcoholic = alcoholicBox.isSelected();
-                String flavor = flavorField.getText().trim();
-                String brand = brandField.getText().trim();
+                String variety = varietyField.getText().trim();
+                String origin = originField.getText().trim();
+                boolean seasonal = seasonalBox.isSelected();
+                String packagingType = packagingTypeField.getText().trim();
 
-                BeverageDTO beverageDTO = new BeverageDTO(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand);
-                productController.registerBeverage(beverageDTO);
+                FruitDTO fruitDTO = new FruitDTO(cod, name, price, amount, expirationDate, weight, refrigerated,
+                        nutritionalInfo, variety, origin, seasonal, packagingType);
+                productController.registerFruit(fruitDTO);
 
-                JOptionPane.showMessageDialog(this, "Bebida cadastrada com sucesso!");
-                SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee));
+                JOptionPane.showMessageDialog(this, "Fruta cadastrada com sucesso!");
+                SwingMenu.changeScreen(new CreateMeatPanel(personController, productController, employee));
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
             }
         });
 
         JButton backBtn = AuxComponents.createStyledButton("Voltar", 150, 40,
-                () -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, employee)));
+                () -> SwingMenu.changeScreen(new SelectProductTypePanel(personController, productController, employee)));
 
         add(Box.createVerticalStrut(20));
         add(AuxComponents.createHorizontalButtonPanel(registerBtn, backBtn));

@@ -1,4 +1,4 @@
-package view.swing.people.client;
+package view.swing.employee.people.client;
 
 import controllers.PersonController;
 import controllers.ProductController;
@@ -6,8 +6,7 @@ import model.people.Client;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
-import view.swing.people.ManagePeoplePanel;
-import view.swing.people.SearchPersonPanel;
+import view.swing.employee.people.SearchPersonPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,7 +52,7 @@ public class UpdateClientPanel extends JPanel {
 
             personController.updateClient(client.getId(), phone, email, password);
             JOptionPane.showMessageDialog(this, "Cliente atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            SwingMenu.changeScreen(new ManagePeoplePanel(personController, productController, person));
+            SwingMenu.changeScreen(new UpdateClientPanel(personController, productController, personDeafault, person));
         });
 
         // Botão voltar

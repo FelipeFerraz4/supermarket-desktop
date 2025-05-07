@@ -1,4 +1,4 @@
-package view.swing.product;
+package view.swing.employee.product;
 
 import controllers.PersonController;
 import controllers.ProductController;
@@ -6,8 +6,9 @@ import model.people.Person;
 import model.products.Product;
 import model.products.ProductType;
 import view.swing.AuxComponents;
+import view.swing.employee.EmployeePanel;
 import view.swing.SwingMenu;
-import view.swing.product.update.*;
+import view.swing.employee.product.update.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -55,7 +56,7 @@ public class SearchProductsPanel extends JPanel {
         });
 
         JButton buttonBack = AuxComponents.createStyledButton("Voltar", 100, 30,
-                () -> SwingMenu.changeScreen(new ManageProductsPanel(personController, productController, employee)));
+                () -> SwingMenu.changeScreen(new EmployeePanel(personController, productController, employee)));
 
         topPanel.add(new JLabel("Filtro por tipo:"));
         topPanel.add(filterCombo);
