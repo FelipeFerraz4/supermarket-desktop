@@ -1,5 +1,10 @@
 package model.products;
 
+import model.products.food.Beverage;
+import model.products.food.ProcessedFood;
+import model.products.food.Meat;
+import model.products.food.Fruit;
+
 public enum ProductType {
     DRINK,
     FOOD,
@@ -29,6 +34,17 @@ public enum ProductType {
             case "higiene" -> HYGIENE;
             case "utensílio", "utensilio" -> UTENSIL;
             default -> throw new IllegalArgumentException("Tipo de produto desconhecido: " + type);
+        };
+    }
+
+    public static Class<?> getProductClass(ProductType type) {
+        return switch (type) {
+            case DRINK -> Beverage.class;
+            case FOOD -> ProcessedFood.class;
+            case MEAT -> Meat.class;
+            case FRUIT -> Fruit.class;
+            case HYGIENE -> HygieneProduct.class;
+            case UTENSIL -> Utensil.class;
         };
     }
 }
