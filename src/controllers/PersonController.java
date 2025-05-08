@@ -29,7 +29,7 @@ public class PersonController {
             String phone,
             LocalDate accountCreationDate,
             LocalDate dateLastPurchase) {
-        PersonServices.RegistreClient(name, cpf, birthDate, email, password, phone, accountCreationDate, dateLastPurchase, repository);
+        PersonServices.RegisterClient(name, cpf, birthDate, email, password, phone, accountCreationDate, dateLastPurchase, repository);
     }
 
     public void registerEmployee(
