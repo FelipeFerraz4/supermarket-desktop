@@ -1,6 +1,7 @@
 package model.products;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Product {
@@ -55,12 +56,29 @@ public abstract class Product {
     }
 
     public void setPrice(double price) {
+        if (price < 0) {
+            throw new IllegalArgumentException("Price must be non-negative.");
+        }
         this.price = price;
     }
 
     public void setAmount(int amount) {
+        if (amount < 0) {
+            throw new IllegalArgumentException("Amount must be non-negative.");
+        }
         this.amount = amount;
-        this.latestStockUpdate = LocalDate.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(id, product.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
     public ProductType getTypeProduct() {
