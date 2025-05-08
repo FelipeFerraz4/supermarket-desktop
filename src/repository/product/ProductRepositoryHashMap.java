@@ -1,5 +1,7 @@
 package repository.product;
 
+import exceptions.DuplicateEntityException;
+import exceptions.EntityNotFoundException;
 import interfaces.IProductRepository;
 import interfaces.IRepository;
 import model.products.Product;
@@ -11,11 +13,11 @@ public class ProductRepositoryHashMap implements IRepository<Product>, IProductR
     private final Map<UUID, Product> products = new HashMap<>();
 
     @Override
-    public void add(Product product) {
+    public void add(Product product) throws IllegalArgumentException, DuplicateEntityException {
         if (product == null) throw new IllegalArgumentException("Product cannot be null.");
         if (product.getId() == null) throw new IllegalArgumentException("Product ID cannot be null.");
         if (products.containsKey(product.getId())) {
-            throw new IllegalStateException("A product with ID " + product.getId() + " already exists.");
+            throw new DuplicateEntityException("A product with ID " + product.getId() + " already exists.");
         }
         products.put(product.getId(), product);
     }
@@ -26,13 +28,13 @@ public class ProductRepositoryHashMap implements IRepository<Product>, IProductR
     }
 
     @Override
-    public Product searchById(UUID id) {
+    public Product searchById(UUID id) throws IllegalArgumentException {
         if (id == null) throw new IllegalArgumentException("ID cannot be null.");
         return products.get(id);
     }
 
     @Override
-    public Product searchByCod(String cod) {
+    public Product searchByCod(String cod) throws IllegalArgumentException {
         if (cod == null || cod.isBlank()) throw new IllegalArgumentException("Code cannot be null or blank.");
         for (Product product : products.values()) {
             if (product.getCod().equalsIgnoreCase(cod)) {
@@ -43,7 +45,7 @@ public class ProductRepositoryHashMap implements IRepository<Product>, IProductR
     }
 
     @Override
-    public Product searchByName(String name) {
+    public Product searchByName(String name) throws IllegalArgumentException {
         if (name == null || name.isBlank()) throw new IllegalArgumentException("Name cannot be null or blank.");
         for (Product product : products.values()) {
             if (product.getName().equalsIgnoreCase(name)) {
@@ -54,7 +56,7 @@ public class ProductRepositoryHashMap implements IRepository<Product>, IProductR
     }
 
     @Override
-    public void update(Product updatedProduct) {
+    public void update(Product updatedProduct) throws IllegalArgumentException, EntityNotFoundException {
         if (updatedProduct == null) throw new IllegalArgumentException("Product cannot be null.");
         UUID id = updatedProduct.getId();
         if (id == null) throw new IllegalArgumentException("Product ID cannot be null.");
@@ -65,16 +67,16 @@ public class ProductRepositoryHashMap implements IRepository<Product>, IProductR
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(UUID id) throws IllegalArgumentException, EntityNotFoundException {
         if (id == null) throw new IllegalArgumentException("ID cannot be null.");
         if (!products.containsKey(id)) {
-            throw new NoSuchElementException("Product with ID " + id + " not found for deletion.");
+            throw new EntityNotFoundException("Product with ID " + id + " not found for deletion.");
         }
         products.remove(id);
     }
 
     @Override
-    public List<Product> getByType(Class<?> clazz) {
+    public List<Product> getByType(Class<?> clazz) throws IllegalArgumentException {
         if (clazz == null) throw new IllegalArgumentException("Type cannot be null.");
         return products.values().stream()
                 .filter(clazz::isInstance)

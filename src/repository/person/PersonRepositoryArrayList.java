@@ -14,7 +14,7 @@ public class PersonRepositoryArrayList implements IRepository<Person>, IPersonRe
     private final List<Person> people = new ArrayList<>();
 
     @Override
-    public void add(Person person) {
+    public void add(Person person) throws IllegalArgumentException, DuplicateEntityException {
         if (person == null) {
             throw new IllegalArgumentException("A pessoa não pode ser nula.");
         }
@@ -30,7 +30,7 @@ public class PersonRepositoryArrayList implements IRepository<Person>, IPersonRe
     }
 
     @Override
-    public Person searchById(UUID id) {
+    public Person searchById(UUID id) throws IllegalArgumentException {
         if (id == null) throw new IllegalArgumentException("ID não pode ser nulo.");
         for (Person person : people) {
             if (person.getId().equals(id)) {
@@ -41,7 +41,7 @@ public class PersonRepositoryArrayList implements IRepository<Person>, IPersonRe
     }
 
     @Override
-    public Person searchByName(String name) {
+    public Person searchByName(String name) throws IllegalArgumentException{
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Nome inválido.");
         }
@@ -54,7 +54,7 @@ public class PersonRepositoryArrayList implements IRepository<Person>, IPersonRe
     }
 
     @Override
-    public Person searchByEmail(String email) {
+    public Person searchByEmail(String email) throws IllegalArgumentException {
         if (email == null || email.isBlank()) {
             throw new IllegalArgumentException("Email inválido.");
         }
@@ -67,7 +67,7 @@ public class PersonRepositoryArrayList implements IRepository<Person>, IPersonRe
     }
 
     @Override
-    public Person searchByCpf(String cpf) {
+    public Person searchByCpf(String cpf) throws IllegalArgumentException {
         if (cpf == null || cpf.isBlank()) {
             throw new IllegalArgumentException("CPF inválido.");
         }
@@ -80,7 +80,7 @@ public class PersonRepositoryArrayList implements IRepository<Person>, IPersonRe
     }
 
     @Override
-    public void update(Person updatedPerson) {
+    public void update(Person updatedPerson) throws IllegalArgumentException, EntityNotFoundException {
         if (updatedPerson == null) {
             throw new IllegalArgumentException("Pessoa não pode ser nula.");
         }
@@ -98,7 +98,7 @@ public class PersonRepositoryArrayList implements IRepository<Person>, IPersonRe
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(UUID id) throws IllegalArgumentException, EntityNotFoundException {
         if (id == null) throw new IllegalArgumentException("ID não pode ser nulo.");
         boolean found = false;
         for (Person person : people) {
@@ -114,7 +114,7 @@ public class PersonRepositoryArrayList implements IRepository<Person>, IPersonRe
     }
 
     @Override
-    public List<Person> getByType(Class<?> clazz) {
+    public List<Person> getByType(Class<?> clazz) throws IllegalArgumentException {
         if (clazz == null) throw new IllegalArgumentException("Classe não pode ser nula.");
         List<Person> result = new ArrayList<>();
         for (Person person : people) {

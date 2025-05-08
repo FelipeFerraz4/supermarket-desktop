@@ -4,8 +4,8 @@ import java.util.List;
 import model.people.Person;
 
 public interface IPersonRepository {
-    Person searchByName(String name);
-    Person searchByEmail(String email);
-    Person searchByCpf(String cpf);
-    List<Person> getByType(Class<?> clazz);
+    Person searchByName(String name) throws IllegalArgumentException;
+    Person searchByEmail(String email) throws IllegalArgumentException;
+    Person searchByCpf(String cpf) throws IllegalArgumentException;
+    List<Person> getByType(Class<?> clazz) throws IllegalArgumentException;
 }

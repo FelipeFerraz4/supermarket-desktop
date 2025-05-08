@@ -14,7 +14,7 @@ public class ProductRepositoryArrayList implements IRepository<Product>, IProduc
     private final List<Product> products = new ArrayList<>();
 
     @Override
-    public void add(Product product) {
+    public void add(Product product) throws IllegalArgumentException, DuplicateEntityException {
         if (product == null) {
             throw new IllegalArgumentException("A produto não pode ser nula.");
         }
@@ -30,7 +30,7 @@ public class ProductRepositoryArrayList implements IRepository<Product>, IProduc
     }
 
     @Override
-    public Product searchById(UUID id) {
+    public Product searchById(UUID id) throws IllegalArgumentException {
         if (id == null) throw new IllegalArgumentException("ID não pode ser nulo.");
         for (Product product : products) {
             if (product.getId().equals(id)) {
@@ -41,7 +41,7 @@ public class ProductRepositoryArrayList implements IRepository<Product>, IProduc
     }
 
     @Override
-    public Product searchByCod(String cod) {
+    public Product searchByCod(String cod) throws IllegalArgumentException {
         if (cod == null || cod.isBlank()) {
             throw new IllegalArgumentException("codigo inválido.");
         }
@@ -54,7 +54,7 @@ public class ProductRepositoryArrayList implements IRepository<Product>, IProduc
     }
 
     @Override
-    public Product searchByName(String name) {
+    public Product searchByName(String name) throws IllegalArgumentException {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Nome inválido.");
         }
@@ -67,7 +67,7 @@ public class ProductRepositoryArrayList implements IRepository<Product>, IProduc
     }
 
     @Override
-    public void update(Product updatedProduct) {
+    public void update(Product updatedProduct) throws IllegalArgumentException, EntityNotFoundException {
         if (updatedProduct == null) {
             throw new IllegalArgumentException("Produto não pode ser nula.");
         }
@@ -85,7 +85,7 @@ public class ProductRepositoryArrayList implements IRepository<Product>, IProduc
     }
 
     @Override
-    public void delete(UUID id) {
+    public void delete(UUID id) throws IllegalArgumentException, EntityNotFoundException {
         if (id == null) {
             throw new IllegalArgumentException("ID não pode ser nulo.");
         }
@@ -98,7 +98,7 @@ public class ProductRepositoryArrayList implements IRepository<Product>, IProduc
     }
 
     @Override
-    public List<Product> getByType(Class<?> clazz) {
+    public List<Product> getByType(Class<?> clazz) throws IllegalArgumentException {
         if (clazz == null) throw new IllegalArgumentException("Classe não pode ser nula.");
         List<Product> result = new ArrayList<>();
         for (Product product : products) {
