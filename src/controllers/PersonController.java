@@ -1,5 +1,6 @@
 package controllers;
 
+import interfaces.IPersonRepository;
 import model.people.Client;
 import model.people.Person;
 import model.people.Employee;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PersonController {
-    private final PersonRepositoryHashMap repository;
+    private final IPersonRepository repository;
 
     public PersonController() {
         this.repository = new PersonRepositoryHashMap();
@@ -42,11 +43,11 @@ public class PersonController {
             String position,
             double salary,
             LocalDate hireDate){
-        PersonServices.RegistreEmployee(name, cpf, birthDate, email, password, phone, position, salary, hireDate, repository);
+        PersonServices.RegisterEmployee(name, cpf, birthDate, email, password, phone, position, salary, hireDate, repository);
     }
 
     public List<Person> listAll() {
-        return repository.search();
+        return repository.getAll();
     }
 
     public Person findById(UUID id) {

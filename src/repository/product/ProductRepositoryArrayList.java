@@ -3,14 +3,13 @@ package repository.product;
 import exceptions.DuplicateEntityException;
 import exceptions.EntityNotFoundException;
 import interfaces.IProductRepository;
-import interfaces.IRepository;
 import model.products.Product;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class ProductRepositoryArrayList implements IRepository<Product>, IProductRepository {
+public class ProductRepositoryArrayList implements IProductRepository {
     private final List<Product> products = new ArrayList<>();
 
     @Override
@@ -22,11 +21,6 @@ public class ProductRepositoryArrayList implements IRepository<Product>, IProduc
             throw new DuplicateEntityException("Produto com ID já existe: " + product.getId());
         }
         products.add(product);
-    }
-
-    @Override
-    public List<Product> search() {
-        return new ArrayList<>(products);
     }
 
     @Override
@@ -95,6 +89,11 @@ public class ProductRepositoryArrayList implements IRepository<Product>, IProduc
         if (!removed) {
             throw new EntityNotFoundException("Produto com ID " + id + " não encontrado para exclusão.");
         }
+    }
+
+    @Override
+    public List<Product> getAll() {
+        return new ArrayList<>(products);
     }
 
     @Override

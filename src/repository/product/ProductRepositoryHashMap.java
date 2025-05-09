@@ -3,13 +3,12 @@ package repository.product;
 import exceptions.DuplicateEntityException;
 import exceptions.EntityNotFoundException;
 import interfaces.IProductRepository;
-import interfaces.IRepository;
 import model.products.Product;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ProductRepositoryHashMap implements IRepository<Product>, IProductRepository {
+public class ProductRepositoryHashMap implements IProductRepository {
     private final Map<UUID, Product> products = new HashMap<>();
 
     @Override
@@ -20,11 +19,6 @@ public class ProductRepositoryHashMap implements IRepository<Product>, IProductR
             throw new DuplicateEntityException("A product with ID " + product.getId() + " already exists.");
         }
         products.put(product.getId(), product);
-    }
-
-    @Override
-    public List<Product> search() {
-        return new ArrayList<>(products.values());
     }
 
     @Override
@@ -73,6 +67,11 @@ public class ProductRepositoryHashMap implements IRepository<Product>, IProductR
             throw new EntityNotFoundException("Product with ID " + id + " not found for deletion.");
         }
         products.remove(id);
+    }
+
+    @Override
+    public List<Product> getAll() {
+        return new ArrayList<>(products.values());
     }
 
     @Override

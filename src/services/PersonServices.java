@@ -2,11 +2,11 @@ package services;
 
 import exceptions.DuplicateEntityException;
 import exceptions.EntityNotFoundException;
+import interfaces.IPersonRepository;
 import interfaces.IRepository;
 import model.people.Employee;
 import model.people.Client;
 import model.people.Person;
-import repository.person.PersonRepositoryHashMap;
 
 import java.time.LocalDate;
 import java.util.Map;
@@ -114,7 +114,7 @@ public class PersonServices {
         repository.update(employee);
     }
 
-    public static void updateClientCart(UUID id, Map<UUID, Double> cart, PersonRepositoryHashMap repository)
+    public static void updateClientCart(UUID id, Map<UUID, Double> cart, IPersonRepository repository)
                 throws IllegalArgumentException, EntityNotFoundException {
         if (repository == null) throw new IllegalArgumentException("Repository cannot be null.");
         if (id == null) throw new IllegalArgumentException("Client ID cannot be null.");
@@ -127,7 +127,7 @@ public class PersonServices {
         repository.update(client);
     }
 
-    public static void addItemToClientCart(UUID id, UUID productId, double price, PersonRepositoryHashMap repository)
+    public static void addItemToClientCart(UUID id, UUID productId, double price, IPersonRepository repository)
             throws IllegalArgumentException, EntityNotFoundException {
         if (repository == null) throw new IllegalArgumentException("Repository cannot be null.");
         if (id == null) throw new IllegalArgumentException("Client ID cannot be null.");
@@ -141,7 +141,7 @@ public class PersonServices {
         repository.update(client);
     }
 
-    public static Map<UUID, Double> getClientCart(UUID uuid, PersonRepositoryHashMap repository) throws IllegalArgumentException {
+    public static Map<UUID, Double> getClientCart(UUID uuid, IPersonRepository repository) throws IllegalArgumentException {
         if (repository == null) throw new IllegalArgumentException("Repository cannot be null.");
         if (uuid == null) throw new IllegalArgumentException("Client ID cannot be null.");
 

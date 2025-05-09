@@ -3,14 +3,13 @@ package repository.person;
 import exceptions.DuplicateEntityException;
 import exceptions.EntityNotFoundException;
 import interfaces.IPersonRepository;
-import interfaces.IRepository;
 import model.people.Person;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class PersonRepositoryArrayList implements IRepository<Person>, IPersonRepository {
+public class PersonRepositoryArrayList implements IPersonRepository {
     private final List<Person> people = new ArrayList<>();
 
     @Override
@@ -22,11 +21,6 @@ public class PersonRepositoryArrayList implements IRepository<Person>, IPersonRe
             throw new DuplicateEntityException("Pessoa com ID já existe: " + person.getId());
         }
         people.add(person);
-    }
-
-    @Override
-    public List<Person> search() {
-        return new ArrayList<>(people);
     }
 
     @Override
@@ -111,6 +105,11 @@ public class PersonRepositoryArrayList implements IRepository<Person>, IPersonRe
         if (!found) {
             throw new EntityNotFoundException("Pessoa com ID " + id + " não encontrada para exclusão.");
         }
+    }
+
+    @Override
+    public List<Person> getAll() {
+        return new ArrayList<>(people);
     }
 
     @Override

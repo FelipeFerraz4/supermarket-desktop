@@ -3,12 +3,11 @@ package repository.person;
 import exceptions.DuplicateEntityException;
 import exceptions.EntityNotFoundException;
 import interfaces.IPersonRepository;
-import interfaces.IRepository;
 import model.people.Person;
 
 import java.util.*;
 
-public class PersonRepositoryHashMap implements IRepository<Person>, IPersonRepository {
+public class PersonRepositoryHashMap implements IPersonRepository {
     private final Map<UUID, Person> storage = new HashMap<>();
 
     @Override
@@ -19,11 +18,6 @@ public class PersonRepositoryHashMap implements IRepository<Person>, IPersonRepo
             throw new DuplicateEntityException("A person with ID " + person.getId() + " already exists.");
         }
         storage.put(person.getId(), person);
-    }
-
-    @Override
-    public List<Person> search() {
-        return new ArrayList<>(storage.values());
     }
 
     @Override
@@ -84,6 +78,11 @@ public class PersonRepositoryHashMap implements IRepository<Person>, IPersonRepo
             throw new EntityNotFoundException("Person with ID " + id + " not found for deletion.");
         }
         person.setStatus(false);
+    }
+
+    @Override
+    public List<Person> getAll() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override

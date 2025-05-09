@@ -3,7 +3,7 @@ package interfaces;
 import java.util.List;
 import model.people.Person;
 
-public interface IPersonRepository {
+public interface IPersonRepository extends IRepository<Person> {
     Person searchByName(String name) throws IllegalArgumentException;
     Person searchByEmail(String email) throws IllegalArgumentException;
     Person searchByCpf(String cpf) throws IllegalArgumentException;

@@ -1,6 +1,7 @@
 package controllers;
 
 import dtos.*;
+import interfaces.IProductRepository;
 import model.products.Product;
 import repository.product.ProductRepositoryHashMap;
 import services.ProductServices;
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class ProductController {
-    private final ProductRepositoryHashMap repository;
+    private final IProductRepository repository;
 
     public ProductController() {
         this.repository = new ProductRepositoryHashMap();
@@ -82,7 +83,7 @@ public class ProductController {
     }
 
     public List<Product> getAllProducts() {
-        return repository.search();
+        return repository.getAll();
     }
 
     public List<Product> getProductsByCategory(Class<?> categoryClass) {
