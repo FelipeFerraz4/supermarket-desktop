@@ -1,6 +1,8 @@
 package controllers;
 
 import dtos.*;
+import exceptions.DuplicateEntityException;
+import exceptions.EntityNotFoundException;
 import interfaces.IProductRepository;
 import model.products.Product;
 import repository.product.ProductRepositoryHashMap;
@@ -15,70 +17,74 @@ public class ProductController {
 
     public ProductController() {
         this.repository = new ProductRepositoryHashMap();
-        this.initializeProducts();
+        try {
+            this.initializeProducts();
+        } catch (Exception e) {
+            throw new RuntimeException("Error initializing products", e);
+        }
     }
 
-    public void registerBeverage(BeverageDTO beverageDTO) {
+    public void registerBeverage(BeverageDTO beverageDTO) throws IllegalArgumentException, DuplicateEntityException {
         ProductServices.registerBeverage(beverageDTO, repository);
     }
 
-    public void updateBeverage(UUID id, BeverageDTO beverageDTO) {
+    public void updateBeverage(UUID id, BeverageDTO beverageDTO) throws IllegalArgumentException, EntityNotFoundException {
         ProductServices.updateBeverage(id, beverageDTO, repository);
     }
 
-    public void registerProcessedFood(ProcessedFoodDTO processedFoodDTO) {
+    public void registerProcessedFood(ProcessedFoodDTO processedFoodDTO) throws IllegalArgumentException, DuplicateEntityException {
         ProductServices.registerProcessedFood(processedFoodDTO, repository);
     }
 
-    public void updateProcessedFood(UUID id,ProcessedFoodDTO processedFoodDTO) {
+    public void updateProcessedFood(UUID id,ProcessedFoodDTO processedFoodDTO) throws IllegalArgumentException, EntityNotFoundException {
         ProductServices.updateProcessedFood(id, processedFoodDTO, repository);
     }
 
-    public void registerMeat(MeatDTO meatDTO) {
+    public void registerMeat(MeatDTO meatDTO) throws IllegalArgumentException, DuplicateEntityException {
         ProductServices.registerMeat(meatDTO, repository);
     }
 
-    public void updateMeat(UUID id, MeatDTO meatDTO) {
+    public void updateMeat(UUID id, MeatDTO meatDTO) throws IllegalArgumentException, EntityNotFoundException {
         ProductServices.updateMeat(id, meatDTO, repository);
     }
 
-    public void registerFruit(FruitDTO fruitDTO) {
+    public void registerFruit(FruitDTO fruitDTO) throws IllegalArgumentException, DuplicateEntityException {
         ProductServices.registerFruit(fruitDTO, repository);
     }
 
-    public void updateFruit(UUID id, FruitDTO fruitDTO) {
+    public void updateFruit(UUID id, FruitDTO fruitDTO) throws IllegalArgumentException, EntityNotFoundException {
         ProductServices.updateFruit(id, fruitDTO,repository);
     }
 
-    public void registerHygieneProduct(HygieneProductDTO hygieneProductDTO) {
+    public void registerHygieneProduct(HygieneProductDTO hygieneProductDTO) throws IllegalArgumentException, DuplicateEntityException {
         ProductServices.registerHygieneProduct(hygieneProductDTO, repository);
     }
 
-    public void updateHygieneProduct(UUID id, HygieneProductDTO hygieneProductDTO) {
+    public void updateHygieneProduct(UUID id, HygieneProductDTO hygieneProductDTO) throws IllegalArgumentException, EntityNotFoundException {
         ProductServices.updateHygieneProduct(id, hygieneProductDTO, repository);
     }
 
-    public void registerUtensil(UtensilDTO utensilDTO) {
+    public void registerUtensil(UtensilDTO utensilDTO) throws IllegalArgumentException, DuplicateEntityException {
         ProductServices.registerUtensil(utensilDTO, repository);
     }
 
-    public void updateUtensil(UUID id, UtensilDTO utensilDTO) {
+    public void updateUtensil(UUID id, UtensilDTO utensilDTO) throws IllegalArgumentException, EntityNotFoundException {
         ProductServices.updateUtensil(id, utensilDTO, repository);
     }
 
-    public Product searchById(UUID id) {
+    public Product searchById(UUID id) throws IllegalArgumentException {
         return repository.searchById(id);
     }
 
-    public Product searchByName(String name) {
+    public Product searchByName(String name) throws IllegalArgumentException {
         return repository.searchByName(name);
     }
 
-    public Product searchByCod(String cod) {
+    public Product searchByCod(String cod) throws IllegalArgumentException{
         return repository.searchByCod(cod);
     }
 
-    public void deleteProduct(UUID id) {
+    public void deleteProduct(UUID id) throws IllegalArgumentException, EntityNotFoundException {
         repository.delete(id);
     }
 
@@ -86,11 +92,11 @@ public class ProductController {
         return repository.getAll();
     }
 
-    public List<Product> getProductsByCategory(Class<?> categoryClass) {
+    public List<Product> getProductsByCategory(Class<?> categoryClass) throws IllegalArgumentException {
         return repository.getByType(categoryClass);
     }
 
-    public void initializeProducts() {
+    public void initializeProducts() throws IllegalArgumentException, DuplicateEntityException {
         ProductServices.registerBeverage(
                 new BeverageDTO("BE0001", "Coca-Cola", 5.99, 50, LocalDate.of(2024, 12, 31), 1.5, true, "Coca-Cola", 2.0, true, "Cola", "Coca-Cola"),
                 repository
