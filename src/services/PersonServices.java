@@ -1,5 +1,7 @@
 package services;
 
+import exceptions.DuplicateEntityException;
+import exceptions.EntityNotFoundException;
 import interfaces.IRepository;
 import model.people.Employee;
 import model.people.Client;
@@ -21,7 +23,7 @@ public class PersonServices {
             String phone,
             LocalDate accountCreationDate,
             LocalDate dateLastPurchase,
-            IRepository<Person> repository) {
+            IRepository<Person> repository) throws IllegalArgumentException, DuplicateEntityException {
 
         if (repository == null) throw new IllegalArgumentException("Repository cannot be null.");
         if (name == null || name.isBlank()) throw new IllegalArgumentException("Name cannot be null or blank.");
@@ -37,7 +39,7 @@ public class PersonServices {
         repository.add(client);
     }
 
-    public static void RegistreEmployee(
+    public static void RegisterEmployee(
             String name,
             String cpf,
             LocalDate birthDate,
@@ -47,7 +49,7 @@ public class PersonServices {
             String position,
             double salary,
             LocalDate hireDate,
-            IRepository<Person> repository) {
+            IRepository<Person> repository) throws IllegalArgumentException, DuplicateEntityException {
 
         if (repository == null) throw new IllegalArgumentException("Repository cannot be null.");
         if (name == null || name.isBlank()) throw new IllegalArgumentException("Name cannot be null or blank.");
@@ -64,7 +66,8 @@ public class PersonServices {
         repository.add(employee);
     }
 
-    public static void updateClient(UUID id, String phone, String email, String password, IRepository<Person> repository) {
+    public static void updateClient(UUID id, String phone, String email, String password, IRepository<Person> repository)
+            throws IllegalArgumentException, EntityNotFoundException {
         if (repository == null) throw new IllegalArgumentException("Repository cannot be null.");
         if (id == null) throw new IllegalArgumentException("Client ID cannot be null.");
 
@@ -84,7 +87,8 @@ public class PersonServices {
         repository.update(client);
     }
 
-    public static void updateEmployee(UUID id, String phone, String position, double salary, String email, String password, IRepository<Person> repository) {
+    public static void updateEmployee(UUID id, String phone, String position, double salary, String email,
+                                      String password, IRepository<Person> repository) throws IllegalArgumentException, EntityNotFoundException {
         if (repository == null) throw new IllegalArgumentException("Repository cannot be null.");
         if (id == null) throw new IllegalArgumentException("Employee ID cannot be null.");
 
@@ -110,7 +114,8 @@ public class PersonServices {
         repository.update(employee);
     }
 
-    public static void updateClientCart(UUID id, Map<UUID, Double> cart, PersonRepositoryHashMap repository) {
+    public static void updateClientCart(UUID id, Map<UUID, Double> cart, PersonRepositoryHashMap repository)
+                throws IllegalArgumentException, EntityNotFoundException {
         if (repository == null) throw new IllegalArgumentException("Repository cannot be null.");
         if (id == null) throw new IllegalArgumentException("Client ID cannot be null.");
         if (cart == null) throw new IllegalArgumentException("Cart cannot be null.");
@@ -122,7 +127,8 @@ public class PersonServices {
         repository.update(client);
     }
 
-    public static void addItemToClientCart(UUID id, UUID productId, double price, PersonRepositoryHashMap repository) {
+    public static void addItemToClientCart(UUID id, UUID productId, double price, PersonRepositoryHashMap repository)
+            throws IllegalArgumentException, EntityNotFoundException {
         if (repository == null) throw new IllegalArgumentException("Repository cannot be null.");
         if (id == null) throw new IllegalArgumentException("Client ID cannot be null.");
         if (productId == null) throw new IllegalArgumentException("Product ID cannot be null.");
@@ -135,7 +141,7 @@ public class PersonServices {
         repository.update(client);
     }
 
-    public static Map<UUID, Double> getClientCart(UUID uuid, PersonRepositoryHashMap repository) {
+    public static Map<UUID, Double> getClientCart(UUID uuid, PersonRepositoryHashMap repository) throws IllegalArgumentException {
         if (repository == null) throw new IllegalArgumentException("Repository cannot be null.");
         if (uuid == null) throw new IllegalArgumentException("Client ID cannot be null.");
 

@@ -55,14 +55,14 @@ public abstract class Product {
         this.name = name;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(double price) throws IllegalArgumentException {
         if (price < 0) {
             throw new IllegalArgumentException("Price must be non-negative.");
         }
         this.price = price;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(int amount) throws IllegalArgumentException{
         if (amount < 0) {
             throw new IllegalArgumentException("Amount must be non-negative.");
         }

@@ -1,6 +1,8 @@
 package services;
 
 import dtos.*;
+import exceptions.DuplicateEntityException;
+import exceptions.EntityNotFoundException;
 import interfaces.IRepository;
 import model.products.Product;
 import model.products.Utensil;
@@ -20,12 +22,14 @@ public class ProductServices {
         Optional.ofNullable(value).ifPresent(setter);
     }
 
-    public static void registerBeverage(BeverageDTO beverageDTO, IRepository<Product> repository) {
+    public static void registerBeverage(BeverageDTO beverageDTO, IRepository<Product> repository)
+            throws IllegalArgumentException, DuplicateEntityException {
         Beverage beverage = BeverageDTO.toEntity(beverageDTO);
         repository.add(beverage);
     }
 
-    public static void updateBeverage(UUID id, BeverageDTO beverageDTO, IRepository<Product> repository) {
+    public static void updateBeverage(UUID id, BeverageDTO beverageDTO, IRepository<Product> repository)
+            throws IllegalArgumentException, EntityNotFoundException {
         Product product = repository.searchById(id);
         if (product == null) {
             throw new IllegalArgumentException("Produto com ID " + id + " não encontrado.");
@@ -50,12 +54,14 @@ public class ProductServices {
         repository.update(beverage);
     }
 
-    public static void registerHygieneProduct(HygieneProductDTO hygieneProductDTO, IRepository<Product> repository) {
+    public static void registerHygieneProduct(HygieneProductDTO hygieneProductDTO, IRepository<Product> repository)
+            throws IllegalArgumentException, DuplicateEntityException {
         HygieneProduct hygieneProduct = HygieneProductDTO.toEntity(hygieneProductDTO);
         repository.add(hygieneProduct);
     }
 
-    public static void updateHygieneProduct(UUID id, HygieneProductDTO hygieneProductDTO, IRepository<Product> repository) {
+    public static void updateHygieneProduct(UUID id, HygieneProductDTO hygieneProductDTO, IRepository<Product> repository)
+           throws IllegalArgumentException, EntityNotFoundException {
         Product product = repository.searchById(id);
         if (product == null) {
             throw new IllegalArgumentException("Produto com ID " + id + " não encontrado.");
@@ -79,12 +85,14 @@ public class ProductServices {
         repository.update(hygieneProduct);
     }
 
-    public static void registerUtensil(UtensilDTO utensilDTO, IRepository<Product> repository) {
+    public static void registerUtensil(UtensilDTO utensilDTO, IRepository<Product> repository)
+            throws IllegalArgumentException, DuplicateEntityException {
         Utensil utensil = UtensilDTO.toEntity(utensilDTO);
         repository.add(utensil);
     }
 
-    public static void updateUtensil(UUID id, UtensilDTO utensilDTO, IRepository<Product> repository) {
+    public static void updateUtensil(UUID id, UtensilDTO utensilDTO, IRepository<Product> repository)
+            throws IllegalArgumentException, EntityNotFoundException {
         Product product = repository.searchById(id);
         if (product == null) {
             throw new IllegalArgumentException("Produto com ID " + id + " não encontrado.");
@@ -105,12 +113,14 @@ public class ProductServices {
         repository.update(utensil);
     }
 
-    public static void registerProcessedFood(ProcessedFoodDTO processedFoodDTO, IRepository<Product> repository) {
+    public static void registerProcessedFood(ProcessedFoodDTO processedFoodDTO, IRepository<Product> repository)
+            throws IllegalArgumentException, DuplicateEntityException {
         ProcessedFood processedFood = ProcessedFoodDTO.toEntity(processedFoodDTO);
         repository.add(processedFood);
     }
 
-    public static void updateProcessedFood(UUID id, ProcessedFoodDTO processedFoodDTO, IRepository<Product> repository) {
+    public static void updateProcessedFood(UUID id, ProcessedFoodDTO processedFoodDTO, IRepository<Product> repository)
+            throws IllegalArgumentException, EntityNotFoundException {
         Product product = repository.searchById(id);
         if (product == null) {
             throw new IllegalArgumentException("Produto com ID " + id + " não encontrado.");
@@ -135,12 +145,14 @@ public class ProductServices {
         repository.update(processedFood);
     }
 
-    public static void registerMeat(MeatDTO meatDTO, IRepository<Product> repository) {
+    public static void registerMeat(MeatDTO meatDTO, IRepository<Product> repository)
+            throws IllegalArgumentException, DuplicateEntityException {
         Meat meat = MeatDTO.toEntity(meatDTO);
         repository.add(meat);
     }
 
-    public static void updateMeat(UUID id, MeatDTO meatDTO, IRepository<Product> repository) {
+    public static void updateMeat(UUID id, MeatDTO meatDTO, IRepository<Product> repository)
+            throws IllegalArgumentException, EntityNotFoundException {
         Product product = repository.searchById(id);
         if (product == null) {
             throw new IllegalArgumentException("Produto com ID " + id + " não encontrado.");
@@ -166,12 +178,14 @@ public class ProductServices {
         repository.update(meat);
     }
 
-    public static void registerFruit(FruitDTO fruitDTO, IRepository<Product> repository) {
+    public static void registerFruit(FruitDTO fruitDTO, IRepository<Product> repository)
+            throws IllegalArgumentException, DuplicateEntityException {
         Fruit fruit = FruitDTO.toEntity(fruitDTO);
         repository.add(fruit);
     }
 
-    public static void updateFruit(UUID id, FruitDTO fruitDTO, IRepository<Product> repository) {
+    public static void updateFruit(UUID id, FruitDTO fruitDTO, IRepository<Product> repository)
+            throws IllegalArgumentException, EntityNotFoundException {
         Product product = repository.searchById(id);
         if (product == null) {
             throw new IllegalArgumentException("Produto com ID " + id + " não encontrado.");
