@@ -24,18 +24,18 @@ public class PersonRepositoryArrayList implements IPersonRepository {
     }
 
     @Override
-    public Person searchById(UUID id) throws IllegalArgumentException {
+    public Person searchById(UUID id) throws IllegalArgumentException, EntityNotFoundException {
         if (id == null) throw new IllegalArgumentException("ID não pode ser nulo.");
         for (Person person : people) {
             if (person.getId().equals(id)) {
                 return person;
             }
         }
-        return null;
+        throw new EntityNotFoundException("Pessoa com ID " + id + " não encontrada.");
     }
 
     @Override
-    public Person searchByName(String name) throws IllegalArgumentException{
+    public Person searchByName(String name) throws IllegalArgumentException, EntityNotFoundException {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Nome inválido.");
         }
@@ -44,11 +44,11 @@ public class PersonRepositoryArrayList implements IPersonRepository {
                 return person;
             }
         }
-        return null;
+        throw new EntityNotFoundException("Pessoa com nome " + name + " não encontrada.");
     }
 
     @Override
-    public Person searchByEmail(String email) throws IllegalArgumentException {
+    public Person searchByEmail(String email) throws IllegalArgumentException, EntityNotFoundException {
         if (email == null || email.isBlank()) {
             throw new IllegalArgumentException("Email inválido.");
         }
@@ -57,11 +57,11 @@ public class PersonRepositoryArrayList implements IPersonRepository {
                 return person;
             }
         }
-        return null;
+        throw new EntityNotFoundException("Pessoa com email " + email + " não encontrada.");
     }
 
     @Override
-    public Person searchByCpf(String cpf) throws IllegalArgumentException {
+    public Person searchByCpf(String cpf) throws IllegalArgumentException, EntityNotFoundException {
         if (cpf == null || cpf.isBlank()) {
             throw new IllegalArgumentException("CPF inválido.");
         }
@@ -70,7 +70,7 @@ public class PersonRepositoryArrayList implements IPersonRepository {
                 return person;
             }
         }
-        return null;
+        throw new EntityNotFoundException("Pessoa com CPF " + cpf + " não encontrada.");
     }
 
     @Override

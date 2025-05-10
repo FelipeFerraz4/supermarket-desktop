@@ -24,18 +24,18 @@ public class ProductRepositoryArrayList implements IProductRepository {
     }
 
     @Override
-    public Product searchById(UUID id) throws IllegalArgumentException {
+    public Product searchById(UUID id) throws IllegalArgumentException, EntityNotFoundException {
         if (id == null) throw new IllegalArgumentException("ID não pode ser nulo.");
         for (Product product : products) {
             if (product.getId().equals(id)) {
                 return product;
             }
         }
-        return null;
+        throw new EntityNotFoundException("Produto com ID " + id + " não encontrado.");
     }
 
     @Override
-    public Product searchByCod(String cod) throws IllegalArgumentException {
+    public Product searchByCod(String cod) throws IllegalArgumentException, EntityNotFoundException {
         if (cod == null || cod.isBlank()) {
             throw new IllegalArgumentException("codigo inválido.");
         }
@@ -44,11 +44,11 @@ public class ProductRepositoryArrayList implements IProductRepository {
                 return product;
             }
         }
-        return null;
+        throw new EntityNotFoundException("Produto com código " + cod + " não encontrado.");
     }
 
     @Override
-    public Product searchByName(String name) throws IllegalArgumentException {
+    public Product searchByName(String name) throws IllegalArgumentException, EntityNotFoundException {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Nome inválido.");
         }
@@ -57,7 +57,7 @@ public class ProductRepositoryArrayList implements IProductRepository {
                 return product;
             }
         }
-        return null;
+        throw new EntityNotFoundException("Produto com nome " + name + " não encontrado.");
     }
 
     @Override

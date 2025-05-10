@@ -22,31 +22,35 @@ public class ProductRepositoryHashMap implements IProductRepository {
     }
 
     @Override
-    public Product searchById(UUID id) throws IllegalArgumentException {
+    public Product searchById(UUID id) throws IllegalArgumentException, EntityNotFoundException {
         if (id == null) throw new IllegalArgumentException("ID cannot be null.");
-        return products.get(id);
+        Product product = products.get(id);
+        if (product == null) {
+            throw new EntityNotFoundException("Product with ID " + id + " not found.");
+        }
+        return product;
     }
 
     @Override
-    public Product searchByCod(String cod) throws IllegalArgumentException {
+    public Product searchByCod(String cod) throws IllegalArgumentException, EntityNotFoundException {
         if (cod == null || cod.isBlank()) throw new IllegalArgumentException("Code cannot be null or blank.");
         for (Product product : products.values()) {
             if (product.getCod().equalsIgnoreCase(cod)) {
                 return product;
             }
         }
-        return null;
+        throw new EntityNotFoundException("Product with code " + cod + " not found.");
     }
 
     @Override
-    public Product searchByName(String name) throws IllegalArgumentException {
+    public Product searchByName(String name) throws IllegalArgumentException, EntityNotFoundException {
         if (name == null || name.isBlank()) throw new IllegalArgumentException("Name cannot be null or blank.");
         for (Product product : products.values()) {
             if (product.getName().equalsIgnoreCase(name)) {
                 return product;
             }
         }
-        return null;
+        throw new EntityNotFoundException("Product with name " + name + " not found.");
     }
 
     @Override

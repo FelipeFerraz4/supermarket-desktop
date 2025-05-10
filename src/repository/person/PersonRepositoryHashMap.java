@@ -21,42 +21,46 @@ public class PersonRepositoryHashMap implements IPersonRepository {
     }
 
     @Override
-    public Person searchById(UUID id) throws IllegalArgumentException {
+    public Person searchById(UUID id) throws IllegalArgumentException, EntityNotFoundException {
         if (id == null) throw new IllegalArgumentException("ID cannot be null.");
-        return storage.get(id);
+        Person person = storage.get(id);
+        if (person == null) {
+            throw new EntityNotFoundException("Person with ID " + id + " not found.");
+        }
+        return person;
     }
 
     @Override
-    public Person searchByName(String name) throws IllegalArgumentException {
+    public Person searchByName(String name) throws IllegalArgumentException, EntityNotFoundException {
         if (name == null || name.isBlank()) throw new IllegalArgumentException("Name cannot be null or blank.");
         for (Person person : storage.values()) {
             if (person.getName().equalsIgnoreCase(name)) {
                 return person;
             }
         }
-        return null;
+        throw new EntityNotFoundException("Person with name " + name + " not found.");
     }
 
     @Override
-    public Person searchByEmail(String email) throws IllegalArgumentException {
+    public Person searchByEmail(String email) throws IllegalArgumentException, EntityNotFoundException {
         if (email == null || email.isBlank()) throw new IllegalArgumentException("Email cannot be null or blank.");
         for (Person person : storage.values()) {
             if (person.getEmail().equalsIgnoreCase(email)) {
                 return person;
             }
         }
-        return null;
+        throw new EntityNotFoundException("Person with email " + email + " not found.");
     }
 
     @Override
-    public Person searchByCpf(String cpf) throws IllegalArgumentException {
+    public Person searchByCpf(String cpf) throws IllegalArgumentException, EntityNotFoundException {
         if (cpf == null || cpf.isBlank()) throw new IllegalArgumentException("CPF cannot be null or blank.");
         for (Person person : storage.values()) {
             if (person.getCpf().equals(cpf)) {
                 return person;
             }
         }
-        return null;
+        throw new EntityNotFoundException("Person with CPF " + cpf + " not found.");
     }
 
     @Override
