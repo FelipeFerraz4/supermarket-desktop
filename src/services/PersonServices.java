@@ -87,7 +87,7 @@ public class PersonServices {
         repository.update(client);
     }
 
-    public static void updateEmployee(UUID id, String phone, String position, double salary, String email,
+    public static void updateEmployee(UUID id, String phone, String position, Double salary, String email,
                                       String password, IRepository<Person> repository) throws IllegalArgumentException, EntityNotFoundException {
         if (repository == null) throw new IllegalArgumentException("Repository cannot be null.");
         if (id == null) throw new IllegalArgumentException("Employee ID cannot be null.");
@@ -101,7 +101,7 @@ public class PersonServices {
         if (position != null && !position.isBlank()) {
             employee.setPosition(position);
         }
-        if (salary > 0) {
+        if (salary != null && salary > 0) {
             employee.setSalary(salary);
         }
         if (email != null && !email.isBlank()) {

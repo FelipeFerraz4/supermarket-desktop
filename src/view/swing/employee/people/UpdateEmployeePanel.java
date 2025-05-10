@@ -47,7 +47,7 @@ public class UpdateEmployeePanel extends JPanel {
                 personController.updateEmployee(emp.getId(), phone, position, salary, email, password);
                 JOptionPane.showMessageDialog(this, "Funcionário atualizado com sucesso!");
 
-                SwingMenu.changeScreen(new UpdateEmployeePanel(personController, productController, emp, emp, type));
+                SwingMenu.changeScreen(new UpdateEmployeePanel(personController, productController, person, emp, type));
             } catch (IllegalArgumentException ex) {
                 JOptionPane.showMessageDialog(this, "Erro de validação: " + ex.getMessage());
             } catch (EntityNotFoundException ex) {

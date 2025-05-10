@@ -62,11 +62,17 @@ public class PersonView {
                 switch (choice) {
                     case "1" -> {
                         System.out.println("\n--- Lista de Funcionários ---");
-                        controller.listEmployees().forEach(System.out::println);
+                        controller.listEmployees().forEach(person -> {
+                            String status = person.getStatus() ? "" : "Funcionário inativo: ";
+                            System.out.println(status + person);
+                        });
                     }
                     case "2" -> {
                         System.out.println("\n--- Lista de Clientes ---");
-                        controller.listClients().forEach(System.out::println);
+                        controller.listClients().forEach(person -> {
+                            String status = person.getStatus() ? "" : "Funcionário inativo: ";
+                            System.out.println(status + person);
+                        });
                     }
                     default -> System.out.println("Opção inválida.");
                 }
@@ -182,7 +188,8 @@ public class PersonView {
             String position = scanner.nextLine();
 
             System.out.print("Novo salário: ");
-            double salary = Double.parseDouble(scanner.nextLine());
+            String salaryinput = scanner.nextLine();
+            double salary = Double.parseDouble(salaryinput.isEmpty() ? "0" : scanner.nextLine());
 
             System.out.print("Novo e-mail: ");
             String email = scanner.nextLine();
@@ -264,8 +271,10 @@ public class PersonView {
             }
 
             if (id == null) {
-                System.out.println("Pessoa não encontrada ou inativa.");
+                throw new EntityNotFoundException("Pessoa não encontrada.");
             }
+
+            System.out.println("Pessoa encontrada: \n" + controller.findById(id).toString());
 
             return id;
 

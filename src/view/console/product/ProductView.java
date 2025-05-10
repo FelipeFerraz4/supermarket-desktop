@@ -54,13 +54,13 @@ public class ProductView {
     public static void registerProduct(Scanner scanner, ProductController controller) {
         try {
             System.out.println("Qual tipo de produto deseja cadastrar?");
-            System.out.println("0 - Voltar");
             System.out.println("1 - Bebida");
             System.out.println("2 - Alimento Processado");
             System.out.println("3 - Carne");
             System.out.println("4 - Fruta");
             System.out.println("5 - Produto de Higiene");
             System.out.println("6 - Utensílio");
+            System.out.println("0 - Voltar");
             System.out.print("Escolha uma opção: ");
             String option = scanner.nextLine();
 
