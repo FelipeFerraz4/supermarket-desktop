@@ -32,7 +32,6 @@ public class ConsoleMenu {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Entrada inválida. Digite um número inteiro.");
-                scanner.nextLine(); // limpa entrada incorreta
             } catch (Exception e) {
                 System.out.println("Erro inesperado: " + e.getMessage());
             }
