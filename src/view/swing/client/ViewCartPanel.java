@@ -2,6 +2,7 @@ package view.swing.client;
 
 import controllers.PersonController;
 import controllers.ProductController;
+import exceptions.EntityNotFoundException;
 import model.people.Person;
 import model.products.Product;
 import model.products.food.Meat;
@@ -46,9 +47,15 @@ public class ViewCartPanel extends JPanel {
                 UUID id = entry.getKey();
                 double quantity = entry.getValue();
 
-                Product product = productController.searchById(id);
-                if (product == null) {
-                    System.out.println("Produto com ID " + id + " não encontrado.");
+                Product product;
+                try {
+                    product = productController.searchById(id);
+                    if (product == null) {
+                        System.out.println("Produto com ID " + id + " não encontrado.");
+                        continue;
+                    }
+                } catch (EntityNotFoundException | IllegalArgumentException ex) {
+                    System.err.println("Erro ao buscar produto com ID " + id + ": " + ex.getMessage());
                     continue;
                 }
 
@@ -65,7 +72,6 @@ public class ViewCartPanel extends JPanel {
 
                 JLabel label = new JLabel(String.format("%s - %s - R$ %.2f", product.getName(), quantityText, subtotal));
                 label.setFont(new Font("Arial", Font.PLAIN, 16));
-
                 label.setPreferredSize(new Dimension(300, 30));
 
                 JButton decreaseButton = AuxComponents.createStyledButton("-", 100, 30, () -> {
@@ -73,13 +79,14 @@ public class ViewCartPanel extends JPanel {
                     double newQuantity = quantity - step;
                     if (newQuantity <= 0.0) {
                         cart.remove(id);
-                        if (client != null) {
-                            personController.updateClientCart(client.getId(), cart);
-                        }
                     } else {
                         cart.put(id, Math.round(newQuantity * 10.0) / 10.0);
-                        if (client != null) {
+                    }
+                    if (client != null) {
+                        try {
                             personController.updateClientCart(client.getId(), cart);
+                        } catch (EntityNotFoundException | IllegalArgumentException ex) {
+                            JOptionPane.showMessageDialog(this, "Erro ao atualizar o carrinho: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                         }
                     }
                     refresh.run();
@@ -90,7 +97,11 @@ public class ViewCartPanel extends JPanel {
                     double newQuantity = quantity + step;
                     cart.put(id, Math.round(newQuantity * 10.0) / 10.0);
                     if (client != null) {
-                        personController.updateClientCart(client.getId(), cart);
+                        try {
+                            personController.updateClientCart(client.getId(), cart);
+                        } catch (EntityNotFoundException | IllegalArgumentException ex) {
+                            JOptionPane.showMessageDialog(this, "Erro ao atualizar o carrinho: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                        }
                     }
                     refresh.run();
                 });
@@ -115,20 +126,22 @@ public class ViewCartPanel extends JPanel {
 
         JButton payButton = AuxComponents.createStyledButton("Finalizar Pagamento", 200, 40, () -> {
             JOptionPane.showMessageDialog(this, "Pagamento realizado com sucesso!");
-            cart.clear(); // esvazia o carrinho após pagamento
+            cart.clear();
             if (client != null) {
-                personController.updateClientCart(client.getId(), cart);
+                try {
+                    personController.updateClientCart(client.getId(), cart);
+                } catch (EntityNotFoundException | IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro ao atualizar o carrinho: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                }
             }
-            refresh.run(); // atualiza tela
+            refresh.run();
         });
 
         JButton backButton = AuxComponents.createStyledButton("Voltar", 150, 40, () ->
                 SwingMenu.changeScreen(new ClientPanel(personController, productController, client, cart))
         );
         add(Box.createVerticalStrut(20));
-        add(AuxComponents.createHorizontalButtonPanel(
-                backButton, payButton
-        ));
+        add(AuxComponents.createHorizontalButtonPanel(backButton, payButton));
         add(Box.createVerticalStrut(5));
     }
 }
