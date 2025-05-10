@@ -28,37 +28,45 @@ public class EmployeePanel extends JPanel {
         add(Box.createVerticalStrut(80));
 
         JButton buttonCreateProduct =
-                AuxComponents.createStyledButton(
-                        "Cadastrar produtos", 300, 50,
-                        () -> SwingMenu.changeScreen(new SelectProductTypePanel(personController, productController, person))
+                AuxComponents.createSafeStyledButton(
+                        this, "Cadastrar produtos", 300, 50,
+                        () -> SwingMenu.changeScreen(new SelectProductTypePanel(personController, productController, person)),
+                        "Erro ao abrir tela de cadastro de produtos"
                 );
+
         JButton buttonSearchProduct =
-                AuxComponents.createStyledButton(
-                        "Buscar produtos", 300, 50,
-                        () -> SwingMenu.changeScreen(new SearchProductsPanel(personController, productController, person))
+                AuxComponents.createSafeStyledButton(
+                        this, "Buscar produtos", 300, 50,
+                        () -> SwingMenu.changeScreen(new SearchProductsPanel(personController, productController, person)),
+                        "Erro ao abrir tela de busca de produtos"
                 );
+
         JButton buttonCreateClient =
-                AuxComponents.createStyledButton(
-                        "Cadastrar Clientes", 300, 50,
-                        () -> SwingMenu.changeScreen(new CreateClientAdminPanel(personController, productController, person))
+                AuxComponents.createSafeStyledButton(
+                        this, "Cadastrar Clientes", 300, 50,
+                        () -> SwingMenu.changeScreen(new CreateClientAdminPanel(personController, productController, person)),
+                        "Erro ao abrir tela de cadastro de clientes"
                 );
 
         JButton buttonCreateEmployee =
-                AuxComponents.createStyledButton(
-                        "Cadastrar funcionários", 300, 50,
-                        () -> SwingMenu.changeScreen(new CreateEmployeePanel(personController, productController, person))
+                AuxComponents.createSafeStyledButton(
+                        this, "Cadastrar funcionários", 300, 50,
+                        () -> SwingMenu.changeScreen(new CreateEmployeePanel(personController, productController, person)),
+                        "Erro ao abrir tela de cadastro de funcionários"
                 );
 
         JButton buttonSearchPerson =
-                AuxComponents.createStyledButton(
-                        "Buscar funcionários", 300, 50,
-                        () -> SwingMenu.changeScreen(new SearchPersonPanel(personController, productController, person))
+                AuxComponents.createSafeStyledButton(
+                        this, "Buscar funcionários", 300, 50,
+                        () -> SwingMenu.changeScreen(new SearchPersonPanel(personController, productController, person)),
+                        "Erro ao abrir tela de busca de funcionários"
                 );
 
         JButton buttonUpdatePerson =
-                AuxComponents.createStyledButton(
-                        "Atualizar Meus dados", 300, 50,
-                        () -> SwingMenu.changeScreen(new UpdateEmployeePanel(personController, productController, person, person, 2))
+                AuxComponents.createSafeStyledButton(
+                        this, "Atualizar Meus dados", 300, 50,
+                        () -> SwingMenu.changeScreen(new UpdateEmployeePanel(personController, productController, person, person, 2)),
+                        "Erro ao abrir tela de atualização de dados"
                 );
 
         add(AuxComponents.createHorizontalButtonPanel(
@@ -72,13 +80,13 @@ public class EmployeePanel extends JPanel {
         add(AuxComponents.createHorizontalButtonPanel(
                 buttonSearchPerson, buttonUpdatePerson
         ));
-
         add(Box.createVerticalStrut(80));
 
         JButton buttonBack =
-                AuxComponents.createStyledButton(
-                        "Voltar", 150, 40,
-                        () -> SwingMenu.changeScreen(new MainMenuPanel(personController, productController))
+                AuxComponents.createSafeStyledButton(
+                        this, "Voltar", 150, 40,
+                        () -> SwingMenu.changeScreen(new MainMenuPanel(personController, productController)),
+                        "Erro ao voltar para o menu principal"
                 );
         add(buttonBack);
     }

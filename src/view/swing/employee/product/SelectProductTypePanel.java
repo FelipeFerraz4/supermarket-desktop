@@ -23,38 +23,45 @@ public class SelectProductTypePanel extends JPanel {
         add(titleLabel);
         add(Box.createVerticalStrut(40));
 
-        // Criando os botões para os tipos de produto
-        JButton buttonBeverage = AuxComponents.createStyledButton(
-                "Bebida", 200, 50,
-                () -> SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee))
+        JButton buttonBeverage = AuxComponents.createSafeStyledButton(
+                this, "Bebida", 200, 50,
+                () -> SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee)),
+                "Erro ao abrir tela de cadastro de bebida"
         );
-        JButton buttonProcessedFood = AuxComponents.createStyledButton(
-                "Alimento", 200, 50,
-                () -> SwingMenu.changeScreen(new CreateProcessedFoodPanel(personController, productController, employee))
+        JButton buttonProcessedFood = AuxComponents.createSafeStyledButton(
+                this, "Alimento", 200, 50,
+                () -> SwingMenu.changeScreen(new CreateProcessedFoodPanel(personController, productController, employee)),
+                "Erro ao abrir tela de cadastro de alimento"
         );
-        JButton buttonMeat = AuxComponents.createStyledButton(
-                "Carne", 200, 50,
-                () -> SwingMenu.changeScreen(new CreateMeatPanel(personController, productController, employee))
+        JButton buttonMeat = AuxComponents.createSafeStyledButton(
+                this, "Carne", 200, 50,
+                () -> SwingMenu.changeScreen(new CreateMeatPanel(personController, productController, employee)),
+                "Erro ao abrir tela de cadastro de carne"
         );
-        JButton buttonFruit = AuxComponents.createStyledButton(
-                "Fruta", 200, 50,
-                () -> SwingMenu.changeScreen(new CreateFruitPanel(personController, productController, employee))
+        JButton buttonFruit = AuxComponents.createSafeStyledButton(
+                this, "Fruta", 200, 50,
+                () -> SwingMenu.changeScreen(new CreateFruitPanel(personController, productController, employee)),
+                "Erro ao abrir tela de cadastro de fruta"
         );
-        JButton buttonHygieneProduct = AuxComponents.createStyledButton(
-                "Higiene", 200, 50,
-                () -> SwingMenu.changeScreen(new CreateHygieneProductPanel(personController, productController, employee))
+        JButton buttonHygieneProduct = AuxComponents.createSafeStyledButton(
+                this, "Higiene", 200, 50,
+                () -> SwingMenu.changeScreen(new CreateHygieneProductPanel(personController, productController, employee)),
+                "Erro ao abrir tela de cadastro de produto de higiene"
         );
-        JButton buttonUtensil = AuxComponents.createStyledButton(
-                "Utensílio", 200, 50,
-                () -> SwingMenu.changeScreen(new CreateUtensilPanel(personController, productController, employee))
+        JButton buttonUtensil = AuxComponents.createSafeStyledButton(
+                this, "Utensílio", 200, 50,
+                () -> SwingMenu.changeScreen(new CreateUtensilPanel(personController, productController, employee)),
+                "Erro ao abrir tela de cadastro de utensílio"
         );
 
         add(AuxComponents.createHorizontalButtonPanel(buttonBeverage, buttonProcessedFood));
         add(AuxComponents.createHorizontalButtonPanel(buttonMeat, buttonFruit));
         add(AuxComponents.createHorizontalButtonPanel(buttonHygieneProduct, buttonUtensil));
 
-        JButton buttonBack = AuxComponents.createStyledButton("Voltar", 150, 40, () ->
-                SwingMenu.changeScreen(new EmployeePanel(personController, productController, employee))
+        JButton buttonBack = AuxComponents.createSafeStyledButton(
+                this, "Voltar", 150, 40,
+                () -> SwingMenu.changeScreen(new EmployeePanel(personController, productController, employee)),
+                "Erro ao voltar para o painel do funcionário"
         );
 
         add(Box.createVerticalStrut(40));

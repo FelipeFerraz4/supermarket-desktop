@@ -2,6 +2,7 @@ package view.swing.employee.product;
 
 import controllers.PersonController;
 import controllers.ProductController;
+import exceptions.EntityNotFoundException;
 import model.people.Person;
 import model.products.Product;
 import model.products.ProductType;
@@ -37,26 +38,38 @@ public class SearchProductsPanel extends JPanel {
         productTable.getColumnModel().getColumn(0).setMaxWidth(0);
         productTable.getColumnModel().getColumn(0).setWidth(0);
 
-        JButton searchButton = AuxComponents.createStyledButton("Buscar", 100, 30, () -> {
-            String filter = (String) filterCombo.getSelectedItem();
-            String query = searchField.getText().trim().toLowerCase();
+        JButton searchButton = AuxComponents.createSafeStyledButton(
+                this, "Buscar", 100, 30,
+                () -> {
+                    String filter = (String) filterCombo.getSelectedItem();
+                    String query = searchField.getText().trim().toLowerCase();
 
-            List<Product> filtered = productController.getAllProducts().stream()
-                    .filter(p -> {
-                        if ("Todos".equals(filter)) return true;
-                        return p.getTypeProduct().toString().equalsIgnoreCase(filter);
-                    })
-                    .filter(p -> query.isEmpty() || p.getName().toLowerCase().contains(query))
-                    .toList();
+                    List<Product> filtered = productController.getAllProducts().stream()
+                            .filter(p -> {
+                                if ("Todos".equals(filter)) return true;
+                                return p.getTypeProduct().toString().equalsIgnoreCase(filter);
+                            })
+                            .filter(p -> query.isEmpty() || p.getName().toLowerCase().contains(query))
+                            .toList();
 
-            tableModel.setRowCount(0);
-            for (Product p : filtered) {
-                tableModel.addRow(new Object[]{p.getId(), p.getName(), p.getTypeProduct().toString(), String.format("R$ %.2f", p.getPrice())});
-            }
-        });
+                    tableModel.setRowCount(0);
+                    for (Product p : filtered) {
+                        tableModel.addRow(new Object[]{
+                                p.getId(),
+                                p.getName(),
+                                p.getTypeProduct().toString(),
+                                String.format("R$ %.2f", p.getPrice())
+                        });
+                    }
+                },
+                "Erro ao buscar produtos"
+        );
 
-        JButton buttonBack = AuxComponents.createStyledButton("Voltar", 100, 30,
-                () -> SwingMenu.changeScreen(new EmployeePanel(personController, productController, employee)));
+        JButton buttonBack = AuxComponents.createSafeStyledButton(
+                this, "Voltar", 100, 30,
+                () -> SwingMenu.changeScreen(new EmployeePanel(personController, productController, employee)),
+                "Erro ao voltar para tela administrativa"
+        );
 
         topPanel.add(new JLabel("Filtro por tipo:"));
         topPanel.add(filterCombo);
@@ -70,6 +83,7 @@ public class SearchProductsPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(productTable);
         add(scrollPane, BorderLayout.CENTER);
 
+        // Preenchimento inicial
         tableModel.setRowCount(0);
         for (Product p : productController.getAllProducts()) {
             tableModel.addRow(new Object[]{p.getId(), p.getName(), p.getTypeProduct().toString(), String.format("R$ %.2f", p.getPrice())});
@@ -77,19 +91,28 @@ public class SearchProductsPanel extends JPanel {
 
         productTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && productTable.getSelectedRow() != -1) {
-                UUID id = UUID.fromString(tableModel.getValueAt(productTable.getSelectedRow(), 0).toString());
-                Product selected = productController.searchById(id);
-                ProductType type = selected.getTypeProduct();
+                try {
+                    UUID id = UUID.fromString(tableModel.getValueAt(productTable.getSelectedRow(), 0).toString());
+                    Product selected = productController.searchById(id);
+                    ProductType type = selected.getTypeProduct();
 
-                switch (type) {
-                    case DRINK -> SwingMenu.changeScreen(new UpdateBeveragePanel(personController, productController, employee, id));
-                    case FOOD -> SwingMenu.changeScreen(new UpdateProcessedFoodPanel(personController, productController, employee, id));
-                    case MEAT -> SwingMenu.changeScreen(new UpdateMeatPanel(personController, productController, employee, id));
-                    case FRUIT -> SwingMenu.changeScreen(new UpdateFruitPanel(personController, productController, employee, id));
-                    case HYGIENE -> SwingMenu.changeScreen(new UpdateHygienePanel(personController, productController, employee, id));
-                    case UTENSIL -> SwingMenu.changeScreen(new UpdateUtensilPanel(personController, productController, employee, id));
+                    switch (type) {
+                        case DRINK -> SwingMenu.changeScreen(new UpdateBeveragePanel(personController, productController, employee, id));
+                        case FOOD -> SwingMenu.changeScreen(new UpdateProcessedFoodPanel(personController, productController, employee, id));
+                        case MEAT -> SwingMenu.changeScreen(new UpdateMeatPanel(personController, productController, employee, id));
+                        case FRUIT -> SwingMenu.changeScreen(new UpdateFruitPanel(personController, productController, employee, id));
+                        case HYGIENE -> SwingMenu.changeScreen(new UpdateHygienePanel(personController, productController, employee, id));
+                        case UTENSIL -> SwingMenu.changeScreen(new UpdateUtensilPanel(personController, productController, employee, id));
+                    }
+                } catch (EntityNotFoundException ex) {
+                    JOptionPane.showMessageDialog(this, "Produto não encontrado. Ele pode ter sido removido.", "Produto não encontrado", JOptionPane.WARNING_MESSAGE);
+                } catch (IllegalArgumentException | NullPointerException ex) {
+                    JOptionPane.showMessageDialog(this, "Erro ao selecionar produto: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Erro inesperado: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
+
     }
 }
