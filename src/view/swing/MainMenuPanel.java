@@ -22,22 +22,26 @@ public class MainMenuPanel extends JPanel {
         add(Box.createVerticalStrut(10));
 
         JButton buttonStartShopping =
-                AuxComponents.createStyledButton(
-                        "Faça suas compras aqui", 400, 50,
-                        () -> SwingMenu.changeScreen(new ClientPanel(personController, productController, null, new HashMap<>()))
+                AuxComponents.createSafeStyledButton(
+                        this, "Faça suas compras aqui", 400, 50,
+                        () -> SwingMenu.changeScreen(new ClientPanel(personController, productController, null, new HashMap<>())),
+                        "Erro ao abrir tela de compras"
                 );
 
         JButton buttonLogin =
-                AuxComponents.createStyledButton(
-                        "Faça login e ganhe ponto para trocar por descontos", 400, 50,
-                        () -> SwingMenu.changeScreen(new LoginPanel(personController, productController))
+                AuxComponents.createSafeStyledButton(
+                        this, "Faça login e ganhe ponto para trocar por descontos", 400, 50,
+                        () -> SwingMenu.changeScreen(new LoginPanel(personController, productController)),
+                        "Erro ao abrir tela de login"
                 );
 
         JButton buttonCreateClient =
-                AuxComponents.createStyledButton(
-                        "Crie sua conta aqui", 400, 50,
-                        () -> SwingMenu.changeScreen(new CreateClientPanel(personController, productController))
+                AuxComponents.createSafeStyledButton(
+                        this, "Crie sua conta aqui", 400, 50,
+                        () -> SwingMenu.changeScreen(new CreateClientPanel(personController, productController)),
+                        "Erro ao abrir tela de cadastro"
                 );
+
 
         add(Box.createVerticalGlue());
         add(buttonStartShopping);

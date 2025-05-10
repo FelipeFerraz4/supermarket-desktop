@@ -170,4 +170,18 @@ public class AuxComponents {
             return new JPanel();
         }
     }
+
+    public static JButton createSafeStyledButton(Component parentComponent, String text, int width, int height, Runnable action, String errorMessagePrefix) {
+        return createStyledButton(text, width, height, () -> {
+            try {
+                action.run();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(parentComponent,
+                        errorMessagePrefix + ": " + e.getMessage(),
+                        "Erro", JOptionPane.ERROR_MESSAGE);
+//                e.printStackTrace();
+            }
+        });
+    }
+
 }
