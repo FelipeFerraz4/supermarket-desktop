@@ -2,6 +2,7 @@ package view.swing.employee.people;
 
 import controllers.PersonController;
 import controllers.ProductController;
+import exceptions.EntityNotFoundException;
 import model.people.Client;
 import model.people.Employee;
 import model.people.Person;
@@ -38,26 +39,32 @@ public class SearchPersonPanel extends JPanel {
         peopleTable.getColumnModel().getColumn(0).setWidth(0);
 
         JButton searchButton = AuxComponents.createStyledButton("Buscar", 100, 30, () -> {
-            String filter = (String) filterCombo.getSelectedItem();
-            String query = searchField.getText().trim().toLowerCase();
+            try {
+                String filter = (String) filterCombo.getSelectedItem();
+                String query = searchField.getText().trim().toLowerCase();
 
-            List<Person> filtered = personController.listAll().stream()
-                    .filter(p -> {
-                        if ("Funcionários".equals(filter)) return p instanceof Employee;
-                        if ("Clientes".equals(filter)) return p instanceof Client;
-                        return true;
-                    })
-                    .filter(p -> {
-                        if (query.isEmpty()) return true;
-                        return p.getName().toLowerCase().contains(query) ||
-                                p.getEmail().toLowerCase().contains(query);
-                    })
-                    .toList();
+                List<Person> filtered = personController.listAll().stream()
+                        .filter(p -> {
+                            if ("Funcionários".equals(filter)) return p instanceof Employee;
+                            if ("Clientes".equals(filter)) return p instanceof Client;
+                            return true;
+                        })
+                        .filter(p -> {
+                            if (query.isEmpty()) return true;
+                            return p.getName().toLowerCase().contains(query) ||
+                                    p.getEmail().toLowerCase().contains(query);
+                        })
+                        .toList();
 
-            tableModel.setRowCount(0);
-            for (Person p : filtered) {
-                String type = (p instanceof Employee) ? "Funcionário" : "Cliente";
-                tableModel.addRow(new Object[]{p.getId(), p.getName(), p.getEmail(), type});
+                tableModel.setRowCount(0);
+                for (Person p : filtered) {
+                    String type = (p instanceof Employee) ? "Funcionário" : "Cliente";
+                    tableModel.addRow(new Object[]{p.getId(), p.getName(), p.getEmail(), type});
+                }
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, "Erro na busca: argumentos inválidos.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Erro inesperado: " + e.getMessage());
             }
         });
 
@@ -78,20 +85,34 @@ public class SearchPersonPanel extends JPanel {
 
         peopleTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && peopleTable.getSelectedRow() != -1) {
-                UUID id = UUID.fromString(tableModel.getValueAt(peopleTable.getSelectedRow(), 0).toString());
-                Person selected = personController.findById(id);
-                if (selected instanceof Employee emp) {
-                    SwingMenu.changeScreen(new UpdateEmployeePanel(personController, productController, person, emp, 1));
-                } else if (selected instanceof Client client) {
-                    SwingMenu.changeScreen(new UpdateClientPanel(personController, productController, person, client));
+                try {
+                    UUID id = UUID.fromString(tableModel.getValueAt(peopleTable.getSelectedRow(), 0).toString());
+                    Person selected = personController.findById(id);
+                    if (selected instanceof Employee emp) {
+                        SwingMenu.changeScreen(new UpdateEmployeePanel(personController, productController, person, emp, 1));
+                    } else if (selected instanceof Client client) {
+                        SwingMenu.changeScreen(new UpdateClientPanel(personController, productController, person, client));
+                    }
+                } catch (IllegalArgumentException ex) {
+                    JOptionPane.showMessageDialog(this, "ID inválido selecionado.");
+                } catch (EntityNotFoundException ex) {
+                    JOptionPane.showMessageDialog(this, "Pessoa não encontrada.");
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Erro inesperado: " + ex.getMessage());
                 }
             }
         });
 
-        tableModel.setRowCount(0);
-        for (Person p : personController.listAll()) {
-            String type = (p instanceof Employee) ? "Funcionário" : "Cliente";
-            tableModel.addRow(new Object[]{p.getId(), p.getName(), p.getEmail(), type});
+        try {
+            tableModel.setRowCount(0);
+            for (Person p : personController.listAll()) {
+                String type = (p instanceof Employee) ? "Funcionário" : "Cliente";
+                tableModel.addRow(new Object[]{p.getId(), p.getName(), p.getEmail(), type});
+            }
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, "Erro ao carregar pessoas: argumentos inválidos.");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Erro inesperado ao carregar pessoas: " + e.getMessage());
         }
     }
 }
