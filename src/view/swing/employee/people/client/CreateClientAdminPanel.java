@@ -2,6 +2,7 @@ package view.swing.employee.people.client;
 
 import controllers.PersonController;
 import controllers.ProductController;
+import exceptions.DuplicateEntityException;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.employee.EmployeePanel;
@@ -54,8 +55,12 @@ public class CreateClientAdminPanel extends JPanel {
 
                 SwingMenu.changeScreen(new CreateClientAdminPanel(personController, productController, person));
 
+            } catch (DuplicateEntityException e) {
+                JOptionPane.showMessageDialog(this, "Erro: Já existe um cliente com esses dados.");
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, "Erro: Dados inválidos, " + e.getMessage());
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Erro ao cadastrar cliente: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Erro inesperado ao cadastrar cliente:\n" + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         });
 

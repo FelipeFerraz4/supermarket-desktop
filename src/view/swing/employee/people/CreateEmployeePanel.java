@@ -22,11 +22,10 @@ public class CreateEmployeePanel extends JPanel {
         add(titleLabel);
         add(Box.createVerticalStrut(40));
 
-        // Campos
         JTextField nameField = new JTextField();
         JTextField cpfField = new JTextField();
         JTextField phoneField = new JTextField();
-        JTextField birthField = new JTextField(); // formato: AAAA-MM-DD
+        JTextField birthField = new JTextField();
         JTextField positionField = new JTextField();
         JTextField salaryField = new JTextField();
         JTextField emailField = new JTextField();
@@ -42,23 +41,27 @@ public class CreateEmployeePanel extends JPanel {
 
         JButton buttonRegister = AuxComponents.createStyledButton("Cadastrar", 150, 40, () -> {
             try {
-                String name = nameField.getText();
-                String cpf = cpfField.getText();
-                String phone = phoneField.getText();
-                LocalDate birthDate = LocalDate.parse(birthField.getText());
-                String position = positionField.getText();
-                double salary = Double.parseDouble(salaryField.getText());
-                String email = emailField.getText();
-                String password = new String(passwordField.getPassword());
+                String name = nameField.getText().trim();
+                String cpf = cpfField.getText().trim();
+                String phone = phoneField.getText().trim();
+                LocalDate birthDate = LocalDate.parse(birthField.getText().trim());
+                String position = positionField.getText().trim();
+                double salary = Double.parseDouble(salaryField.getText().trim());
+                String email = emailField.getText().trim();
+                String password = new String(passwordField.getPassword()).trim();
                 LocalDate hireDate = LocalDate.now();
 
                 personController.registerEmployee(name, cpf, birthDate, email, password, phone, position, salary, hireDate);
-                JOptionPane.showMessageDialog(this, "Funcionário cadastrado com sucesso!");
+                JOptionPane.showMessageDialog(this, "Funcionário cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
                 SwingMenu.changeScreen(new CreateEmployeePanel(personController, productController, employee));
 
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Erro ao cadastrar funcionário: " + e.getMessage());
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(this, "Erro de validação: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (exceptions.DuplicateEntityException ex) {
+                JOptionPane.showMessageDialog(this, "Erro: já existe um funcionário com essas informações. " + ex.getMessage(), "Erro de Duplicação", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro inesperado ao cadastrar funcionário: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         });
 
