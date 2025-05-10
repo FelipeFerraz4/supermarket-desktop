@@ -3,6 +3,7 @@ package view.swing.employee.product.update;
 import controllers.PersonController;
 import controllers.ProductController;
 import dtos.BeverageDTO;
+import exceptions.EntityNotFoundException;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
@@ -17,7 +18,19 @@ public class UpdateBeveragePanel extends JPanel {
     public UpdateBeveragePanel(PersonController personController, ProductController productController, Person employee, UUID id) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        BeverageDTO dto = BeverageDTO.toDTO(productController.searchById(id));
+        BeverageDTO dto;
+        try {
+            dto = BeverageDTO.toDTO(productController.searchById(id));
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, "ID inválido fornecido.");
+            return;
+        } catch (EntityNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Produto não encontrado.");
+            return;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro inesperado ao buscar a bebida.");
+            return;
+        }
 
         JLabel titleLabel = new JLabel("Atualizar Bebida");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -88,6 +101,12 @@ public class UpdateBeveragePanel extends JPanel {
                 SwingMenu.changeScreen(new SearchProductsPanel(personController, productController, employee));
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Erro: Certifique-se de que todos os campos numéricos estejam corretos.");
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Dados inválidos fornecidos.");
+            } catch (EntityNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Produto não encontrado.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro inesperado ao atualizar a bebida: " + e.getMessage());
             }
         });
 

@@ -3,6 +3,7 @@ package view.swing.employee.product.update;
 import controllers.PersonController;
 import controllers.ProductController;
 import dtos.HygieneProductDTO;
+import exceptions.EntityNotFoundException;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
@@ -16,7 +17,19 @@ public class UpdateHygienePanel extends JPanel {
     public UpdateHygienePanel(PersonController personController, ProductController productController, Person employee, UUID id) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        HygieneProductDTO dto = HygieneProductDTO.toDTO(productController.searchById(id));
+        HygieneProductDTO dto;
+        try {
+            dto = HygieneProductDTO.toDTO(productController.searchById(id));
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, "ID inválido fornecido.");
+            return;
+        } catch (EntityNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Produto não encontrado.");
+            return;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro inesperado ao buscar o produto de higiene.");
+            return;
+        }
 
         JLabel titleLabel = new JLabel("Atualizar Produto de Higiene");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -62,22 +75,32 @@ public class UpdateHygienePanel extends JPanel {
         add(Box.createVerticalStrut(20));
 
         JButton updateButton = AuxComponents.createStyledButton("Atualizar", 150, 40, () -> {
-            HygieneProductDTO updatedDto = dto
-                    .withCode(codeField.getText())
-                    .withName(nameField.getText())
-                    .withPrice(Double.parseDouble(priceField.getText()))
-                    .withAmount(Integer.parseInt(amountField.getText()))
-                    .withType(typeField.getText())
-                    .withBrand(brandField.getText())
-                    .withSensitive(sensitiveBox.isSelected())
-                    .withUsageInstructions(usageField.getText())
-                    .withToxic(toxicBox.isSelected())
-                    .withScent(scentField.getText())
-                    .withVolume(Double.parseDouble(volumeField.getText()));
+            try {
+                HygieneProductDTO updatedDto = dto
+                        .withCode(codeField.getText())
+                        .withName(nameField.getText())
+                        .withPrice(Double.parseDouble(priceField.getText()))
+                        .withAmount(Integer.parseInt(amountField.getText()))
+                        .withType(typeField.getText())
+                        .withBrand(brandField.getText())
+                        .withSensitive(sensitiveBox.isSelected())
+                        .withUsageInstructions(usageField.getText())
+                        .withToxic(toxicBox.isSelected())
+                        .withScent(scentField.getText())
+                        .withVolume(Double.parseDouble(volumeField.getText()));
 
-            productController.updateHygieneProduct(id, updatedDto);
-            JOptionPane.showMessageDialog(null, "Produto de higiene atualizado com sucesso!");
-            SwingMenu.changeScreen(new UpdateHygienePanel(personController, productController, employee, id));
+                productController.updateHygieneProduct(id, updatedDto);
+                JOptionPane.showMessageDialog(null, "Produto de higiene atualizado com sucesso!");
+                SwingMenu.changeScreen(new UpdateHygienePanel(personController, productController, employee, id));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Verifique se os campos numéricos estão preenchidos corretamente.");
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Dados inválidos fornecidos.");
+            } catch (EntityNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Produto não encontrado.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro inesperado ao atualizar o produto de higiene: " + e.getMessage());
+            }
         });
 
         JButton backButton = AuxComponents.createStyledButton("Voltar", 150, 40, () ->

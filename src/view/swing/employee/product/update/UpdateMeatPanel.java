@@ -3,6 +3,7 @@ package view.swing.employee.product.update;
 import controllers.PersonController;
 import controllers.ProductController;
 import dtos.MeatDTO;
+import exceptions.EntityNotFoundException;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
@@ -17,7 +18,19 @@ public class UpdateMeatPanel extends JPanel {
     public UpdateMeatPanel(PersonController personController, ProductController productController, Person employee, UUID id) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        final MeatDTO dto = MeatDTO.toDTO(productController.searchById(id));
+        MeatDTO dto;
+        try {
+            dto = MeatDTO.toDTO(productController.searchById(id));
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, "ID inválido fornecido.");
+            return;
+        } catch (EntityNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Produto não encontrado.");
+            return;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro inesperado ao buscar a carne.");
+            return;
+        }
 
         JLabel titleLabel = new JLabel("Atualizar Carne");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -78,8 +91,14 @@ public class UpdateMeatPanel extends JPanel {
                 productController.updateMeat(id, updatedDto);
                 JOptionPane.showMessageDialog(null, "Carne atualizada com sucesso!");
                 SwingMenu.changeScreen(new SearchProductsPanel(personController, productController, employee));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Verifique se os campos numéricos estão preenchidos corretamente.");
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Dados inválidos fornecidos.");
+            } catch (EntityNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Produto não encontrado.");
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + e.getMessage());
+                JOptionPane.showMessageDialog(null, "Erro inesperado ao atualizar a carne: " + e.getMessage());
             }
         });
 

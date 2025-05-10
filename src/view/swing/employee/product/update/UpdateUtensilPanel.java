@@ -3,6 +3,7 @@ package view.swing.employee.product.update;
 import controllers.PersonController;
 import controllers.ProductController;
 import dtos.UtensilDTO;
+import exceptions.EntityNotFoundException;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
@@ -16,7 +17,19 @@ public class UpdateUtensilPanel extends JPanel {
     public UpdateUtensilPanel(PersonController personController, ProductController productController, Person employee, UUID id) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        UtensilDTO dto = UtensilDTO.toDTO(productController.searchById(id));
+        UtensilDTO dto;
+        try {
+            dto = UtensilDTO.toDTO(productController.searchById(id));
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, "Erro: ID fornecido é inválido.");
+            return;
+        } catch (EntityNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Erro: Utensílio não encontrado.");
+            return;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar utensílio: " + e.getMessage());
+            return;
+        }
 
         JLabel titleLabel = new JLabel("Atualizar Utensílio");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -55,19 +68,29 @@ public class UpdateUtensilPanel extends JPanel {
         add(Box.createVerticalStrut(20));
 
         JButton updateButton = AuxComponents.createStyledButton("Atualizar", 150, 40, () -> {
-            UtensilDTO updatedDto = dto
-                    .withCode(codeField.getText())
-                    .withName(nameField.getText())
-                    .withPrice(Double.parseDouble(priceField.getText()))
-                    .withAmount(Integer.parseInt(amountField.getText()))
-                    .withMaterial(materialField.getText())
-                    .withCategory(categoryField.getText())
-                    .withReusable(reusableBox.isSelected())
-                    .withSize(sizeField.getText());
+            try {
+                UtensilDTO updatedDto = dto
+                        .withCode(codeField.getText())
+                        .withName(nameField.getText())
+                        .withPrice(Double.parseDouble(priceField.getText()))
+                        .withAmount(Integer.parseInt(amountField.getText()))
+                        .withMaterial(materialField.getText())
+                        .withCategory(categoryField.getText())
+                        .withReusable(reusableBox.isSelected())
+                        .withSize(sizeField.getText());
 
-            productController.updateUtensil(id, updatedDto);
-            JOptionPane.showMessageDialog(null, "Utensílio atualizado com sucesso!");
-            SwingMenu.changeScreen(new UpdateUtensilPanel(personController, productController, employee, id));
+                productController.updateUtensil(id, updatedDto);
+                JOptionPane.showMessageDialog(null, "Utensílio atualizado com sucesso!");
+                SwingMenu.changeScreen(new UpdateUtensilPanel(personController, productController, employee, id));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Verifique os campos numéricos.");
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Dados inválidos fornecidos.");
+            } catch (EntityNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Utensílio não encontrado durante a atualização.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro ao atualizar utensílio: " + e.getMessage());
+            }
         });
 
         JButton backButton = AuxComponents.createStyledButton("Voltar", 150, 40, () ->

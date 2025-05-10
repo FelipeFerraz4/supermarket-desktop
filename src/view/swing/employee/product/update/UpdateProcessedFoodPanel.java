@@ -3,6 +3,7 @@ package view.swing.employee.product.update;
 import controllers.PersonController;
 import controllers.ProductController;
 import dtos.ProcessedFoodDTO;
+import exceptions.EntityNotFoundException;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
@@ -17,7 +18,19 @@ public class UpdateProcessedFoodPanel extends JPanel {
     public UpdateProcessedFoodPanel(PersonController personController, ProductController productController, Person employee, UUID id) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        ProcessedFoodDTO dto = ProcessedFoodDTO.toDTO(productController.searchById(id));
+        ProcessedFoodDTO dto;
+        try {
+            dto = ProcessedFoodDTO.toDTO(productController.searchById(id));
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, "ID fornecido é inválido.");
+            return;
+        } catch (EntityNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Produto não encontrado.");
+            return;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro ao buscar o produto: " + e.getMessage());
+            return;
+        }
 
         JLabel titleLabel = new JLabel("Atualizar Alimento Processado");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -84,7 +97,11 @@ public class UpdateProcessedFoodPanel extends JPanel {
                 JOptionPane.showMessageDialog(null, "Produto processado atualizado com sucesso!");
                 SwingMenu.changeScreen(new SearchProductsPanel(personController, productController, employee));
             } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Erro: Verifique os campos numéricos.");
+                JOptionPane.showMessageDialog(null, "Campos numéricos.");
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(null, "Dados inválidos.");
+            } catch (EntityNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Produto não encontrado.");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Erro: " + e.getMessage());
             }

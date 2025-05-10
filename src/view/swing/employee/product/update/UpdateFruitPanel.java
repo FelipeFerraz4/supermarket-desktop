@@ -3,6 +3,7 @@ package view.swing.employee.product.update;
 import controllers.PersonController;
 import controllers.ProductController;
 import dtos.FruitDTO;
+import exceptions.EntityNotFoundException;
 import model.people.Person;
 import view.swing.AuxComponents;
 import view.swing.SwingMenu;
@@ -17,7 +18,19 @@ public class UpdateFruitPanel extends JPanel {
     public UpdateFruitPanel(PersonController personController, ProductController productController, Person employee, UUID id) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        FruitDTO dto = FruitDTO.toDTO(productController.searchById(id));
+        FruitDTO dto;
+        try {
+            dto = FruitDTO.toDTO(productController.searchById(id));
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(null, "ID inválido fornecido.");
+            return;
+        } catch (EntityNotFoundException e) {
+            JOptionPane.showMessageDialog(null, "Produto não encontrado.");
+            return;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Erro inesperado ao buscar a fruta.");
+            return;
+        }
 
         JLabel titleLabel = new JLabel("Atualizar Fruta");
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -65,23 +78,33 @@ public class UpdateFruitPanel extends JPanel {
         add(Box.createVerticalStrut(20));
 
         JButton updateButton = AuxComponents.createStyledButton("Atualizar", 150, 40, () -> {
-            FruitDTO updatedDto = dto
-                    .withCode(codeField.getText())
-                    .withName(nameField.getText())
-                    .withPrice(Double.parseDouble(priceField.getText()))
-                    .withAmount(Integer.parseInt(amountField.getText()))
-                    .withExpirationDate(LocalDate.parse(expirationField.getText()))
-                    .withWeight(Double.parseDouble(weightField.getText()))
-                    .withRefrigerated(refrigeratedBox.isSelected())
-                    .withNutritionalInfo(nutritionalInfoField.getText())
-                    .withVariety(varietyField.getText())
-                    .withOrigin(originField.getText())
-                    .withSeasonal(seasonalBox.isSelected())
-                    .withPackagingType(packagingTypeField.getText());
+            try {
+                FruitDTO updatedDto = dto
+                        .withCode(codeField.getText())
+                        .withName(nameField.getText())
+                        .withPrice(Double.parseDouble(priceField.getText()))
+                        .withAmount(Integer.parseInt(amountField.getText()))
+                        .withExpirationDate(LocalDate.parse(expirationField.getText()))
+                        .withWeight(Double.parseDouble(weightField.getText()))
+                        .withRefrigerated(refrigeratedBox.isSelected())
+                        .withNutritionalInfo(nutritionalInfoField.getText())
+                        .withVariety(varietyField.getText())
+                        .withOrigin(originField.getText())
+                        .withSeasonal(seasonalBox.isSelected())
+                        .withPackagingType(packagingTypeField.getText());
 
-            productController.updateFruit(id, updatedDto);
-            JOptionPane.showMessageDialog(null, "Fruta atualizada com sucesso!");
-            SwingMenu.changeScreen(new UpdateFruitPanel(personController, productController, employee, id));
+                productController.updateFruit(id, updatedDto);
+                JOptionPane.showMessageDialog(null, "Fruta atualizada com sucesso!");
+                SwingMenu.changeScreen(new UpdateFruitPanel(personController, productController, employee, id));
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Verifique se os campos numéricos estão preenchidos corretamente.");
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Dados inválidos fornecidos.");
+            } catch (EntityNotFoundException e) {
+                JOptionPane.showMessageDialog(null, "Erro: Produto não encontrado.");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Erro inesperado ao atualizar a fruta: " + e.getMessage());
+            }
         });
 
         JButton backButton = AuxComponents.createStyledButton("Voltar", 150, 40, () ->
