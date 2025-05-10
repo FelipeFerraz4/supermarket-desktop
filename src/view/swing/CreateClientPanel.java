@@ -2,6 +2,8 @@ package view.swing;
 
 import controllers.PersonController;
 import controllers.ProductController;
+import exceptions.DuplicateEntityException;
+import model.people.Person;
 import view.swing.client.ClientPanel;
 
 import javax.swing.*;
@@ -29,7 +31,7 @@ public class CreateClientPanel extends JPanel {
         JPasswordField passwordField = new JPasswordField(20);
 
         add(AuxComponents.createHorizontalFields(
-                "Nome:",15,  nameField, 400, 30,
+                "Nome:", 15, nameField, 400, 30,
                 "CPF:", 15, cpfField, 200, 30
         ));
 
@@ -60,13 +62,22 @@ public class CreateClientPanel extends JPanel {
                         LocalDate accountCreationDate = LocalDate.now();
                         LocalDate dateLastPurchase = LocalDate.now();
 
-                        personController.registerClient(name, cpf, birthDate, email, password, phone, accountCreationDate, dateLastPurchase);
+                        personController.registerClient(
+                                name, cpf, birthDate, email, password,
+                                phone, accountCreationDate, dateLastPurchase
+                        );
 
                         JOptionPane.showMessageDialog(this, "Cliente cadastrado com sucesso!");
 
-                        SwingMenu.changeScreen(new ClientPanel(personController, productController, personController.findByName(name), new HashMap<>()));
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(this, "Erro ao cadastrar cliente: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                        Person person = personController.findByName(name);
+                        SwingMenu.changeScreen(new ClientPanel(personController, productController, person, new HashMap<>()));
+
+                    } catch (DuplicateEntityException e) {
+                        JOptionPane.showMessageDialog(this, "Já existe um cliente com esse e-mail ou CPF.", "Erro de duplicação", JOptionPane.ERROR_MESSAGE);
+                    } catch (IllegalArgumentException e) {
+                        JOptionPane.showMessageDialog(this, "Dados inválidos: " + e.getMessage(), "Erro de validação", JOptionPane.ERROR_MESSAGE);
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(this, "Erro inesperado ao cadastrar cliente: " + e.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                     }
                 }
         );
