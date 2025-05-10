@@ -2,6 +2,7 @@ package view.swing.employee.people.client;
 
 import controllers.PersonController;
 import controllers.ProductController;
+import exceptions.EntityNotFoundException;
 import model.people.Client;
 import model.people.Person;
 import view.swing.AuxComponents;
@@ -27,7 +28,6 @@ public class UpdateClientPanel extends JPanel {
         add(titleLabel);
         add(Box.createVerticalStrut(40));
 
-        // Campos de entrada
         JTextField phoneField = new JTextField(client.getPhone());
         JTextField emailField = new JTextField(client.getEmail());
         JPasswordField passwordField = new JPasswordField();
@@ -39,23 +39,30 @@ public class UpdateClientPanel extends JPanel {
         add(AuxComponents.createLabeledField("Nova Senha", 16, passwordField, 300, 30));
         add(Box.createVerticalStrut(30));
 
-        // Botão salvar
         JButton saveButton = AuxComponents.createStyledButton("Salvar", 150, 40, () -> {
-            String phone = phoneField.getText().trim();
-            String email = emailField.getText().trim();
-            String password = new String(passwordField.getPassword());
+            try {
+                String phone = phoneField.getText().trim();
+                String email = emailField.getText().trim();
+                String password = new String(passwordField.getPassword());
 
-            if (phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos.", "Erro", JOptionPane.ERROR_MESSAGE);
-                return;
+                if (phone.isEmpty() || email.isEmpty() || password.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Todos os campos devem ser preenchidos.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                personController.updateClient(client.getId(), phone, email, password);
+                JOptionPane.showMessageDialog(this, "Cliente atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+                SwingMenu.changeScreen(new UpdateClientPanel(personController, productController, personDeafault, client));
+
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(this, "Erro de validação: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (EntityNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, "Cliente não encontrado: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro inesperado: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
-
-            personController.updateClient(client.getId(), phone, email, password);
-            JOptionPane.showMessageDialog(this, "Cliente atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-            SwingMenu.changeScreen(new UpdateClientPanel(personController, productController, personDeafault, person));
         });
 
-        // Botão voltar
         JButton backButton = AuxComponents.createStyledButton("Voltar", 150, 40,
                 () -> SwingMenu.changeScreen(new SearchPersonPanel(personController, productController, personDeafault)));
 

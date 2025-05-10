@@ -2,6 +2,7 @@ package view.swing.employee.people;
 
 import controllers.PersonController;
 import controllers.ProductController;
+import exceptions.EntityNotFoundException;
 import model.people.Employee;
 import model.people.Person;
 import view.swing.AuxComponents;
@@ -47,13 +48,19 @@ public class UpdateEmployeePanel extends JPanel {
                 JOptionPane.showMessageDialog(this, "Funcionário atualizado com sucesso!");
 
                 SwingMenu.changeScreen(new UpdateEmployeePanel(personController, productController, emp, emp, type));
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Erro ao atualizar funcionário: " + e.getMessage());
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(this, "Erro de validação: " + ex.getMessage());
+            } catch (EntityNotFoundException ex) {
+                JOptionPane.showMessageDialog(this, "Funcionário não encontrado: ");
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Erro inesperado: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
             }
         });
 
         JButton buttonBack = AuxComponents.createStyledButton("Voltar", 150, 40,
-                () -> SwingMenu.changeScreen( type == 1 ? new SearchPersonPanel(personController, productController, person) : new EmployeePanel(personController, productController, person)));
+                () -> SwingMenu.changeScreen(type == 1
+                        ? new SearchPersonPanel(personController, productController, person)
+                        : new EmployeePanel(personController, productController, person)));
 
         add(AuxComponents.createHorizontalButtonPanel(buttonBack, buttonUpdate));
     }
