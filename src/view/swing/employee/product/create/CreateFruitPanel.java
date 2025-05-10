@@ -3,6 +3,7 @@ package view.swing.employee.product.create;
 import controllers.PersonController;
 import controllers.ProductController;
 import dtos.FruitDTO;
+import exceptions.DuplicateEntityException;
 import model.people.Person;
 import model.products.food.Fruit;
 import view.swing.AuxComponents;
@@ -25,7 +26,6 @@ public class CreateFruitPanel extends JPanel {
         add(titleLabel);
         add(Box.createVerticalStrut(30));
 
-        // Campos
         JTextField nameField = new JTextField();
         JTextField priceField = new JTextField();
         JTextField amountField = new JTextField();
@@ -64,29 +64,60 @@ public class CreateFruitPanel extends JPanel {
 
         JButton registerBtn = AuxComponents.createStyledButton("Cadastrar", 150, 40, () -> {
             try {
+                // Validação dos campos
+                String name = nameField.getText().trim();
+                if (name.isEmpty()) throw new IllegalArgumentException("Nome não pode ser vazio.");
+
+                String priceText = priceField.getText().trim();
+                if (priceText.isEmpty()) throw new IllegalArgumentException("Preço não pode ser vazio.");
+                double price = Double.parseDouble(priceText);
+                if (price < 0) throw new IllegalArgumentException("Preço não pode ser negativo.");
+
+                String amountText = amountField.getText().trim();
+                if (amountText.isEmpty()) throw new IllegalArgumentException("Quantidade não pode ser vazia.");
+                int amount = Integer.parseInt(amountText);
+                if (amount < 0) throw new IllegalArgumentException("Quantidade não pode ser negativa.");
+
+                String expirationDateText = expirationDateField.getText().trim();
+                if (expirationDateText.isEmpty()) throw new IllegalArgumentException("Data de validade não pode ser vazia.");
+                LocalDate expirationDate = LocalDate.parse(expirationDateText);
+
+                String weightText = weightField.getText().trim();
+                if (weightText.isEmpty()) throw new IllegalArgumentException("Peso não pode ser vazio.");
+                double weight = Double.parseDouble(weightText);
+                if (weight < 0) throw new IllegalArgumentException("Peso não pode ser negativo.");
+
+                String nutritionalInfo = nutritionalInfoField.getText().trim();
+                if (nutritionalInfo.isEmpty()) throw new IllegalArgumentException("Informações nutricionais não podem ser vazias.");
+
+                String variety = varietyField.getText().trim();
+                if (variety.isEmpty()) throw new IllegalArgumentException("Variedade não pode ser vazia.");
+
+                String origin = originField.getText().trim();
+                if (origin.isEmpty()) throw new IllegalArgumentException("Origem não pode ser vazia.");
+
+                String packagingType = packagingTypeField.getText().trim();
+                if (packagingType.isEmpty()) throw new IllegalArgumentException("Tipo de embalagem não pode ser vazio.");
+
+                boolean refrigerated = refrigeratedBox.isSelected();
+                boolean seasonal = seasonalBox.isSelected();
+
                 List<?> products = productController.getProductsByCategory(Fruit.class);
                 String cod = String.format("FR%04d", products.size() + 1);
 
-                String name = nameField.getText().trim();
-                double price = Double.parseDouble(priceField.getText().trim());
-                int amount = Integer.parseInt(amountField.getText().trim());
-                LocalDate expirationDate = LocalDate.parse(expirationDateField.getText().trim());
-                double weight = Double.parseDouble(weightField.getText().trim());
-                boolean refrigerated = refrigeratedBox.isSelected();
-                String nutritionalInfo = nutritionalInfoField.getText().trim();
-                String variety = varietyField.getText().trim();
-                String origin = originField.getText().trim();
-                boolean seasonal = seasonalBox.isSelected();
-                String packagingType = packagingTypeField.getText().trim();
-
+                // Criação do DTO
                 FruitDTO fruitDTO = new FruitDTO(cod, name, price, amount, expirationDate, weight, refrigerated,
                         nutritionalInfo, variety, origin, seasonal, packagingType);
+
+                // Registro do produto
                 productController.registerFruit(fruitDTO);
 
                 JOptionPane.showMessageDialog(this, "Fruta cadastrada com sucesso!");
-                SwingMenu.changeScreen(new CreateMeatPanel(personController, productController, employee));
-            } catch (Exception e) {
+                SwingMenu.changeScreen(new CreateFruitPanel(personController, productController, employee));
+            } catch (IllegalArgumentException | DuplicateEntityException e) {
                 JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Erro inesperado: " + e.getMessage());
             }
         });
 

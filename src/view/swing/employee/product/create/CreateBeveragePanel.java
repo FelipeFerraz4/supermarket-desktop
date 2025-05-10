@@ -3,6 +3,7 @@ package view.swing.employee.product.create;
 import controllers.PersonController;
 import controllers.ProductController;
 import dtos.BeverageDTO;
+import exceptions.DuplicateEntityException;
 import model.people.Person;
 import model.products.food.Beverage;
 import view.swing.AuxComponents;
@@ -25,16 +26,15 @@ public class CreateBeveragePanel extends JPanel {
         add(titleLabel);
         add(Box.createVerticalStrut(30));
 
-        // Campos
         JTextField nameField = new JTextField();
         JTextField priceField = new JTextField();
         JTextField amountField = new JTextField();
         JTextField expirationDateField = new JTextField();
         JTextField weightField = new JTextField();
-        JTextField brandField = new JTextField(); // Corrigido
+        JTextField brandField = new JTextField();
         JTextField volumeField = new JTextField();
         JTextField flavorField = new JTextField();
-        JTextField nutritionalInfoField = new JTextField(); // Corrigido
+        JTextField nutritionalInfoField = new JTextField();
 
         JCheckBox refrigeratedBox = new JCheckBox("Refrigerado?");
         JCheckBox alcoholicBox = new JCheckBox("Alcoólica?");
@@ -64,26 +64,77 @@ public class CreateBeveragePanel extends JPanel {
 
         JButton registerBtn = AuxComponents.createStyledButton("Cadastrar", 150, 40, () -> {
             try {
+                // Validação dos campos de entrada
+                String name = nameField.getText().trim();
+                if (name.isEmpty()) {
+                    throw new IllegalArgumentException("Nome é obrigatório.");
+                }
+
+                double price;
+                try {
+                    price = Double.parseDouble(priceField.getText().trim());
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Preço inválido.");
+                }
+
+                int amount;
+                try {
+                    amount = Integer.parseInt(amountField.getText().trim());
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Quantidade inválida.");
+                }
+
+                LocalDate expirationDate;
+                try {
+                    expirationDate = LocalDate.parse(expirationDateField.getText().trim());
+                } catch (Exception e) {
+                    throw new IllegalArgumentException("Data de validade inválida.");
+                }
+
+                double weight;
+                try {
+                    weight = Double.parseDouble(weightField.getText().trim());
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Peso inválido.");
+                }
+
+                String nutritionalInfo = nutritionalInfoField.getText().trim();
+                if (nutritionalInfo.isEmpty()) {
+                    throw new IllegalArgumentException("Informações nutricionais são obrigatórias.");
+                }
+
+                double volume;
+                try {
+                    volume = Double.parseDouble(volumeField.getText().trim());
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("Volume inválido.");
+                }
+
+                String flavor = flavorField.getText().trim();
+                if (flavor.isEmpty()) {
+                    throw new IllegalArgumentException("Sabor é obrigatório.");
+                }
+
+                String brand = brandField.getText().trim();
+                if (brand.isEmpty()) {
+                    throw new IllegalArgumentException("Marca é obrigatória.");
+                }
+
+                boolean refrigerated = refrigeratedBox.isSelected();
+                boolean alcoholic = alcoholicBox.isSelected();
+
                 List<?> products = productController.getProductsByCategory(Beverage.class);
                 String cod = String.format("BE%04d", products.size() + 1);
-
-                String name = nameField.getText().trim();
-                double price = Double.parseDouble(priceField.getText().trim());
-                int amount = Integer.parseInt(amountField.getText().trim());
-                LocalDate expirationDate = LocalDate.parse(expirationDateField.getText().trim());
-                double weight = Double.parseDouble(weightField.getText().trim());
-                boolean refrigerated = refrigeratedBox.isSelected();
-                String nutritionalInfo = nutritionalInfoField.getText().trim();
-                double volume = Double.parseDouble(volumeField.getText().trim());
-                boolean alcoholic = alcoholicBox.isSelected();
-                String flavor = flavorField.getText().trim();
-                String brand = brandField.getText().trim();
 
                 BeverageDTO beverageDTO = new BeverageDTO(cod, name, price, amount, expirationDate, weight, refrigerated, nutritionalInfo, volume, alcoholic, flavor, brand);
                 productController.registerBeverage(beverageDTO);
 
                 JOptionPane.showMessageDialog(this, "Bebida cadastrada com sucesso!");
                 SwingMenu.changeScreen(new CreateBeveragePanel(personController, productController, employee));
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
+            } catch (DuplicateEntityException e) {
+                JOptionPane.showMessageDialog(this, "Erro: Bebida já cadastrada.");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
             }

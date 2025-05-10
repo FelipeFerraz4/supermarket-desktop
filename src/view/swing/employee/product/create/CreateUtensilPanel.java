@@ -3,6 +3,7 @@ package view.swing.employee.product.create;
 import controllers.PersonController;
 import controllers.ProductController;
 import dtos.UtensilDTO;
+import exceptions.DuplicateEntityException;
 import model.people.Person;
 import model.products.Utensil;
 import view.swing.AuxComponents;
@@ -24,7 +25,6 @@ public class CreateUtensilPanel extends JPanel {
         add(titleLabel);
         add(Box.createVerticalStrut(30));
 
-        // Campos
         JTextField nameField = new JTextField();
         JTextField priceField = new JTextField();
         JTextField amountField = new JTextField();
@@ -50,22 +50,53 @@ public class CreateUtensilPanel extends JPanel {
 
         JButton registerBtn = AuxComponents.createStyledButton("Cadastrar", 150, 40, () -> {
             try {
-                List<?> products = productController.getProductsByCategory(Utensil.class);
-                String cod = String.format("UT%04d", products.size() + 1);
-
+                // Validações de dados antes de prosseguir
                 String name = nameField.getText().trim();
-                double price = Double.parseDouble(priceField.getText().trim());
-                int amount = Integer.parseInt(amountField.getText().trim());
+                if (name.isEmpty()) {
+                    throw new IllegalArgumentException("O nome do utensílio não pode ser vazio.");
+                }
+
+                double price;
+                try {
+                    price = Double.parseDouble(priceField.getText().trim());
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("O preço deve ser um valor numérico.");
+                }
+
+                int amount;
+                try {
+                    amount = Integer.parseInt(amountField.getText().trim());
+                } catch (NumberFormatException e) {
+                    throw new IllegalArgumentException("A quantidade deve ser um número inteiro.");
+                }
+
                 String material = materialField.getText().trim();
                 String category = categoryField.getText().trim();
                 boolean isReusable = reusableBox.isSelected();
                 String size = sizeField.getText().trim();
 
-                UtensilDTO utensilDTO = new UtensilDTO(cod, name, price, amount, material, category, isReusable, size);
-                productController.registerUtensil(utensilDTO);
+                // Verifica se algum campo obrigatório está vazio
+                if (material.isEmpty() || category.isEmpty() || size.isEmpty()) {
+                    throw new IllegalArgumentException("Material, categoria e tamanho não podem ser vazios.");
+                }
 
-                JOptionPane.showMessageDialog(this, "Utensílio cadastrado com sucesso!");
-                SwingMenu.changeScreen(new CreateUtensilPanel(personController, productController, employee));
+                // Gera o código do utensílio
+                List<?> products = productController.getProductsByCategory(Utensil.class);
+                String cod = String.format("UT%04d", products.size() + 1);
+
+                // Cria o DTO do utensílio
+                UtensilDTO utensilDTO = new UtensilDTO(cod, name, price, amount, material, category, isReusable, size);
+
+                // Tenta registrar o utensílio
+                try {
+                    productController.registerUtensil(utensilDTO);
+                    JOptionPane.showMessageDialog(this, "Utensílio cadastrado com sucesso!");
+                    SwingMenu.changeScreen(new CreateUtensilPanel(personController, productController, employee));
+                } catch (DuplicateEntityException e) {
+                    JOptionPane.showMessageDialog(this, "Erro: Já existe esse utensílio");
+                }
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, "Erro de validação: " + e.getMessage());
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
             }

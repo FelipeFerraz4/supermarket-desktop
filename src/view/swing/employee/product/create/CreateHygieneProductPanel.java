@@ -3,6 +3,7 @@ package view.swing.employee.product.create;
 import controllers.PersonController;
 import controllers.ProductController;
 import dtos.HygieneProductDTO;
+import exceptions.DuplicateEntityException;
 import model.people.Person;
 import model.products.HygieneProduct;
 import view.swing.AuxComponents;
@@ -24,7 +25,6 @@ public class CreateHygieneProductPanel extends JPanel {
         add(titleLabel);
         add(Box.createVerticalStrut(30));
 
-        // Campos
         JTextField nameField = new JTextField();
         JTextField priceField = new JTextField();
         JTextField amountField = new JTextField();
@@ -62,20 +62,36 @@ public class CreateHygieneProductPanel extends JPanel {
 
         JButton registerBtn = AuxComponents.createStyledButton("Cadastrar", 150, 40, () -> {
             try {
+                // Validações de campos
+                if (nameField.getText().trim().isEmpty() || priceField.getText().trim().isEmpty() ||
+                        amountField.getText().trim().isEmpty() || typeField.getText().trim().isEmpty() ||
+                        brandField.getText().trim().isEmpty() || usageInstructionsField.getText().trim().isEmpty() ||
+                        volumeField.getText().trim().isEmpty()) {
+                    throw new IllegalArgumentException("Todos os campos são obrigatórios.");
+                }
+
+                double price = Double.parseDouble(priceField.getText().trim());
+                int amount = Integer.parseInt(amountField.getText().trim());
+                double volume = Double.parseDouble(volumeField.getText().trim());
+
+                // Validações de valores positivos
+                if (price <= 0 || amount <= 0 || volume <= 0) {
+                    throw new IllegalArgumentException("Preço, quantidade e volume devem ser maiores que zero.");
+                }
+
+                // Gerar código
                 List<?> products = productController.getProductsByCategory(HygieneProduct.class);
                 String cod = String.format("HY%04d", products.size() + 1);
 
                 String name = nameField.getText().trim();
-                double price = Double.parseDouble(priceField.getText().trim());
-                int amount = Integer.parseInt(amountField.getText().trim());
                 String type = typeField.getText().trim();
                 String brand = brandField.getText().trim();
                 boolean forSensitiveSkin = sensitiveSkinBox.isSelected();
                 String usageInstructions = usageInstructionsField.getText().trim();
                 boolean toxic = toxicBox.isSelected();
                 String scent = scentField.getText().trim();
-                double volume = Double.parseDouble(volumeField.getText().trim());
 
+                // Criar o DTO do produto de higiene
                 HygieneProductDTO hygieneDTO = new HygieneProductDTO(
                         cod, name, price, amount, type, brand, forSensitiveSkin, usageInstructions, toxic, scent, volume
                 );
@@ -84,6 +100,10 @@ public class CreateHygieneProductPanel extends JPanel {
 
                 JOptionPane.showMessageDialog(this, "Produto de Higiene cadastrado com sucesso!");
                 SwingMenu.changeScreen(new CreateHygieneProductPanel(personController, productController, employee));
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, "Erro de validação: " + e.getMessage());
+            } catch (DuplicateEntityException e) {
+                JOptionPane.showMessageDialog(this, "Produto já cadastrado");
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
             }

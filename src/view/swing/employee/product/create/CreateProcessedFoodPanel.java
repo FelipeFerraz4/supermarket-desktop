@@ -3,6 +3,7 @@ package view.swing.employee.product.create;
 import controllers.PersonController;
 import controllers.ProductController;
 import dtos.ProcessedFoodDTO;
+import exceptions.DuplicateEntityException;
 import model.people.Person;
 import model.products.food.ProcessedFood;
 import view.swing.AuxComponents;
@@ -25,7 +26,6 @@ public class CreateProcessedFoodPanel extends JPanel {
         add(titleLabel);
         add(Box.createVerticalStrut(30));
 
-        // Campos
         JTextField nameField = new JTextField();
         JTextField priceField = new JTextField();
         JTextField amountField = new JTextField();
@@ -39,7 +39,6 @@ public class CreateProcessedFoodPanel extends JPanel {
         JCheckBox refrigeratedBox = new JCheckBox("Refrigerado?");
         JCheckBox preservativesBox = new JCheckBox("Contém conservantes?");
 
-        // Adiciona campos ao painel
         add(AuxComponents.createHorizontalFields("Nome:", 14, nameField, 400, 25,
                 "Preço:", 14, priceField, 200, 25));
         add(AuxComponents.createHorizontalFields("Quantidade:", 14, amountField, 300, 25,
@@ -53,24 +52,40 @@ public class CreateProcessedFoodPanel extends JPanel {
         add(Box.createVerticalStrut(20));
         add(AuxComponents.createHorizontalCheckBoxes(refrigeratedBox, preservativesBox));
 
-        // Botões
         JButton registerBtn = AuxComponents.createStyledButton("Cadastrar", 150, 40, () -> {
             try {
                 List<?> products = productController.getProductsByCategory(ProcessedFood.class);
                 String cod = String.format("PR%04d", products.size() + 1);
 
                 String name = nameField.getText().trim();
-                double price = Double.parseDouble(priceField.getText().trim());
-                int amount = Integer.parseInt(amountField.getText().trim());
-                LocalDate expirationDate = LocalDate.parse(expirationDateField.getText().trim());
-                double weight = Double.parseDouble(weightField.getText().trim());
-                boolean refrigerated = refrigeratedBox.isSelected();
+                double price;
+                int amount;
+                LocalDate expirationDate;
+                double weight;
                 String nutritionalInfo = nutritionalInfoField.getText().trim();
                 String category = categoryField.getText().trim();
                 String brand = brandField.getText().trim();
-                boolean containsPreservatives = preservativesBox.isSelected();
                 String cookingInstructions = cookingInstructionsField.getText().trim();
+                boolean refrigerated = refrigeratedBox.isSelected();
+                boolean containsPreservatives = preservativesBox.isSelected();
 
+                try {
+                    price = Double.parseDouble(priceField.getText().trim());
+                    amount = Integer.parseInt(amountField.getText().trim());
+                    weight = Double.parseDouble(weightField.getText().trim());
+                } catch (NumberFormatException e) {
+                    JOptionPane.showMessageDialog(this, "Por favor, insira valores numéricos válidos para preço, quantidade e peso.");
+                    return;
+                }
+
+                try {
+                    expirationDate = LocalDate.parse(expirationDateField.getText().trim());
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(this, "Por favor, insira uma data válida para a validade (AAAA-MM-DD).");
+                    return;
+                }
+
+                // Cria o DTO do alimento processado
                 ProcessedFoodDTO dto = new ProcessedFoodDTO(cod, name, price, amount, expirationDate, weight, refrigerated,
                         nutritionalInfo, category, brand, containsPreservatives, cookingInstructions);
 
@@ -78,8 +93,12 @@ public class CreateProcessedFoodPanel extends JPanel {
 
                 JOptionPane.showMessageDialog(this, "Alimento processado cadastrado com sucesso!");
                 SwingMenu.changeScreen(new CreateProcessedFoodPanel(personController, productController, employee));
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, "Erro: " + e.getMessage());
+            } catch (DuplicateEntityException e) {
+                JOptionPane.showMessageDialog(this, "Erro: Produto duplicado. Já existe um produto com as mesmas informações.");
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Erro ao cadastrar: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Erro inesperado: " + e.getMessage());
             }
         });
 
