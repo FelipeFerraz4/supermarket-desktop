@@ -2,6 +2,7 @@ package view.swing;
 
 import controllers.PersonController;
 import controllers.ProductController;
+import exceptions.EntityNotFoundException;
 import model.people.Person;
 import view.swing.client.ClientPanel;
 import view.swing.employee.EmployeePanel;
@@ -29,28 +30,37 @@ public class LoginPanel extends JPanel {
         add(AuxComponents.createLabeledField("Senha:", 15, passwordField, 400, 30));
         add(Box.createVerticalStrut(10));
 
-        JButton loginButton = AuxComponents.createStyledButton(
-                "Login", 150, 40,
+        JButton loginButton = AuxComponents.createSafeStyledButton(
+                this, "Login", 150, 40,
                 () -> {
                     String email = emailField.getText();
                     String password = new String(passwordField.getPassword());
-                    Person person = personController.login(email, password);
-                    if (person != null) {
-                        if (person instanceof model.people.Client) {
-                            Map<UUID, Double> cart = personController.getClientCart(person.getId());
-                            SwingMenu.changeScreen(new ClientPanel(personController, productController, person, cart));
+
+                    try {
+                        Person person = personController.login(email, password);
+
+                        if (person != null) {
+                            if (person instanceof model.people.Client) {
+                                Map<UUID, Double> cart = personController.getClientCart(person.getId());
+                                SwingMenu.changeScreen(new ClientPanel(personController, productController, person, cart));
+                            } else {
+                                SwingMenu.changeScreen(new EmployeePanel(personController, productController, person));
+                            }
                         } else {
-                            SwingMenu.changeScreen(new EmployeePanel(personController, productController, person));
+                            JOptionPane.showMessageDialog(this, "E-mail ou senha incorretos.");
                         }
-                    } else {
-                        JOptionPane.showMessageDialog(this, "E-mail ou senha incorretos.");
+
+                    } catch (IllegalArgumentException | EntityNotFoundException ex) {
+                        JOptionPane.showMessageDialog(this, "Erro durante login: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
                     }
-                }
+                },
+                "Erro durante o processo de login"
         );
 
-        JButton backButton = AuxComponents.createStyledButton(
-                "Voltar", 150, 40,
-                () -> SwingMenu.changeScreen(new MainMenuPanel(personController, productController))
+        JButton backButton = AuxComponents.createSafeStyledButton(
+                this, "Voltar", 150, 40,
+                () -> SwingMenu.changeScreen(new MainMenuPanel(personController, productController)),
+                "Erro ao retornar ao menu"
         );
 
         JPanel buttonPanel = AuxComponents.createHorizontalButtonPanel(backButton, loginButton);
